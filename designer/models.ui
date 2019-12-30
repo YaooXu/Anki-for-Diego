@@ -42,6 +42,9 @@
        </property>
        <item>
         <widget class="QDialogButtonBox" name="buttonBox">
+         <property name="styleSheet">
+          <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>

@@ -23,6 +23,7 @@ class Ui_Dialog(object):
         self.verticalLayout.setSpacing(3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.fieldsArea = QtWidgets.QWidget(Dialog)
+        self.fieldsArea.setStyleSheet("background :url(:/icons/Mainwindow_bg.jpg)")
         self.fieldsArea.setObjectName("fieldsArea")
         self.verticalLayout.addWidget(self.fieldsArea)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

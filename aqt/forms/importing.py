@@ -15,6 +15,7 @@ class Ui_ImportDialog(object):
     def setupUi(self, ImportDialog):
         ImportDialog.setObjectName("ImportDialog")
         ImportDialog.resize(553, 466)
+        ImportDialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.vboxlayout = QtWidgets.QVBoxLayout(ImportDialog)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(ImportDialog)
@@ -72,7 +73,7 @@ class Ui_ImportDialog(object):
         self.mappingArea.setWidgetResizable(True)
         self.mappingArea.setObjectName("mappingArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 529, 251))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 513, 256))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.mappingArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.mappingArea, 0, 0, 1, 1)

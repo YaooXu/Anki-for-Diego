@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Anki</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
@@ -22,7 +25,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="lang"/>
+    <widget class="QListWidget" name="lang">
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

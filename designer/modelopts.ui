@@ -19,6 +19,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="qtabwidget">
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>

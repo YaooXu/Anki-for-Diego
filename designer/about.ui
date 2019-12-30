@@ -34,6 +34,9 @@
    </property>
    <item>
     <widget class="AnkiWebView" name="label" native="true">
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+     </property>
      <property name="url" stdset="0">
       <url>
        <string>about:blank</string>

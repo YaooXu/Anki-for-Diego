@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Custom Study</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
@@ -62,6 +65,9 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+     </property>
      <property name="title">
       <string/>
      </property>
@@ -69,7 +75,7 @@
       <item>
        <widget class="QLabel" name="title">
         <property name="text">
-         <string>...</string>
+         <string notr="true">...</string>
         </property>
        </widget>
       </item>
@@ -78,7 +84,7 @@
         <item>
          <widget class="QLabel" name="preSpin">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>
@@ -88,7 +94,7 @@
         <item>
          <widget class="QLabel" name="postSpin">
           <property name="text">
-           <string>...</string>
+           <string notr="true">...</string>
           </property>
          </widget>
         </item>

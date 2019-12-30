@@ -17,6 +17,9 @@
    <iconset resource="icons.qrc">
     <normaloff>:/icons/anki.png</normaloff>:/icons/anki.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>3</number>
@@ -72,7 +75,10 @@
       </sizepolicy>
      </property>
      <property name="autoFillBackground">
-      <bool>true</bool>
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
      </property>
     </widget>
    </item>

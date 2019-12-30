@@ -34,6 +34,7 @@ class Ui_Dialog(object):
         self.verticalLayout_3.setSpacing(12)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Close|QtWidgets.QDialogButtonBox.Help)
         self.buttonBox.setObjectName("buttonBox")

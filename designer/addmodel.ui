@@ -22,6 +22,9 @@
      <layout class="QVBoxLayout">
       <item>
        <widget class="QListWidget" name="models">
+        <property name="styleSheet">
+         <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+        </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>

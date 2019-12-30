@@ -20,6 +20,7 @@ class Ui_Dialog(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.web = AnkiWebView(Dialog)
+        self.web.setStyleSheet("background :url(:/icons/Mainwindow_bg.jpg)")
         self.web.setProperty("url", QtCore.QUrl("about:blank"))
         self.web.setObjectName("web")
         self.verticalLayout.addWidget(self.web)

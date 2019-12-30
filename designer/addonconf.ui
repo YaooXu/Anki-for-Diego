@@ -29,6 +29,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+      </property>
       <property name="lineWrapMode">
        <enum>QPlainTextEdit::NoWrap</enum>
       </property>
@@ -51,8 +54,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>80</width>
-         <height>470</height>
+         <width>69</width>
+         <height>474</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -70,6 +73,9 @@
         </property>
         <item>
          <widget class="QLabel" name="label">
+          <property name="styleSheet">
+           <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+          </property>
           <property name="text">
            <string/>
           </property>

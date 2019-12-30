@@ -27,6 +27,7 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.filter)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.list = QtWidgets.QListWidget(Dialog)
+        self.list.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.list.setObjectName("list")
         self.verticalLayout.addWidget(self.list)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

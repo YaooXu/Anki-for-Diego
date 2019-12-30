@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(470, 569)
+        Form.resize(578, 569)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -34,6 +34,7 @@ class Ui_Form(object):
         self.tlayout1.setSpacing(0)
         self.tlayout1.setObjectName("tlayout1")
         self.front = QtWidgets.QTextEdit(self.groupBox)
+        self.front.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.front.setObjectName("front")
         self.tlayout1.addWidget(self.front)
         self.horizontalLayout_2.addWidget(self.groupBox)
@@ -52,6 +53,7 @@ class Ui_Form(object):
         self.tlayout2.setSpacing(0)
         self.tlayout2.setObjectName("tlayout2")
         self.css = QtWidgets.QTextEdit(self.groupBox_3)
+        self.css.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.css.setObjectName("css")
         self.tlayout2.addWidget(self.css)
         self.horizontalLayout.addWidget(self.groupBox_3)
@@ -89,6 +91,7 @@ class Ui_Form(object):
         self.tlayout3.setSpacing(0)
         self.tlayout3.setObjectName("tlayout3")
         self.back = QtWidgets.QTextEdit(self.groupBox_2)
+        self.back.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.back.setObjectName("back")
         self.tlayout3.addWidget(self.back)
         self.horizontalLayout_3.addWidget(self.groupBox_2)

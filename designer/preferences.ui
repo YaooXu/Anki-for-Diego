@@ -13,14 +13,20 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+     </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <attribute name="title">
@@ -111,7 +117,7 @@
        <item>
         <widget class="QCheckBox" name="newSched">
          <property name="text">
-          <string>Experimental V2 scheduler</string>
+          <string>Anki 2.1 scheduler</string>
          </property>
         </widget>
        </item>

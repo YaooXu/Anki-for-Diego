@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>356</height>
+    <height>355</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,9 @@
    <iconset resource="icons.qrc">
     <normaloff>:/icons/anki.png</normaloff>:/icons/anki.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
@@ -24,7 +27,11 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QListWidget" name="profiles"/>
+         <widget class="QListWidget" name="profiles">
+          <property name="styleSheet">
+           <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -103,7 +110,7 @@
      <x>0</x>
      <y>0</y>
      <width>423</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>

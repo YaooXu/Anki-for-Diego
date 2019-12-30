@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>icons/Mainwindow_bg.jpg</file>
     <file>icons/anki.png</file>
     <file>icons/tag.svg</file>
     <file>icons/deck.svg</file>

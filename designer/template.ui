@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>470</width>
+    <width>578</width>
     <height>569</height>
    </rect>
   </property>
@@ -23,7 +23,16 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -40,11 +49,24 @@
         <property name="spacing">
          <number>0</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QTextEdit" name="front"/>
+         <widget class="QTextEdit" name="front">
+          <property name="styleSheet">
+           <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -72,11 +94,24 @@
         <property name="spacing">
          <number>0</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QTextEdit" name="css"/>
+         <widget class="QTextEdit" name="css">
+          <property name="styleSheet">
+           <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -169,11 +204,24 @@
         <property name="spacing">
          <number>0</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="QTextEdit" name="back"/>
+         <widget class="QTextEdit" name="back">
+          <property name="styleSheet">
+           <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

@@ -23,6 +23,7 @@ class Ui_Dialog(object):
         self.vboxlayout1 = QtWidgets.QVBoxLayout(self.groupBox)
         self.vboxlayout1.setObjectName("vboxlayout1")
         self.models = QtWidgets.QListWidget(self.groupBox)
+        self.models.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.models.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.models.setTabKeyNavigation(True)
         self.models.setObjectName("models")

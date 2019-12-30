@@ -10,6 +10,9 @@
     <height>514</height>
    </rect>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background: url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">

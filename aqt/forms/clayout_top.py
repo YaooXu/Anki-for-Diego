@@ -43,6 +43,7 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.templateOptions)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.changesLabel = QtWidgets.QLabel(Form)
+        self.changesLabel.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.changesLabel.setText("")
         self.changesLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.changesLabel.setObjectName("changesLabel")

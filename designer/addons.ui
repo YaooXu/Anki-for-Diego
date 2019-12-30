@@ -31,6 +31,9 @@
      </item>
      <item>
       <widget class="QListWidget" name="addonList">
+       <property name="styleSheet">
+        <string notr="true">background :url(:/icons/Mainwindow_bg.jpg)</string>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>

@@ -14,7 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(412, 352)
+        Dialog.resize(412, 382)
+        Dialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         Dialog.setModal(True)
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -27,6 +28,7 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.fieldList.sizePolicy().hasHeightForWidth())
         self.fieldList.setSizePolicy(sizePolicy)
         self.fieldList.setMinimumSize(QtCore.QSize(50, 60))
+        self.fieldList.setStyleSheet("border:url(:/icons/Mainwindow_bg.jpg)")
         self.fieldList.setObjectName("fieldList")
         self.horizontalLayout.addWidget(self.fieldList)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()

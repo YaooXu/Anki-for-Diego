@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Import</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
+  </property>
   <layout class="QVBoxLayout">
    <item>
     <widget class="QGroupBox" name="groupBox">
@@ -119,8 +122,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>529</width>
-             <height>251</height>
+             <width>513</width>
+             <height>256</height>
             </rect>
            </property>
           </widget>

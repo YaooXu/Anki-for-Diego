@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>412</width>
-    <height>352</height>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Fields</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background:url(:/icons/Mainwindow_bg.jpg)</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -32,6 +35,9 @@
          <width>50</width>
          <height>60</height>
         </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border:url(:/icons/Mainwindow_bg.jpg)</string>
        </property>
       </widget>
      </item>
