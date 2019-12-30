@@ -57,6 +57,8 @@ class AnkiQt(QMainWindow):
             # addCard.editor.note.fields.clear()
             addCard.editor.note.fields[0] = word_info['word']
             addCard.editor.note.fields[1] = word_info['accent']
+            addCard.editor.note.fields[2] = word_info['mean_cn']
+            addCard.editor.note.fields[3] = word_info['st']
             print(addCard.editor.note.fields)
             # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
             addCard._addCards()
@@ -65,6 +67,8 @@ class AnkiQt(QMainWindow):
     def get_word_in_text(self):
         alert = QMessageBox()
         content = self.words_text.toPlainText()
+        if not content:
+            return
         words = content.strip().split('\n')
         word_infos = []
         for word in words:
@@ -89,7 +93,7 @@ class AnkiQt(QMainWindow):
         root.withdraw()
         file_path = filedialog.askopenfilename()
 
-        if file_path.endswith('txt'):
+        if file_path and file_path.endswith('txt'):
             word_infos = []
             with open(file_path, 'r') as f:
                 msg = f.read()
@@ -109,15 +113,15 @@ class AnkiQt(QMainWindow):
             self.add_words(word_infos)
             self.words_text.setText("")
             report_add_res(len(words), len(word_infos))
-        else:
+        elif file_path and not file_path.endswith('txt'):
             alert.setText("必须是txt文件!")
             alert.exec_()
 
     def __init__(self, app, profileManager, opts, args):
         QMainWindow.__init__(self)
         self.words_text = QTextEdit(self)
-        self.get_word_in_text_button = QPushButton('Add words in text', self)
-        self.get_word_from_file_button = QPushButton('Add words from file', self)
+        self.get_word_in_text_button = QPushButton('添加文本框中的单词', self)
+        self.get_word_from_file_button = QPushButton('添加文本文档中的单词', self)
 
         self.get_word_in_text_button.clicked.connect(self.get_word_in_text)
         self.get_word_from_file_button.clicked.connect(self.get_word_from_file)
