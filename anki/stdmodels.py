@@ -13,13 +13,21 @@ models = []
 def addBasicModel(col):
     mm = col.models
     m = mm.new(_("Basic"))
-    fm = mm.newField(_("Front"))
+    fm = mm.newField(_("单词"))
     mm.addField(m, fm)
-    fm = mm.newField(_("Back"))
+    fm = mm.newField(_("音标"))
     mm.addField(m, fm)
+    fm = mm.newField(_("释义"))
+    mm.addField(m, fm)
+    fm = mm.newField(_("例句"))
+    mm.addField(m, fm)
+    fm = mm.newField(_("图片"))
+    mm.addField(m, fm)
+
     t = mm.newTemplate(_("Card 1"))
     t['qfmt'] = "{{"+_("Front")+"}}"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("Back")+"}}"
+    t['qfmt'] = "{{"+_("单词")+"}}<br>{{"+_("音标")+"}}"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("释义")+"}}<br>{{"+_("例句")+"}}"
     mm.addTemplate(m, t)
     mm.add(m)
     return m

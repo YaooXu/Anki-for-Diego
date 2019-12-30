@@ -5,6 +5,7 @@
 from anki.utils import fieldChecksum, intTime, \
     joinFields, splitFields, stripHTMLMedia, timestampID, guid64
 
+
 class Note:
 
     def __init__(self, col, model=None, id=None):
@@ -50,18 +51,18 @@ from notes where id = ?""", self.id)
         tags = self.stringTags()
         fields = self.joinedFields()
         if not mod and self.col.db.scalar(
-            "select 1 from notes where id = ? and tags = ? and flds = ?",
-            self.id, tags, fields):
+                "select 1 from notes where id = ? and tags = ? and flds = ?",
+                self.id, tags, fields):
             return
         csum = fieldChecksum(self.fields[0])
         self.mod = mod if mod else intTime()
         self.usn = self.col.usn()
         res = self.col.db.execute("""
 insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)""",
-                            self.id, self.guid, self.mid,
-                            self.mod, self.usn, tags,
-                            fields, sfld, csum, self.flags,
-                            self.data)
+                                  self.id, self.guid, self.mid,
+                                  self.mod, self.usn, tags,
+                                  fields, sfld, csum, self.flags,
+                                  self.data)
         self.col.tags.register(self.tags)
         self._postFlush()
 
@@ -138,10 +139,10 @@ insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)""",
         csum = fieldChecksum(val)
         # find any matching csums and compare
         for flds in self.col.db.list(
-            "select flds from notes where csum = ? and id != ? and mid = ?",
-            csum, self.id or 0, self.mid):
+                "select flds from notes where csum = ? and id != ? and mid = ?",
+                csum, self.id or 0, self.mid):
             if stripHTMLMedia(
-                splitFields(flds)[0]) == stripHTMLMedia(self.fields[0]):
+                    splitFields(flds)[0]) == stripHTMLMedia(self.fields[0]):
                 return 2
         return False
 
@@ -160,4 +161,4 @@ insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)""",
             # popping up a dialog while editing is confusing; instead we can
             # document that the user should open the templates window to
             # garbage collect empty cards
-            #self.col.remEmptyCards(ids)
+            # self.col.remEmptyCards(ids)
