@@ -10,60 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f7e91159-29d1-4e29-85c0-98fb69764ef1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/get_word.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/文档分析.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/anki/collection.py" beforeDir="false" afterPath="$PROJECT_DIR$/anki/collection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/addcards.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/addcards.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/editor.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/editor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/about.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/addcards.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/addfield.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/addmodel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/addonconf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/addons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/browser.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/browserdisp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/browseropts.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/changemap.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/changemodel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/clayout_top.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/customstudy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/dconf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/debug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/dyndconf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/editaddon.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/editcurrent.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/edithtml.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/exporting.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/fields.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/finddupes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/findreplace.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/getaddons.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/icons_rc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/importing.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/modelopts.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/preferences.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/preview.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/profiles.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/progress.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/reposition.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/reschedule.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/setgroup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/setlang.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/stats.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/studydeck.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/taglimit.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/forms/template.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/qt.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/qt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aqt/webview.py" beforeDir="false" afterPath="$PROJECT_DIR$/aqt/webview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/designer/main.ui" beforeDir="false" afterPath="$PROJECT_DIR$/designer/main.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/文档分析.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme_Diego.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -75,119 +23,7 @@
     <favorites_list name="anki-2.1.15" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/aqt/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="61" column="27" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
-              <folding>
-                <element signature="e#152#161#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/addcards.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="190" selection-start-line="190" selection-end-line="190" />
-              <folding>
-                <element signature="e#151#174#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/toolbar.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="2" column="14" lean-forward="true" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-              <folding>
-                <element signature="e#152#172#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/editor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="355" selection-start-line="355" selection-end-line="355" />
-              <folding>
-                <element signature="e#151#160#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/webview.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="330" selection-start-line="330" selection-end-line="330" />
-              <folding>
-                <element signature="e#151#162#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/anki/hooks.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/anki/tags.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="131" selection-start-line="131" selection-end-line="131" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="376" selection-start-line="376" selection-end-line="376" />
-              <folding>
-                <element signature="e#128#164#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqt/utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="340" selection-start-line="340" selection-end-line="340" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/get_word.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="17" column="15" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -229,14 +65,15 @@
         <option value="$PROJECT_DIR$/aqt/addcards.py" />
         <option value="$PROJECT_DIR$/文档分析.md" />
         <option value="$PROJECT_DIR$/aqt/main.py" />
+        <option value="$PROJECT_DIR$/Readme_Diego.md" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="950" />
     <option name="y" value="-10" />
-    <option name="width" value="979" />
-    <option name="height" value="1049" />
+    <option name="width" value="980" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -244,6 +81,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -255,7 +93,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -406,6 +243,7 @@
       <updated>1577588346113</updated>
       <workItem from="1577588356371" duration="1058000" />
       <workItem from="1577589487134" duration="42218000" />
+      <workItem from="1577671726505" duration="880000" />
     </task>
     <task id="LOCAL-00001" summary="原始版本">
       <created>1577591816425</created>
@@ -418,7 +256,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43276000" />
+    <option name="totallyTimeSpent" value="44156000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -431,9 +269,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984756" weight="0.19635628" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4984756" visible="true" weight="0.19635628" />
       <window_info id="Structure" order="1" sideWeight="0.5015244" side_tool="true" weight="0.19635628" />
       <window_info id="Favorites" order="2" sideWeight="0.5015244" side_tool="true" weight="0.19635628" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -444,17 +281,17 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3292683" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.5762195" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.6280488" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.7332317" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.6996951" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.5609756" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Remote Host" order="3" weight="0.3299595" />
       <window_info anchor="right" id="SciView" order="4" weight="0.3299595" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="5" side_tool="true" weight="0.317139" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="5" side_tool="true" weight="0.2651822" />
       <window_info anchor="right" id="Database" order="6" />
     </layout>
   </component>
@@ -482,6 +319,20 @@
                 </list>
               </option>
             </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
           </value>
         </entry>
       </map>
@@ -571,13 +422,7 @@
         <state relative-caret-position="-1725" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/forms_0/addons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" selection-start-line="2" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/forms_0/addons.py" />
     <entry file="file://$PROJECT_DIR$/README.contributing">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -592,13 +437,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/forms_0/addcards.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="44" lean-forward="true" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/forms_0/addcards.py" />
     <entry file="file://E:/Anaconda/envs/py36-anki/Lib/site-packages/requests/sessions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="118">
@@ -613,21 +452,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fuck.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-281" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/forms_0/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-          <folding>
-            <element signature="e#601#620#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/fuck.py" />
+    <entry file="file://$PROJECT_DIR$/aqt/forms_0/__init__.py" />
     <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1210421986/PyQt5/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -652,16 +478,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/forms_0/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3350">
-          <caret line="135" column="74" selection-start-line="135" selection-start-column="74" selection-end-line="135" selection-end-column="74" />
-          <folding>
-            <element signature="e#79#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/forms_0/main.py" />
     <entry file="file://$PROJECT_DIR$/aqt/addons.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3075">
@@ -802,16 +619,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/文档分析.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="250">
-            <caret line="10" column="32" lean-forward="true" selection-start-line="10" selection-start-column="32" selection-end-line="10" selection-end-column="32" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://E:/Anaconda/envs/py36-anki/Lib/site-packages/PyQt5/QtWidgets.pyi">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -826,70 +633,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/get_word.py">
+    <entry file="file://$PROJECT_DIR$/aqt/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="17" column="15" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="15" />
+        <state relative-caret-position="213">
+          <caret line="68" column="33" lean-forward="true" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="340" selection-start-line="340" selection-end-line="340" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/anki/tags.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="131" selection-start-line="131" selection-end-line="131" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/anki/hooks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/toolbar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="14" lean-forward="true" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-          <folding>
-            <element signature="e#152#172#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="376" selection-start-line="376" selection-end-line="376" />
-          <folding>
-            <element signature="e#128#164#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/webview.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="330" selection-start-line="330" selection-end-line="330" />
-          <folding>
-            <element signature="e#151#162#0" expanded="true" />
+            <element signature="e#152#161#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aqt/addcards.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
+        <state relative-caret-position="4750">
           <caret line="190" selection-start-line="190" selection-end-line="190" />
           <folding>
             <element signature="e#151#174#0" expanded="true" />
@@ -897,9 +653,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/toolbar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+          <folding>
+            <element signature="e#152#172#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/aqt/editor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
+        <state relative-caret-position="8875">
           <caret line="355" selection-start-line="355" selection-end-line="355" />
           <folding>
             <element signature="e#151#160#0" expanded="true" />
@@ -907,13 +673,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aqt/main.py">
+    <entry file="file://$PROJECT_DIR$/aqt/webview.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="61" column="27" selection-start-line="61" selection-start-column="27" selection-end-line="61" selection-end-column="27" />
+        <state relative-caret-position="8250">
+          <caret line="330" selection-start-line="330" selection-end-line="330" />
           <folding>
-            <element signature="e#152#161#0" expanded="true" />
+            <element signature="e#151#162#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/anki/hooks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/anki/tags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3200">
+          <caret line="131" selection-start-line="131" selection-end-line="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9400">
+          <caret line="376" selection-start-line="376" selection-end-line="376" />
+          <folding>
+            <element signature="e#128#164#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aqt/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8350">
+          <caret line="340" selection-start-line="340" selection-end-line="340" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/get_word.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="17" column="15" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Readme_Diego.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="375">
+            <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
