@@ -24,6 +24,7 @@ class Ui_About(object):
         self.vboxlayout.setContentsMargins(0, 0, 0, 0)
         self.vboxlayout.setObjectName("vboxlayout")
         self.label = AnkiWebView(About)
+        self.label.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.label.setProperty("url", QtCore.QUrl("about:blank"))
         self.label.setObjectName("label")
         self.vboxlayout.addWidget(self.label)

@@ -3,3 +3,4 @@
 aqt/template/
 __pycache__/
 Anki2
+*.spec

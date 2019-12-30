@@ -235,7 +235,8 @@ class AnkiWebView(QWebEngineView):
         if isMac:
             # standard palette does not return correct window color on macOS
             return QColor("#ececec")
-        return self.style().standardPalette().color(QPalette.Window)
+        # return self.style().standardPalette().color(QPalette.Window)
+        return QColor('#87CEFF')
 
     def stdHtml(self, body, css=None, js=None, head=""):
         if css is None:
@@ -319,7 +320,7 @@ body {{ zoom: {}; background: {}; {} }}
     def eval(self, js):
         self.evalWithCallback(js, None)
 
-    def evalWithCallback(self, js, cb): # TODO: js是个啥？
+    def evalWithCallback(self, js, cb):  # TODO: js是个啥？
         self._queueAction("eval", js, cb)
 
     def _evalWithCallback(self, js, cb):

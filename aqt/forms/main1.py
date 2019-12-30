@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=unsubscriptable-object,unused-import
 from anki.lang import _
-# Form implementation generated from reading ui file 'designer/main.ui'
+# Form implementation generated from reading ui file 'designer/main1.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(412, 301)
+        MainWindow.resize(412, 304)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

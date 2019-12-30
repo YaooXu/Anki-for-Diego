@@ -38,3 +38,8 @@
 - PC文档详细化（模块运行流程图、文件夹作用，主要类的作用）
 
 - UI美化（把添加单词那块的间距和button调一下）
+
+### Type默认配置的加载
+1. 程序启动 调用 **anki\storage.py** 中的 `Collection` 函数  `Collection` 接收一个核心参数path <br>
+2. path理解为保存数据库的路径，若第一次调用即无数据库，那么就使用默认配置生成一个数据库 <br>
+3. 关于Type的默认配置的生成 系统会调用 **anki\stdmodels.py** 中的 几个函数`addBasicModel`，`addBasicTypingModel`，`addForwardReverse`，`addForwardOptionalReverse`，`addClozeModel`

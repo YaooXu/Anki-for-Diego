@@ -25,6 +25,7 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.addonList = QtWidgets.QListWidget(Dialog)
+        self.addonList.setStyleSheet("background :url(:/icons/Mainwindow_bg.jpg)")
         self.addonList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.addonList.setObjectName("addonList")
         self.verticalLayout_2.addWidget(self.addonList)

@@ -20,6 +20,7 @@ class Ui_Dialog(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.qtabwidget = QtWidgets.QTabWidget(Dialog)
+        self.qtabwidget.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.qtabwidget.setObjectName("qtabwidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
