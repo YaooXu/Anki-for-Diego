@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/clayout_top.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -53,4 +55,3 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_("Form"))
         self.label.setText(_("Card Type:"))
-

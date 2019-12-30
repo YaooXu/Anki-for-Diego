@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/changemap.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ChangeMap(object):
     def setupUi(self, ChangeMap):
@@ -38,4 +40,3 @@ class Ui_ChangeMap(object):
         _translate = QtCore.QCoreApplication.translate
         ChangeMap.setWindowTitle(_("Import"))
         self.label.setText(_("Target field:"))
-

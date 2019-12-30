@@ -12,17 +12,18 @@ os.environ["LIBOVERLAY_SCROLLBAR"] = "0"
 from anki.utils import isWin, isMac
 from PyQt5 import *
 from PyQt5.Qt import *
-
+from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtNetwork import *
 from PyQt5.QtWebEngine import *
 from PyQt5.QtDesigner import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+from PyQt5.QtCore import *
 
 # trigger explicit message in case of missing libraries
 # instead of silently failing to import
-from PyQt5.QtWebEngineWidgets import *
+# from PyQt5.QtWebEngineWidgets import *
 
 try:
     from PyQt5 import sip

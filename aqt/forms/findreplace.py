@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/findreplace.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -69,4 +71,3 @@ class Ui_Dialog(object):
         self.label_3.setText(_("<b>In</b>:"))
         self.re.setText(_("Treat input as regular expression"))
         self.ignoreCase.setText(_("Ignore case"))
-

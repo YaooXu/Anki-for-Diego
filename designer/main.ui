@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>301</height>
+    <width>1084</width>
+    <height>830</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -45,8 +45,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>412</width>
-     <height>22</height>
+     <width>1084</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuHelp">
@@ -57,12 +57,6 @@
     <addaction name="separator"/>
     <addaction name="actionDonate"/>
     <addaction name="actionAbout"/>
-   </widget>
-   <widget class="QMenu" name="menuEdit">
-    <property name="title">
-     <string>&amp;Edit</string>
-    </property>
-    <addaction name="actionUndo"/>
    </widget>
    <widget class="QMenu" name="menuCol">
     <property name="title">
@@ -92,7 +86,6 @@
     <addaction name="actionPreferences"/>
    </widget>
    <addaction name="menuCol"/>
-   <addaction name="menuEdit"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -235,6 +228,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actionFUCK">
+   <property name="text">
+    <string>FUCK</string>
    </property>
   </action>
  </widget>

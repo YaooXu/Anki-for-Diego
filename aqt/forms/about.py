@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/about.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_About(object):
     def setupUi(self, About):
@@ -39,6 +41,5 @@ class Ui_About(object):
     def retranslateUi(self, About):
         _translate = QtCore.QCoreApplication.translate
         About.setWindowTitle(_("About Anki"))
-
 from aqt.webview import AnkiWebView
 from . import icons_rc

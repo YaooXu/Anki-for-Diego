@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/importing.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ImportDialog(object):
     def setupUi(self, ImportDialog):
@@ -98,4 +100,3 @@ class Ui_ImportDialog(object):
         self.importMode.setItemText(2, _("Import even if existing note has same first field"))
         self.allowHTML.setText(_("Allow HTML in fields"))
         self.mappingGroup.setTitle(_("Field mapping"))
-

@@ -3,16 +3,18 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/main.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(412, 301)
+        MainWindow.resize(1084, 830)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -32,12 +34,10 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 412, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1084, 27))
         self.menubar.setObjectName("menubar")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
-        self.menuEdit = QtWidgets.QMenu(self.menubar)
-        self.menuEdit.setObjectName("menuEdit")
         self.menuCol = QtWidgets.QMenu(self.menubar)
         self.menuCol.setObjectName("menuCol")
         self.menuTools = QtWidgets.QMenu(self.menubar)
@@ -83,17 +83,19 @@ class Ui_MainWindow(object):
         self.actionNoteTypes.setObjectName("actionNoteTypes")
         self.actionAdd_ons = QtWidgets.QAction(MainWindow)
         self.actionAdd_ons.setObjectName("actionAdd_ons")
+        self.actionFUCK = QtWidgets.QAction(MainWindow)
+        self.actionFUCK.setObjectName("actionFUCK")
         self.menuHelp.addAction(self.actionDocumentation)
         self.menuHelp.addSeparator()
         self.menuHelp.addAction(self.actionDonate)
         self.menuHelp.addAction(self.actionAbout)
-        self.menuEdit.addAction(self.actionUndo)
         self.menuCol.addAction(self.actionSwitchProfile)
         self.menuCol.addSeparator()
         self.menuCol.addAction(self.actionImport)
         self.menuCol.addAction(self.actionExport)
         self.menuCol.addSeparator()
         self.menuCol.addAction(self.actionExit)
+        self.menuCol.addAction(self.actionFUCK)
         self.menuTools.addAction(self.actionStudyDeck)
         self.menuTools.addAction(self.actionCreateFiltered)
         self.menuTools.addSeparator()
@@ -106,7 +108,6 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionNoteTypes)
         self.menuTools.addAction(self.actionPreferences)
         self.menubar.addAction(self.menuCol.menuAction())
-        self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuTools.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
 
@@ -117,7 +118,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_("Anki"))
         self.menuHelp.setTitle(_("&Help"))
-        self.menuEdit.setTitle(_("&Edit"))
         self.menuCol.setTitle(_("&File"))
         self.menuTools.setTitle(_("&Tools"))
         self.actionExit.setText(_("E&xit"))
@@ -151,5 +151,5 @@ class Ui_MainWindow(object):
         self.actionNoteTypes.setShortcut(_("Ctrl+Shift+N"))
         self.actionAdd_ons.setText(_("Add-ons"))
         self.actionAdd_ons.setShortcut(_("Ctrl+Shift+A"))
-
+        self.actionFUCK.setText(_("FUCK"))
 from . import icons_rc

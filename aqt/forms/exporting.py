@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/exporting.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_ExportDialog(object):
     def setupUi(self, ExportDialog):
@@ -76,4 +78,3 @@ class Ui_ExportDialog(object):
         self.includeMedia.setText(_("Include media"))
         self.includeTags.setText(_("Include tags"))
         self.includeHTML.setText(_("Include HTML and media references"))
-

@@ -295,7 +295,7 @@ crt=?, mod=?, scm=?, dty=?, usn=?, ls=?, conf=?""",
     def addNote(self, note):
         "Add a note to the collection. Return number of new cards."
         # check we have card models available, then save
-        cms = self.findTemplates(note)
+        cms = self.findTemplates(note) # 卡片模板 list
         if not cms:
             return 0
         note.flush()

@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/template.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -105,5 +107,4 @@ class Ui_Form(object):
         self.groupBox.setTitle(_("Front Template"))
         self.groupBox_3.setTitle(_("Styling"))
         self.groupBox_2.setTitle(_("Back Template"))
-
 from . import icons_rc

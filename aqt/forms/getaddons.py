@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/getaddons.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -46,4 +48,3 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_("Install Add-on"))
         self.label.setText(_("To browse add-ons, please click the browse button below.<br><br>When you\'ve found an add-on you like, please paste its code below. You can paste multiple codes, separated by spaces."))
         self.label_2.setText(_("Code:"))
-

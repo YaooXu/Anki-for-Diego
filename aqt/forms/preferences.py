@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/preferences.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Preferences(object):
     def setupUi(self, Preferences):
@@ -254,4 +256,3 @@ class Ui_Preferences(object):
         self.label_4.setText(_("Note: Media is not backed up. Please create a periodic backup of your Anki folder to be safe."))
         self.label_21.setText(_("Some settings will take effect after you restart Anki."))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _("Backups"))
-

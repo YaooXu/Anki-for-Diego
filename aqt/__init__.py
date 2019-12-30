@@ -60,6 +60,7 @@ from aqt import addcards, browser, editcurrent, stats, about, \
 
 
 class DialogManager:
+    # 管理当前所有的对话窗口
     _dialogs = {
         "AddCards": [addcards.AddCards, None],
         "Browser": [browser.Browser, None],

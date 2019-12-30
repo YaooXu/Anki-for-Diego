@@ -3,11 +3,13 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/profiles.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -76,5 +78,4 @@ class Ui_MainWindow(object):
         self.delete_2.setText(_("Delete"))
         self.quit.setText(_("Quit"))
         self.openBackup.setText(_("Open Backup..."))
-
 from . import icons_rc

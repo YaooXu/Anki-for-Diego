@@ -12,9 +12,10 @@ from anki.hooks import addHook, remHook, runHook
 from anki.utils import htmlToTextLine, isMac
 import aqt.editor, aqt.modelchooser, aqt.deckchooser
 
+
 class AddCards(QDialog):
 
-    def __init__(self, mw):
+    def __init__(self, mw, hidden=0):
         QDialog.__init__(self, None, Qt.Window)
         mw.setupDialogGC(self)
         self.mw = mw
@@ -26,17 +27,20 @@ class AddCards(QDialog):
         self.setupChoosers()
         self.setupEditor()
         self.setupButtons()
-        self.onReset()
+        self.onReset()  #
         self.history = []
         restoreGeom(self, "add")
         addHook('reset', self.onReset)
         addHook('currentModelChanged', self.onModelChange)
         addCloseShortcut(self)
-        self.show()
+        if hidden:
+            self.hide()
+        else:
+            self.show()
 
     def setupEditor(self):
         self.editor = aqt.editor.Editor(
-            self.mw, self.form.fieldsArea, self, True)
+            self.mw, self.form.fieldsArea, self, True)  # TODO: 何时确定的editor的note（卡片模板）
 
     def setupChoosers(self):
         self.modelChooser = aqt.modelchooser.ModelChooser(
@@ -63,10 +67,10 @@ class AddCards(QDialog):
         self.helpButton = QPushButton(_("Help"), clicked=self.helpRequested)
         self.helpButton.setAutoDefault(False)
         bb.addButton(self.helpButton,
-                                        QDialogButtonBox.HelpRole)
+                     QDialogButtonBox.HelpRole)
         # history
         b = bb.addButton(
-            _("History")+ " "+downArrow(), ar)
+            _("History") + " " + downArrow(), ar)
         if isMac:
             sc = "Ctrl+Shift+H"
         else:
@@ -80,7 +84,7 @@ class AddCards(QDialog):
     def setAndFocusNote(self, note):
         self.editor.setNote(note, focusTo=0)
 
-    def onModelChange(self):
+    def onModelChange(self):  # 更换卡片模板，并更新显示的内容
         oldNote = self.editor.note
         note = self.mw.col.newNote()
         if oldNote:
@@ -120,6 +124,7 @@ class AddCards(QDialog):
                         note.fields[n] = ""
                 except IndexError:
                     break
+        # 第一次调用就直接执行这一句
         self.setAndFocusNote(note)
 
     def removeTempNote(self, note):
@@ -147,7 +152,7 @@ class AddCards(QDialog):
                 a = m.addAction(_("(Note deleted)"))
                 a.setEnabled(False)
         runHook("AddCards.onHistory", self, m)
-        m.exec_(self.historyButton.mapToGlobal(QPoint(0,0)))
+        m.exec_(self.historyButton.mapToGlobal(QPoint(0, 0)))
 
     def editHistory(self, nid):
         browser = aqt.dialogs.open("Browser", self.mw)
@@ -166,7 +171,7 @@ class AddCards(QDialog):
             if not self.mw.col.models._availClozeOrds(
                     note.model(), note.joinedFields(), False):
                 if not askUser(_("You have a cloze deletion note type "
-                "but have not made any cloze deletions. Proceed?")):
+                                 "but have not made any cloze deletions. Proceed?")):
                     return
         cards = self.mw.col.addNote(note)
         if not cards:
@@ -175,7 +180,7 @@ The input you have provided would make an empty \
 question on all cards."""), help="AddItems")
             return
         self.addHistory(note)
-        self.mw.requireReset()
+        self.mw.requireReset()  # TODO:?
         return note
 
     def addCards(self):
@@ -196,7 +201,7 @@ question on all cards."""), help="AddItems")
     def keyPressEvent(self, evt):
         "Show answer on RET or register answer."
         if (evt.key() in (Qt.Key_Enter, Qt.Key_Return)
-            and self.editor.tags.hasFocus()):
+                and self.editor.tags.hasFocus()):
             evt.accept()
             return
         return QDialog.keyPressEvent(self, evt)
@@ -220,7 +225,7 @@ question on all cards."""), help="AddItems")
     def ifCanClose(self, onOk):
         def afterSave():
             ok = (self.editor.fieldsAreBlank() or
-                    askUser(_("Close and lose current input?")))
+                  askUser(_("Close and lose current input?")))
             if ok:
                 onOk()
 
@@ -230,4 +235,5 @@ question on all cards."""), help="AddItems")
         def doClose():
             self._reject()
             cb()
+
         self.ifCanClose(doClose)

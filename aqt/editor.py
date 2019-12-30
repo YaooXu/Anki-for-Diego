@@ -26,7 +26,7 @@ import requests
 from anki.sync import AnkiRequestsClient
 
 pics = ("jpg", "jpeg", "png", "tif", "tiff", "gif", "svg", "webp")
-audio =  ("wav", "mp3", "ogg", "flac", "mp4", "swf", "mov", "mpeg", "mkv", "m4a", "3gp", "spx", "oga", "webm")
+audio = ("wav", "mp3", "ogg", "flac", "mp4", "swf", "mov", "mpeg", "mkv", "m4a", "3gp", "spx", "oga", "webm")
 
 _html = """
 <style>
@@ -38,8 +38,10 @@ html { background: %s; }
 <div id="dupes" style="display:none;"><a href="#" onclick="pycmd('dupes');return false;">%s</a></div>
 """
 
+
 # caller is responsible for resetting note on reset
 class Editor:
+    # 该类为添加单词时的界面
     def __init__(self, mw, widget, parentWindow, addMode=False):
         self.mw = mw
         self.widget = widget
@@ -59,7 +61,7 @@ class Editor:
 
     def setupOuter(self):
         l = QVBoxLayout()
-        l.setContentsMargins(0,0,0,0)
+        l.setContentsMargins(0, 0, 0, 0)
         l.setSpacing(0)
         self.widget.setLayout(l)
         self.outerLayout = l
@@ -127,15 +129,14 @@ class Editor:
             data64 = b''.join(base64.encodebytes(data).splitlines())
             return 'data:%s;base64,%s' % (mime, data64.decode('ascii'))
 
-
-    def addButton(self, icon, cmd, func, tip="", label="", 
+    def addButton(self, icon, cmd, func, tip="", label="",
                   id=None, toggleable=False, keys=None, disables=True):
         """Assign func to bridge cmd, register shortcut, return button"""
         if cmd not in self._links:
             self._links[cmd] = func
         if keys:
             QShortcut(QKeySequence(keys), self.widget,
-                      activated = lambda s=self: func(s))
+                      activated=lambda s=self: func(s))
         btn = self._addButton(icon, cmd, tip=tip, label=label,
                               id=id, toggleable=toggleable, disables=disables)
         return btn
@@ -171,9 +172,9 @@ class Editor:
         return ('''<button tabindex=-1 {id} class="{theclass}" type="button" title="{tip}"'''
                 ''' onclick="pycmd('{cmd}');{togglesc}return false;">'''
                 '''{imgelm}{labelelm}</button>'''.format(
-                        imgelm=imgelm, cmd=cmd, tip=tip, labelelm=labelelm, id=idstr,
-                        togglesc=toggleScript, theclass=theclass)
-                )
+            imgelm=imgelm, cmd=cmd, tip=tip, labelelm=labelelm, id=idstr,
+            togglesc=toggleScript, theclass=theclass)
+        )
 
     def setupShortcuts(self):
         # if a third element is provided, enable shortcut even when no field selected
@@ -214,6 +215,7 @@ class Editor:
             if self.currentField is None:
                 return
             fn()
+
         return checkFocus
 
     def onFields(self):
@@ -233,7 +235,7 @@ class Editor:
         else:
             ord = 0
         CardLayout(self.mw, self.note, ord=ord, parent=self.parentWindow,
-               addMode=self.addMode)
+                   addMode=self.addMode)
         if isWin:
             self.parentWindow.activateWindow()
 
@@ -270,7 +272,7 @@ class Editor:
                 self.currentField = None
                 # run any filters
                 if runFilter(
-                    "editFocusLost", False, self.note, ord):
+                        "editFocusLost", False, self.note, ord):
                     # something updated the note; update it after a subsequent focus
                     # event has had time to fire
                     self.mw.progress.timer(100, self.loadNoteKeepingFocus, False)
@@ -333,7 +335,7 @@ class Editor:
         self.web.evalWithCallback("setFields(%s); setFonts(%s); focusField(%s); setNoteId(%s)" % (
             json.dumps(data),
             json.dumps(self.fonts()), json.dumps(focusTo),
-                                  json.dumps(self.note.id)),
+            json.dumps(self.note.id)),
                                   oncallback)
 
     def fonts(self):
@@ -344,11 +346,14 @@ class Editor:
     def saveNow(self, callback, keepFocus=False):
         "Save unsaved edits then call callback()."
         if not self.note:
-             # calling code may not expect the callback to fire immediately
+            # note记录了添加内容的信息
+            # note.fields 各个字段内容
+            # note._fmap 模板各个字段的名字，dict of tuple，tuple包含各个字段的属性
+            # calling code may not expect the callback to fire immediately
             self.mw.progress.timer(10, callback, False)
             return
-        self.saveTags()
-        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback())
+        self.saveTags() # TODO：Tag貌似可以为空，作用是啥？
+        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback()) # TODO：这个函数作用？
 
     def checkValid(self):
         cols = []
@@ -419,7 +424,7 @@ class Editor:
         g.setFlat(True)
         tb = QGridLayout()
         tb.setSpacing(12)
-        tb.setContentsMargins(6,6,6,6)
+        tb.setContentsMargins(6, 6, 6, 6)
         # tags
         l = QLabel(_("Tags"))
         tb.addWidget(l, 1, 0)
@@ -486,10 +491,10 @@ class Editor:
 
     def _onCloze(self):
         # check that the model is set up for cloze deletion
-        if not re.search('{{(.*:)*cloze:',self.note.model()['tmpls'][0]['qfmt']):
+        if not re.search('{{(.*:)*cloze:', self.note.model()['tmpls'][0]['qfmt']):
             if self.addMode:
                 tooltip(_("Warning, cloze deletions will not work until "
-                "you switch the type at the top to Cloze."))
+                          "you switch the type at the top to Cloze."))
             else:
                 showInfo(_("""\
 To make a cloze deletion on an existing note, you need to change it \
@@ -544,11 +549,13 @@ to a cloze type first, via Edit>Change Note Type."""))
 
     def onAddMedia(self):
         key = (_("Media") +
-               " (*.jpg *.png *.gif *.tiff *.svg *.tif *.jpeg "+
+               " (*.jpg *.png *.gif *.tiff *.svg *.tif *.jpeg " +
                "*.mp3 *.ogg *.wav *.avi *.ogv *.mpg *.mpeg *.mov *.mp4 " +
                "*.mkv *.ogx *.ogv *.oga *.flv *.swf *.flac *.webp *.m4a)")
+
         def accept(file):
             self.addMedia(file, canDelete=True)
+
         file = getFile(self.widget, _("Add Media"), accept, key, key="media")
         self.parentWindow.activateWindow()
 
@@ -605,7 +612,7 @@ to a cloze type first, via Edit>Change Note Type."""))
 
     def urlToFile(self, url):
         l = url.lower()
-        for suffix in pics+audio:
+        for suffix in pics + audio:
             if l.endswith("." + suffix):
                 return self._retrieveURL(url)
         # not a supported type
@@ -614,9 +621,9 @@ to a cloze type first, via Edit>Change Note Type."""))
     def isURL(self, s):
         s = s.lower()
         return (s.startswith("http://")
-            or s.startswith("https://")
-            or s.startswith("ftp://")
-            or s.startswith("file://"))
+                or s.startswith("https://")
+                or s.startswith("ftp://")
+                or s.startswith("file://"))
 
     def inlinedImageToFilename(self, txt):
         prefix = "data:image/"
@@ -628,7 +635,7 @@ to a cloze type first, via Edit>Change Note Type."""))
                 data = base64.b64decode(b64data, validate=True)
                 if ext == "jpeg":
                     ext = "jpg"
-                return self._addPastedImage(data, "."+ext)
+                return self._addPastedImage(data, "." + ext)
 
         return ""
 
@@ -827,6 +834,7 @@ to a cloze type first, via Edit>Change Note Type."""))
         cutOrCopy=onCutOrCopy,
     )
 
+
 # Pasting, drag & drop, and keyboard layouts
 ######################################################################
 
@@ -939,13 +947,14 @@ class EditorWebView(AnkiWebView):
 
         # normal text; convert it to HTML
         txt = html.escape(txt)
-        txt = txt.replace("\n", "<br>")\
-            .replace("\t", " "*4)
+        txt = txt.replace("\n", "<br>") \
+            .replace("\t", " " * 4)
 
         # if there's more than one consecutive space,
         # use non-breaking spaces for the second one on
         def repl(match):
             return match.group(1).replace(" ", "&nbsp;") + " "
+
         txt = re.sub(" ( +)", repl, txt)
 
         return txt
@@ -968,13 +977,13 @@ class EditorWebView(AnkiWebView):
         uname = namedtmp("paste")
         if self.editor.mw.pm.profile.get("pastePNG", False):
             ext = ".png"
-            im.save(uname+ext, None, 50)
+            im.save(uname + ext, None, 50)
         else:
             ext = ".jpg"
-            im.save(uname+ext, None, 80)
+            im.save(uname + ext, None, 80)
 
         # invalid image?
-        path = uname+ext
+        path = uname + ext
         if not os.path.exists(path):
             return
 
@@ -1011,9 +1020,12 @@ class EditorWebView(AnkiWebView):
         runHook("EditorWebView.contextMenuEvent", self, m)
         m.popup(QCursor.pos())
 
+
 # QFont returns "Kozuka Gothic Pro L" but WebEngine expects "Kozuka Gothic Pro Light"
 # - there may be other cases like a trailing 'Bold' that need fixing, but will
 # wait for further reports first.
 def fontMungeHack(font):
     return re.sub(" L$", " Light", font)
+
+
 addHook("mungeEditingFontName", fontMungeHack)

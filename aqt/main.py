@@ -14,8 +14,8 @@ from threading import Thread
 from send2trash import send2trash
 from aqt.qt import *
 from anki import Collection
-from anki.utils import  isWin, isMac, intTime, splitFields, ids2str, \
-        devMode
+from anki.utils import isWin, isMac, intTime, splitFields, ids2str, \
+    devMode
 from anki.hooks import runHook, addHook, runFilter
 import aqt
 import aqt.progress
@@ -31,9 +31,73 @@ from aqt.utils import saveGeom, restoreGeom, showInfo, showWarning, \
 from aqt.qt import sip
 from anki.lang import _, ngettext
 
+from get_word import get_word
+from tkinter import filedialog
+import tkinter
+
+
 class AnkiQt(QMainWindow):
+    def get_word_in_text(self):
+        alert = QMessageBox()
+        content = self.words_text.toPlainText()
+        words = content.strip().split('\n')
+        word_infos = []
+        for word in words:
+            info = get_word(word)
+            if info != None:
+                word_infos.append(info)
+
+        res_to_show = ""
+        for info in word_infos:
+            res_to_show += str(info) + '\n'
+
+        alert.setText(res_to_show)
+        alert.exec_()
+
+        for word_info in word_infos:
+            # TODO: 每次重新打开addCard效率不高，先只放一个字段试一下
+            addCard = self.onAddCard(hidden=True)
+            # 一开始有一个 '.'?
+            # addCard.editor.note.fields.clear()
+            # TODO: WTF????
+            addCard.editor.note.fields[0] = word_info['word']
+            addCard.editor.note.fields[1] = word_info['accent']
+            print(addCard.editor.note.fields)
+            addCard.addCards()
+            # addCard.close()
+
+    def get_word_from_file(self):
+        alert = QMessageBox()
+        root = tkinter.Tk()
+        root.withdraw()
+        file_path = filedialog.askopenfilename()
+
+        if file_path != "":
+            word_infos = []
+            with open(file_path, 'r') as f:
+                msg = f.read()
+            msg_box = msg.strip().split('\n')
+            for msg in msg_box:
+                info = get_word(msg)
+                if info != None:
+                    word_infos.append(info)
+
+        res_to_show = ""
+        for info in word_infos:
+            res_to_show += str(info) + '\n'
+
+        alert.setText(res_to_show)
+        alert.exec_()
+
     def __init__(self, app, profileManager, opts, args):
         QMainWindow.__init__(self)
+        self.words_text = QTextEdit(self)
+        self.get_word_in_text_button = QPushButton('Add words in text', self)
+        self.get_word_from_file_button = QPushButton('Add words from file', self)
+
+        self.get_word_in_text_button.clicked.connect(self.get_word_in_text)
+        self.get_word_from_file_button.clicked.connect(self.get_word_from_file)
+
         self.state = "startup"
         self.opts = opts
         aqt.mw = self
@@ -50,7 +114,7 @@ class AnkiQt(QMainWindow):
         # must call this after ui set up
         if self.safeMode:
             tooltip(_("Shift key was held down. Skipping automatic "
-                    "syncing and add-on loading."))
+                      "syncing and add-on loading."))
         # were we given a file to import?
         if args and args[0]:
             self.onAppMsg(args[0])
@@ -63,7 +127,8 @@ class AnkiQt(QMainWindow):
         self.progress.timer(10, fn, False, requiresCollection=False)
 
     def setupUI(self):
-        self.col = None
+        # 动态加载主界面的内容
+        self.col = None  # TODO：col是啥？
         self.setupCrashLog()
         self.disableGC()
         self.setupAppMsg()
@@ -72,6 +137,7 @@ class AnkiQt(QMainWindow):
         self.setupMediaServer()
         self.setupSound()
         self.setupSpellCheck()
+        # 加载主窗口
         self.setupMainWindow()
         self.setupSystemSpecific()
         self.setupStyle()
@@ -84,6 +150,7 @@ class AnkiQt(QMainWindow):
         self.setupRefreshTimer()
         self.updateTitleBar()
         # screens
+        # 加载牌组
         self.setupDeckBrowser()
         self.setupOverview()
         self.setupReviewer()
@@ -230,8 +297,10 @@ Replace your collection with an earlier backup?"""),
                        msgfunc=QMessageBox.warning,
                        defaultno=True):
             return
+
         def doOpen(path):
             self._openBackup(path)
+
         getFile(self.profileDiag, _("Revert to backup"),
                 cb=doOpen, filter="*.colpkg", dir=self.pm.backupFolder())
 
@@ -345,7 +414,7 @@ restarting your computer, please use the Open Backup button in the profile \
 manager.
 
 Debug info:
-""")+traceback.format_exc())
+""") + traceback.format_exc())
             # clean up open collection if possible
             if self.col:
                 try:
@@ -461,7 +530,7 @@ from the profile screen."))
 
     def maybeOptimize(self):
         # have two weeks passed?
-        if (intTime() - self.pm.profile['lastOptimize']) < 86400*14:
+        if (intTime() - self.pm.profile['lastOptimize']) < 86400 * 14:
             return
         self.progress.start(label=_("Optimizing..."), immediate=True)
         self.col.optimize()
@@ -473,16 +542,16 @@ from the profile screen."))
     ##########################################################################
 
     def moveToState(self, state, *args):
-        #print("-> move from", self.state, "to", state)
+        # print("-> move from", self.state, "to", state)
         oldState = self.state or "dummy"
-        cleanup = getattr(self, "_"+oldState+"Cleanup", None)
+        cleanup = getattr(self, "_" + oldState + "Cleanup", None)
         if cleanup:
             # pylint: disable=not-callable
             cleanup(state)
         self.clearStateShortcuts()
         self.state = state
         runHook('beforeStateChange', state, oldState, *args)
-        getattr(self, "_"+state+"State")(oldState, *args)
+        getattr(self, "_" + state + "State")(oldState, *args)
         if state != "resetRequired":
             self.bottomWeb.show()
         runHook('afterStateChange', state, oldState, *args)
@@ -580,7 +649,7 @@ from the profile screen."))
     ##########################################################################
 
     def button(self, link, name, key=None, class_="", id="", extra=""):
-        class_ = "but "+ class_
+        class_ = "but " + class_
         if key:
             key = _("Shortcut key: %s") % key
         else:
@@ -595,12 +664,15 @@ title="%s" %s>%s</button>''' % (
 
     def setupMainWindow(self):
         # main window
+        # 加载前端的MainWindow
         self.form = aqt.forms.main.Ui_MainWindow()
+        # 把Designer中设计的界面搬到这个对话框中，包括它的widgets，tab order等等
         self.form.setupUi(self)
         # toolbar
         tweb = self.toolbarWeb = aqt.webview.AnkiWebView()
         tweb.title = "top toolbar"
         tweb.setFocusPolicy(Qt.WheelFocus)
+        # TODO：tweb干嘛的？
         self.toolbar = aqt.toolbar.Toolbar(self, tweb)
         self.toolbar.draw()
         # main area
@@ -613,12 +685,23 @@ title="%s" %s>%s</button>''' % (
         sweb.title = "bottom toolbar"
         sweb.setFocusPolicy(Qt.WheelFocus)
         # add in a layout
-        self.mainLayout = QVBoxLayout()
-        self.mainLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout = QVBoxLayout()  # 垂直布局
+        self.mainLayout.setContentsMargins(0, 0, 0, 0)
         self.mainLayout.setSpacing(0)
-        self.mainLayout.addWidget(tweb)
-        self.mainLayout.addWidget(self.web)
-        self.mainLayout.addWidget(sweb)
+        self.mainLayout.addWidget(tweb)  # Toolbar
+        self.mainLayout.addWidget(self.web)  # 牌组信息
+
+        self.mainLayout.addWidget(self.words_text)
+
+        self.sub_layout = QHBoxLayout()
+        self.sub_layout.addWidget(self.get_word_in_text_button)
+        self.sub_layout.addWidget(self.get_word_from_file_button)
+
+        self.mainLayout.addLayout(self.sub_layout)
+
+        self.mainLayout.addWidget(self.get_word_in_text_button)
+
+        self.mainLayout.addWidget(sweb)  # 底部Toolbar (开始学习、创建牌组、导入文件)
         self.form.centralwidget.setLayout(self.mainLayout)
 
         # force webengine processes to load before cwd is changed
@@ -641,9 +724,11 @@ title="%s" %s>%s</button>''' % (
         # interrupt any current transaction and schedule a rollback & quit
         if self.col:
             self.col.db.interrupt()
+
         def quit():
             self.col.db.rollback()
             self.close()
+
         self.progress.timer(100, quit, False)
 
     def setupProgress(self):
@@ -697,9 +782,9 @@ title="%s" %s>%s</button>''' % (
     # expects a current profile, but no collection loaded
     def maybeAutoSync(self):
         if (not self.pm.profile['syncKey']
-            or not self.pm.profile['autoSync']
-            or self.safeMode
-            or self.restoringBackup):
+                or not self.pm.profile['autoSync']
+                or self.safeMode
+                or self.restoringBackup):
             return
 
         # ok to sync
@@ -775,7 +860,7 @@ QTreeWidget {
         return qshortcuts
 
     def setStateShortcuts(self, shortcuts):
-        runHook(self.state+"StateShortcuts", shortcuts)
+        runHook(self.state + "StateShortcuts", shortcuts)
         self.stateShortcuts = self.applyShortcuts(shortcuts)
 
     def clearStateShortcuts(self):
@@ -827,7 +912,7 @@ QTreeWidget {
     def maybeEnableUndo(self):
         if self.col and self.col.undoName():
             self.form.actionUndo.setText(_("Undo %s") %
-                                            self.col.undoName())
+                                         self.col.undoName())
             self.form.actionUndo.setEnabled(True)
             runHook("undoState", True)
         else:
@@ -848,8 +933,9 @@ QTreeWidget {
     # Other menu operations
     ##########################################################################
 
-    def onAddCard(self):
-        aqt.dialogs.open("AddCards", self)
+    def onAddCard(self, hidden=0) -> aqt.addcards.AddCards:
+        # 增加隐式打开方式
+        return aqt.dialogs.open("AddCards", self, hidden)
 
     def onBrowse(self):
         aqt.dialogs.open("Browser", self)
@@ -1002,7 +1088,7 @@ Difference to correct time: %s.""") % diffText
 
     def setupRefreshTimer(self):
         # every 10 minutes
-        self.progress.timer(10*60*1000, self.onRefreshTimer, True)
+        self.progress.timer(10 * 60 * 1000, self.onRefreshTimer, True)
 
     def onRefreshTimer(self):
         if self.state == "deckBrowser":
@@ -1055,7 +1141,7 @@ and if the problem comes up again, please ask on the support site."""))
                 f.write(b"nid\tmid\tfields\n")
             for id, mid, flds in col.db.execute(
                     "select id, mid, flds from notes where id in %s" %
-                ids2str(nids)):
+                    ids2str(nids)):
                 fields = splitFields(flds)
                 f.write(("\t".join([str(id), str(mid)] + fields)).encode("utf8"))
                 f.write(b"\n")
@@ -1145,7 +1231,7 @@ will be lost. Continue?"""))
 
     def deleteUnused(self, unused, diag):
         if not askUser(
-            _("Delete unused media?")):
+                _("Delete unused media?")):
             return
         mdir = self.col.media.dir()
         self.progress.start(immediate=True)
@@ -1159,7 +1245,7 @@ will be lost. Continue?"""))
                 now = time.time()
                 if now - lastProgress >= 0.3:
                     lastProgress = now
-                    label = _("Deleted %s files...") % (c+1)
+                    label = _("Deleted %s files...") % (c + 1)
                     self.progress.update(label)
         finally:
             self.progress.finish()
@@ -1186,9 +1272,10 @@ will be lost. Continue?"""))
         part1 = ngettext("%d card", "%d cards", len(cids)) % len(cids)
         part1 = _("%s to delete:") % part1
         diag, box = showText(part1 + "\n\n" + report, run=False,
-                geomKey="emptyCards")
+                             geomKey="emptyCards")
         box.addButton(_("Delete Cards"), QDialogButtonBox.AcceptRole)
         box.button(QDialogButtonBox.Close).setDefault(True)
+
         def onDelete():
             saveGeom(diag, "emptyCards")
             QDialog.accept(diag)
@@ -1196,6 +1283,7 @@ will be lost. Continue?"""))
             self.col.remCards(cids)
             tooltip(ngettext("%d card deleted.", "%d cards deleted.", len(cids)) % len(cids))
             self.reset()
+
         box.accepted.connect(onDelete)
         diag.show()
 
@@ -1224,9 +1312,11 @@ will be lost. Continue?"""))
 
     def _captureOutput(self, on):
         mw = self
+
         class Stream:
             def write(self, data):
                 mw._output += data
+
         if on:
             self._output = ""
             self._oldStderr = sys.stderr
@@ -1340,7 +1430,7 @@ will be lost. Continue?"""))
             if buf != "raise":
                 showInfo(_("""\
 Please ensure a profile is open and Anki is not busy, then try again."""),
-                     parent=None)
+                         parent=None)
             return
         # raise window
         if isWin:

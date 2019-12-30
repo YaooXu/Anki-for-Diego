@@ -10,6 +10,14 @@ from aqt.utils import openLink
 from anki.utils import isMac, isWin, isLin
 from anki.lang import _
 
+from PyQt5.Qt import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtWebEngineWidgets import *
+from PyQt5.QtWebChannel import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+
+
 # Page for debug messages
 ##########################################################################
 
@@ -63,7 +71,7 @@ class AnkiWebPage(QWebEnginePage):
     def javaScriptConsoleMessage(self, lvl, msg, line, srcID):
         # not translated because console usually not visible,
         # and may only accept ascii text
-        buf = "JS error on line %(a)d: %(b)s" % dict(a=line, b=msg+"\n")
+        buf = "JS error on line %(a)d: %(b)s" % dict(a=line, b=msg + "\n")
         # ensure we don't try to write characters the terminal can't handle
         buf = buf.encode(sys.stdout.encoding, "backslashreplace").decode(sys.stdout.encoding)
         sys.stdout.write(buf)
@@ -85,6 +93,7 @@ class AnkiWebPage(QWebEnginePage):
 
     def _onCmd(self, str):
         return self._onBridgeCmd(str)
+
 
 # Main web view
 ##########################################################################
@@ -238,14 +247,14 @@ class AnkiWebView(QWebEngineView):
         color_hl = palette.color(QPalette.Highlight).name()
 
         if isWin:
-            #T: include a font for your language on Windows, eg: "Segoe UI", "MS Mincho"
+            # T: include a font for your language on Windows, eg: "Segoe UI", "MS Mincho"
             family = _('"Segoe UI"')
             widgetspec = "button { font-size: 12px; font-family:%s; }" % family
             widgetspec += "\n:focus { outline: 1px solid %s; }" % color_hl
             fontspec = 'font-size:12px;font-family:%s;' % family
         elif isMac:
-            family="Helvetica"
-            fontspec = 'font-size:15px;font-family:"%s";'% \
+            family = "Helvetica"
+            fontspec = 'font-size:15px;font-family:"%s";' % \
                        family
             widgetspec = """
 button { font-size: 13px; -webkit-appearance: none; background: #fff; border: 1px solid #ccc;
@@ -254,7 +263,7 @@ border-radius:5px; font-family: Helvetica }"""
             family = self.font().family()
             color_hl_txt = palette.color(QPalette.HighlightedText).name()
             color_btn = palette.color(QPalette.Button).name()
-            fontspec = 'font-size:14px;font-family:"%s";'% family
+            fontspec = 'font-size:14px;font-family:"%s";' % family
             widgetspec = """
 /* Buttons */
 button{ font-size:14px; -webkit-appearance:none; outline:0;
@@ -270,13 +279,13 @@ div[contenteditable="true"]:focus {
     border-color: %(color_hl)s;
 }""" % {"family": family, "color_btn": color_btn,
         "color_hl": color_hl, "color_hl_txt": color_hl_txt}
-        
-        csstxt = "\n".join([self.bundledCSS("webview.css")]+
+
+        csstxt = "\n".join([self.bundledCSS("webview.css")] +
                            [self.bundledCSS(fname) for fname in css])
-        jstxt = "\n".join([self.bundledScript("webview.js")]+
+        jstxt = "\n".join([self.bundledScript("webview.js")] +
                           [self.bundledScript(fname) for fname in js])
         from aqt import mw
-        head =  mw.baseHTML() + head + csstxt + jstxt
+        head = mw.baseHTML() + head + csstxt + jstxt
 
         html = """
 <!doctype html>
@@ -294,7 +303,7 @@ body {{ zoom: {}; background: {}; {} }}
 <body>{}</body>
 </html>""".format(self.title, self.zoomFactor(), self._getWindowColor().name(),
                   fontspec, widgetspec, head, body)
-        #print(html)
+        # print(html)
         self.setHtml(html)
 
     def webBundlePath(self, path):
@@ -320,6 +329,7 @@ body {{ zoom: {}; background: {}; {} }}
                     print("ignored late js callback", cb)
                     return
                 cb(val)
+
             self.page().runJavaScript(js, handler)
         else:
             self.page().runJavaScript(js)
@@ -382,5 +392,5 @@ body {{ zoom: {}; background: {}; {} }}
             mw.progress.timer(1000, mw.reset, False)
             return
 
-        height = math.ceil(qvar*self.zoomFactor())
+        height = math.ceil(qvar * self.zoomFactor())
         self.setFixedHeight(height)
