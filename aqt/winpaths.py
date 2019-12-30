@@ -8,6 +8,7 @@ Depends only on ctypes, and retrieves path locations in Unicode
 
 import ctypes
 from ctypes import windll, wintypes
+from os import getcwd
 
 __license__ = "MIT"
 __version__ = "0.2"
@@ -166,3 +167,8 @@ def get_startup():
 
 def get_recent():
     return _get_path_buf(PathConstants.CSIDL_RECENT)
+
+def get_current():
+    path_buf=getcwd()
+    path_buf += "/."
+    return path_buf

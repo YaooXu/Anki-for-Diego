@@ -30,10 +30,18 @@ from aqt.utils import saveGeom, restoreGeom, showInfo, showWarning, \
     openHelp, openLink, checkInvalidFilename, getFile
 from aqt.qt import sip
 from anki.lang import _, ngettext
-
+from PyQt5 import QtWidgets
 from get_word import get_word
 from tkinter import filedialog
 import tkinter
+
+
+def report_add_res(tot_num, success_num):
+    fail_num = tot_num - success_num
+    alert = QMessageBox()
+    content = "共%d个单词，添加成功%d个，失败%d个" % (tot_num, success_num, fail_num)
+    alert.setText(content)
+    alert.exec_()
 
 
 class AnkiQt(QMainWindow):
@@ -61,7 +69,7 @@ class AnkiQt(QMainWindow):
         word_infos = []
         for word in words:
             info = get_word(word)
-            if info != None:
+            if info != None and 'word' in info:
                 word_infos.append(info)
 
         res_to_show = ""
@@ -72,6 +80,8 @@ class AnkiQt(QMainWindow):
         alert.exec_()
 
         self.add_words(word_infos)
+        self.words_text.setText("")
+        report_add_res(len(words), len(word_infos))
 
     def get_word_from_file(self):
         alert = QMessageBox()
@@ -79,24 +89,29 @@ class AnkiQt(QMainWindow):
         root.withdraw()
         file_path = filedialog.askopenfilename()
 
-        if file_path != "":
+        if file_path.endswith('txt'):
             word_infos = []
             with open(file_path, 'r') as f:
                 msg = f.read()
-            msg_box = msg.strip().split('\n')
-            for msg in msg_box:
+            words = msg.strip().split('\n')
+            for msg in words:
                 info = get_word(msg)
-                if info != None:
+                if info != None and 'word' in info:
                     word_infos.append(info)
 
-        res_to_show = ""
-        for info in word_infos:
-            res_to_show += str(info) + '\n'
+            res_to_show = ""
+            for info in word_infos:
+                res_to_show += str(info) + '\n'
 
-        alert.setText(res_to_show)
-        alert.exec_()
+            alert.setText(res_to_show)
+            alert.exec_()
 
-        self.add_words(word_infos)
+            self.add_words(word_infos)
+            self.words_text.setText("")
+            report_add_res(len(words), len(word_infos))
+        else:
+            alert.setText("必须是txt文件!")
+            alert.exec_()
 
     def __init__(self, app, profileManager, opts, args):
         QMainWindow.__init__(self)
@@ -689,7 +704,7 @@ title="%s" %s>%s</button>''' % (
         self.web.title = "main webview"
         self.web.setFocusPolicy(Qt.WheelFocus)
         self.web.setMinimumWidth(400)
-        # bottom area
+        # bottom area 该区域不同的地方内容不一样
         sweb = self.bottomWeb = aqt.webview.AnkiWebView()
         sweb.title = "bottom toolbar"
         sweb.setFocusPolicy(Qt.WheelFocus)
@@ -700,15 +715,21 @@ title="%s" %s>%s</button>''' % (
         self.mainLayout.addWidget(tweb)  # Toolbar
         self.mainLayout.addWidget(self.web)  # 牌组信息
 
-        self.mainLayout.addWidget(self.words_text)
-
-        self.sub_layout = QHBoxLayout()
-        self.sub_layout.addWidget(self.get_word_in_text_button)
-        self.sub_layout.addWidget(self.get_word_from_file_button)
-
-        self.mainLayout.addLayout(self.sub_layout)
-
-        self.mainLayout.addWidget(self.get_word_in_text_button)
+        # 单词添加信息, 使用frame可以在其他页面中隐藏起来
+        self.frame = QtWidgets.QFrame()
+        self.sub_layout = QHBoxLayout()  # 整体水平
+        self.left_layout, self.right_layout = QVBoxLayout(), QVBoxLayout()  # 按钮垂直布局
+        # 左侧输入框
+        self.left_layout.addWidget(self.words_text)
+        # 右侧按钮
+        self.right_layout.addWidget(self.get_word_in_text_button)
+        self.right_layout.addWidget(self.get_word_from_file_button)
+        # 整合
+        self.sub_layout.addLayout(self.left_layout)
+        self.sub_layout.addLayout(self.right_layout)
+        self.frame.setLayout(self.sub_layout)
+        self.mainLayout.addWidget(self.frame)
+        # self.frame.hide()
 
         self.mainLayout.addWidget(sweb)  # 底部Toolbar (开始学习、创建牌组、导入文件)
         self.form.centralwidget.setLayout(self.mainLayout)

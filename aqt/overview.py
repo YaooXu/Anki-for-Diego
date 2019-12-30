@@ -33,6 +33,8 @@ class Overview:
 
     def _linkHandler(self, url):
         if url == "study":
+            # 把主页面的frame隐藏掉
+            self.mw.frame.hide()
             self.mw.col.startTimebox()
             self.mw.moveToState("review")
             if self.mw.state == "overview":

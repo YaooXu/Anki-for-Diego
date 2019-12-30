@@ -1,5 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
 aqt/template/
-anki/__pycache__/
 __pycache__/
+Anki2
