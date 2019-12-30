@@ -344,7 +344,7 @@ class Editor:
                 for f in self.note.model()['flds']]
 
     def saveNow(self, callback, keepFocus=False):
-        "Save unsaved edits then call callback()."
+        "Save unsaved edits then call callback(). 添加单词中callBack就是_addCards"
         if not self.note:
             # note记录了添加内容的信息
             # note.fields 各个字段内容
@@ -353,7 +353,7 @@ class Editor:
             self.mw.progress.timer(10, callback, False)
             return
         self.saveTags() # TODO：Tag貌似可以为空，作用是啥？
-        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback()) # TODO：这个函数作用？
+        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback()) # TODO：这个函数作用？ self.Web?
 
     def checkValid(self):
         cols = []

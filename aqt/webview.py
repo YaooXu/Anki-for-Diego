@@ -319,7 +319,7 @@ body {{ zoom: {}; background: {}; {} }}
     def eval(self, js):
         self.evalWithCallback(js, None)
 
-    def evalWithCallback(self, js, cb):
+    def evalWithCallback(self, js, cb): # TODO: js是个啥？
         self._queueAction("eval", js, cb)
 
     def _evalWithCallback(self, js, cb):

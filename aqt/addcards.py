@@ -27,7 +27,7 @@ class AddCards(QDialog):
         self.setupChoosers()
         self.setupEditor()
         self.setupButtons()
-        self.onReset()  #
+        self.onReset()  # 设置note
         self.history = []
         restoreGeom(self, "add")
         addHook('reset', self.onReset)
@@ -40,7 +40,7 @@ class AddCards(QDialog):
 
     def setupEditor(self):
         self.editor = aqt.editor.Editor(
-            self.mw, self.form.fieldsArea, self, True)  # TODO: 何时确定的editor的note（卡片模板）
+            self.mw, self.form.fieldsArea, self, True)
 
     def setupChoosers(self):
         self.modelChooser = aqt.modelchooser.ModelChooser(

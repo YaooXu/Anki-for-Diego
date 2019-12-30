@@ -37,6 +37,23 @@ import tkinter
 
 
 class AnkiQt(QMainWindow):
+    def add_words(self, word_infos: list):
+        r"""
+        把从服务器得到的单词批量加入牌组
+        :param word_infos:
+        :return:
+        """
+        for word_info in word_infos:
+            addCard = self.onAddCard(hidden=True)
+            # 一开始有一个 '.'?
+            # addCard.editor.note.fields.clear()
+            addCard.editor.note.fields[0] = word_info['word']
+            addCard.editor.note.fields[1] = word_info['accent']
+            print(addCard.editor.note.fields)
+            # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
+            addCard._addCards()
+            addCard.close()
+
     def get_word_in_text(self):
         alert = QMessageBox()
         content = self.words_text.toPlainText()
@@ -54,17 +71,7 @@ class AnkiQt(QMainWindow):
         alert.setText(res_to_show)
         alert.exec_()
 
-        for word_info in word_infos:
-            # TODO: 每次重新打开addCard效率不高，先只放一个字段试一下
-            addCard = self.onAddCard(hidden=True)
-            # 一开始有一个 '.'?
-            # addCard.editor.note.fields.clear()
-            # TODO: WTF????
-            addCard.editor.note.fields[0] = word_info['word']
-            addCard.editor.note.fields[1] = word_info['accent']
-            print(addCard.editor.note.fields)
-            addCard.addCards()
-            # addCard.close()
+        self.add_words(word_infos)
 
     def get_word_from_file(self):
         alert = QMessageBox()
@@ -88,6 +95,8 @@ class AnkiQt(QMainWindow):
 
         alert.setText(res_to_show)
         alert.exec_()
+
+        self.add_words(word_infos)
 
     def __init__(self, app, profileManager, opts, args):
         QMainWindow.__init__(self)
