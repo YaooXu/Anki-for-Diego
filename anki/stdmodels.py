@@ -7,6 +7,7 @@ from anki.consts import MODEL_CLOZE
 
 models = []
 
+
 # Basic
 ##########################################################################
 
@@ -25,14 +26,17 @@ def addBasicModel(col):
     mm.addField(m, fm)
 
     t = mm.newTemplate(_("Card 1"))
-    t['qfmt'] = "{{"+_("Front")+"}}"
-    t['qfmt'] = "{{"+_("单词")+"}}<br>{{"+_("音标")+"}}"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("释义")+"}}<br>{{"+_("例句")+"}}"
+    t['qfmt'] = "{{" + _("Front") + "}}"
+    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("释义") + "}}<br>{{" + _(
+        "例句") + "}}" + "<img src={{" + _("图片") + "}} alt=\"" + _("图片") + "\">"
     mm.addTemplate(m, t)
     mm.add(m)
     return m
 
+
 models.append((lambda: _("Basic"), addBasicModel))
+
 
 # Basic w/ typing
 ##########################################################################
@@ -45,13 +49,15 @@ def addBasicTypingModel(col):
     fm = mm.newField(_("Back"))
     mm.addField(m, fm)
     t = mm.newTemplate(_("Card 1"))
-    t['qfmt'] = "{{"+_("Front")+"}}\n\n{{type:"+_("Back")+"}}"
-    t['afmt'] = "{{"+_("Front")+"}}\n\n<hr id=answer>\n\n{{type:"+_("Back")+"}}"
+    t['qfmt'] = "{{" + _("Front") + "}}\n\n{{type:" + _("Back") + "}}"
+    t['afmt'] = "{{" + _("Front") + "}}\n\n<hr id=answer>\n\n{{type:" + _("Back") + "}}"
     mm.addTemplate(m, t)
     mm.add(m)
     return m
 
+
 models.append((lambda: _("Basic (type in the answer)"), addBasicTypingModel))
+
 
 # Forward & Reverse
 ##########################################################################
@@ -61,12 +67,14 @@ def addForwardReverse(col):
     m = addBasicModel(col)
     m['name'] = _("Basic (and reversed card)")
     t = mm.newTemplate(_("Card 2"))
-    t['qfmt'] = "{{"+_("Back")+"}}"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("Front")+"}}"
+    t['qfmt'] = "{{" + _("Back") + "}}"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("Front") + "}}"
     mm.addTemplate(m, t)
     return m
 
+
 models.append((lambda: _("Basic (and reversed card)"), addForwardReverse))
+
 
 # Forward & Optional Reverse
 ##########################################################################
@@ -80,12 +88,14 @@ def addForwardOptionalReverse(col):
     mm.addField(m, fm)
     t = mm.newTemplate(_("Card 2"))
     t['qfmt'] = "{{#%s}}{{%s}}{{/%s}}" % (av, _("Back"), av)
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("Front")+"}}"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("Front") + "}}"
     mm.addTemplate(m, t)
     return m
 
+
 models.append((lambda: _("Basic (optional reversed card)"),
-        addForwardOptionalReverse))
+               addForwardOptionalReverse))
+
 
 # Cloze
 ##########################################################################
@@ -114,5 +124,6 @@ def addClozeModel(col):
     mm.addTemplate(m, t)
     mm.add(m)
     return m
+
 
 models.append((lambda: _("Cloze"), addClozeModel))

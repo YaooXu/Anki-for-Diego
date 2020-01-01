@@ -59,6 +59,7 @@ class AnkiQt(QMainWindow):
             addCard.editor.note.fields[1] = word_info['accent']
             addCard.editor.note.fields[2] = word_info['mean_cn']
             addCard.editor.note.fields[3] = word_info['st']
+            addCard.editor.note.fields[4] = word_info['img']
             print(addCard.editor.note.fields)
             # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
             addCard._addCards()
