@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/dyndconf.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,7 +15,6 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(392, 472)
-        Dialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtWidgets.QGroupBox(Dialog)
@@ -71,7 +70,6 @@ class Ui_Dialog(object):
         self.gridLayout_3.addWidget(self.label_4, 1, 2, 1, 1)
         self.verticalLayout.addWidget(self.filter2group)
         self.groupBox_2 = QtWidgets.QGroupBox(Dialog)
-        self.groupBox_2.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.groupBox_2.setObjectName("groupBox_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox_2)
         self.gridLayout_2.setObjectName("gridLayout_2")

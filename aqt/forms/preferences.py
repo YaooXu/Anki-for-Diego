@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/preferences.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,12 +15,10 @@ class Ui_Preferences(object):
     def setupUi(self, Preferences):
         Preferences.setObjectName("Preferences")
         Preferences.resize(423, 508)
-        Preferences.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(Preferences)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tabWidget = QtWidgets.QTabWidget(Preferences)
         self.tabWidget.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.tabWidget.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.tabWidget.setObjectName("tabWidget")
         self.tab_1 = QtWidgets.QWidget()
         self.tab_1.setObjectName("tab_1")
@@ -202,7 +200,7 @@ class Ui_Preferences(object):
         self.verticalLayout_2.addWidget(self.buttonBox)
 
         self.retranslateUi(Preferences)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(0)
         self.buttonBox.accepted.connect(Preferences.accept)
         self.buttonBox.rejected.connect(Preferences.reject)
         QtCore.QMetaObject.connectSlotsByName(Preferences)
@@ -235,7 +233,7 @@ class Ui_Preferences(object):
         self.pastePNG.setText(_("Paste clipboard images as PNG"))
         self.nightMode.setText(_("Show cards as white on black (night mode)"))
         self.dayLearnFirst.setText(_("Show learning cards with larger steps before reviews"))
-        self.newSched.setText(_("Anki 2.1 scheduler"))
+        self.newSched.setText(_("Experimental V2 scheduler"))
         self.useCurrent.setItemText(0, _("When adding, default to current deck"))
         self.useCurrent.setItemText(1, _("Change deck depending on note type"))
         self.label_23.setText(_("Next day starts at"))

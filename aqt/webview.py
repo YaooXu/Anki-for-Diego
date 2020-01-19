@@ -235,8 +235,7 @@ class AnkiWebView(QWebEngineView):
         if isMac:
             # standard palette does not return correct window color on macOS
             return QColor("#ececec")
-        # return self.style().standardPalette().color(QPalette.Window)
-        return QColor('#DFF2F9')
+        return self.style().standardPalette().color(QPalette.Window)
 
     def stdHtml(self, body, css=None, js=None, head=""):
         if css is None:

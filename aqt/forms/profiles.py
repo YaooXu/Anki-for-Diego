@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/profiles.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,11 +14,10 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(423, 355)
+        MainWindow.resize(423, 356)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/anki.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
-        MainWindow.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -28,7 +27,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.profiles = QtWidgets.QListWidget(self.centralwidget)
-        self.profiles.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.profiles.setObjectName("profiles")
         self.verticalLayout_2.addWidget(self.profiles)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
@@ -60,7 +58,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setEnabled(False)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 423, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 423, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)

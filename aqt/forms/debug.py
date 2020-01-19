@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/debug.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -24,7 +24,6 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.text.sizePolicy().hasHeightForWidth())
         self.text.setSizePolicy(sizePolicy)
         self.text.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.text.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.text.setLineWrapMode(QtWidgets.QPlainTextEdit.NoWrap)
         self.text.setObjectName("text")
         self.verticalLayout.addWidget(self.text)
@@ -35,7 +34,6 @@ class Ui_Dialog(object):
         sizePolicy.setHeightForWidth(self.log.sizePolicy().hasHeightForWidth())
         self.log.setSizePolicy(sizePolicy)
         self.log.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.log.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.log.setReadOnly(True)
         self.log.setObjectName("log")
         self.verticalLayout.addWidget(self.log)

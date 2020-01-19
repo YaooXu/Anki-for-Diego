@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/addcards.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -18,7 +18,6 @@ class Ui_Dialog(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/anki.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setWindowIcon(icon)
-        Dialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setContentsMargins(12, 6, 12, 12)
         self.verticalLayout.setSpacing(3)
@@ -46,8 +45,7 @@ class Ui_Dialog(object):
         sizePolicy.setVerticalStretch(10)
         sizePolicy.setHeightForWidth(self.fieldsArea.sizePolicy().hasHeightForWidth())
         self.fieldsArea.setSizePolicy(sizePolicy)
-        self.fieldsArea.setAutoFillBackground(False)
-        self.fieldsArea.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
+        self.fieldsArea.setAutoFillBackground(True)
         self.fieldsArea.setObjectName("fieldsArea")
         self.verticalLayout.addWidget(self.fieldsArea)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

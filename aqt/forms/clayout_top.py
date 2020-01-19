@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/clayout_top.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -43,7 +43,6 @@ class Ui_Form(object):
         self.horizontalLayout.addWidget(self.templateOptions)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.changesLabel = QtWidgets.QLabel(Form)
-        self.changesLabel.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.changesLabel.setText("")
         self.changesLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.changesLabel.setObjectName("changesLabel")

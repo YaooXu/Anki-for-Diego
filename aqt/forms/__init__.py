@@ -26,7 +26,6 @@ __all__ = [
 	"getaddons",
 	"importing",
 	"main",
-	"main1",
 	"modelopts",
 	"models",
 	"preferences",
@@ -68,7 +67,6 @@ from . import findreplace
 from . import getaddons
 from . import importing
 from . import main
-from . import main1
 from . import modelopts
 from . import models
 from . import preferences

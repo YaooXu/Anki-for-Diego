@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/stats.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -20,7 +20,6 @@ class Ui_Dialog(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.web = AnkiWebView(Dialog)
-        self.web.setStyleSheet("background :url(:/icons/Mainwindow_bg.jpg)")
         self.web.setProperty("url", QtCore.QUrl("about:blank"))
         self.web.setObjectName("web")
         self.verticalLayout.addWidget(self.web)

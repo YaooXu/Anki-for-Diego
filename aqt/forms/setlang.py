@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/setlang.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,14 +15,12 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(400, 300)
-        Dialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.lang = QtWidgets.QListWidget(Dialog)
-        self.lang.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.lang.setObjectName("lang")
         self.verticalLayout.addWidget(self.lang)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

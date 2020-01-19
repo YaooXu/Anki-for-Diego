@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/models.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -34,7 +34,6 @@ class Ui_Dialog(object):
         self.verticalLayout_3.setSpacing(12)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Close|QtWidgets.QDialogButtonBox.Help)
         self.buttonBox.setObjectName("buttonBox")

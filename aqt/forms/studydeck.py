@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/studydeck.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -27,7 +27,6 @@ class Ui_Dialog(object):
         self.horizontalLayout.addWidget(self.filter)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.list = QtWidgets.QListWidget(Dialog)
-        self.list.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.list.setObjectName("list")
         self.verticalLayout.addWidget(self.list)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)

@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/customstudy.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -15,7 +15,6 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(332, 380)
-        Dialog.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.gridLayout = QtWidgets.QGridLayout()
@@ -40,26 +39,22 @@ class Ui_Dialog(object):
         self.gridLayout.addWidget(self.radio5, 4, 0, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.groupBox = QtWidgets.QGroupBox(Dialog)
-        self.groupBox.setStyleSheet("background:url(:/icons/Mainwindow_bg.jpg)")
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.title = QtWidgets.QLabel(self.groupBox)
-        self.title.setText("...")
         self.title.setObjectName("title")
         self.verticalLayout_2.addWidget(self.title)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.preSpin = QtWidgets.QLabel(self.groupBox)
-        self.preSpin.setText("...")
         self.preSpin.setObjectName("preSpin")
         self.horizontalLayout.addWidget(self.preSpin)
         self.spin = QtWidgets.QSpinBox(self.groupBox)
         self.spin.setObjectName("spin")
         self.horizontalLayout.addWidget(self.spin)
         self.postSpin = QtWidgets.QLabel(self.groupBox)
-        self.postSpin.setText("...")
         self.postSpin.setObjectName("postSpin")
         self.horizontalLayout.addWidget(self.postSpin)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
@@ -106,6 +101,9 @@ class Ui_Dialog(object):
         self.radio2.setText(_("Increase today\'s review card limit"))
         self.radio6.setText(_("Study by card state or tag"))
         self.radio5.setText(_("Preview new cards"))
+        self.title.setText(_("..."))
+        self.preSpin.setText(_("..."))
+        self.postSpin.setText(_("..."))
         __sortingEnabled = self.cardType.isSortingEnabled()
         self.cardType.setSortingEnabled(False)
         item = self.cardType.item(0)

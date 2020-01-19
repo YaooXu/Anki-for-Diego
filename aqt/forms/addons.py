@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/addons.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -25,7 +25,6 @@ class Ui_Dialog(object):
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
         self.addonList = QtWidgets.QListWidget(Dialog)
-        self.addonList.setStyleSheet("background :url(:/icons/Mainwindow_bg.jpg)")
         self.addonList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.addonList.setObjectName("addonList")
         self.verticalLayout_2.addWidget(self.addonList)
