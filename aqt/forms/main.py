@@ -3,7 +3,7 @@
 from anki.lang import _
 # Form implementation generated from reading ui file 'designer/main.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1084, 830)
+        MainWindow.resize(412, 301)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,6 +33,18 @@ class Ui_MainWindow(object):
         self.centralwidget.setAutoFillBackground(True)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 412, 22))
+        self.menubar.setObjectName("menubar")
+        self.menuHelp = QtWidgets.QMenu(self.menubar)
+        self.menuHelp.setObjectName("menuHelp")
+        self.menuEdit = QtWidgets.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuCol = QtWidgets.QMenu(self.menubar)
+        self.menuCol.setObjectName("menuCol")
+        self.menuTools = QtWidgets.QMenu(self.menubar)
+        self.menuTools.setObjectName("menuTools")
+        MainWindow.setMenuBar(self.menubar)
         self.actionExit = QtWidgets.QAction(MainWindow)
         self.actionExit.setObjectName("actionExit")
         self.actionPreferences = QtWidgets.QAction(MainWindow)
@@ -73,8 +85,32 @@ class Ui_MainWindow(object):
         self.actionNoteTypes.setObjectName("actionNoteTypes")
         self.actionAdd_ons = QtWidgets.QAction(MainWindow)
         self.actionAdd_ons.setObjectName("actionAdd_ons")
-        self.actionFUCK = QtWidgets.QAction(MainWindow)
-        self.actionFUCK.setObjectName("actionFUCK")
+        self.menuHelp.addAction(self.actionDocumentation)
+        self.menuHelp.addSeparator()
+        self.menuHelp.addAction(self.actionDonate)
+        self.menuHelp.addAction(self.actionAbout)
+        self.menuEdit.addAction(self.actionUndo)
+        self.menuCol.addAction(self.actionSwitchProfile)
+        self.menuCol.addSeparator()
+        self.menuCol.addAction(self.actionImport)
+        self.menuCol.addAction(self.actionExport)
+        self.menuCol.addSeparator()
+        self.menuCol.addAction(self.actionExit)
+        self.menuTools.addAction(self.actionStudyDeck)
+        self.menuTools.addAction(self.actionCreateFiltered)
+        self.menuTools.addSeparator()
+        self.menuTools.addAction(self.actionFullDatabaseCheck)
+        self.menuTools.addAction(self.actionCheckMediaDatabase)
+        self.menuTools.addAction(self.actionEmptyCards)
+        self.menuTools.addSeparator()
+        self.menuTools.addAction(self.actionAdd_ons)
+        self.menuTools.addSeparator()
+        self.menuTools.addAction(self.actionNoteTypes)
+        self.menuTools.addAction(self.actionPreferences)
+        self.menubar.addAction(self.menuCol.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
+        self.menubar.addAction(self.menuTools.menuAction())
+        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -82,6 +118,10 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_("Anki"))
+        self.menuHelp.setTitle(_("&Help"))
+        self.menuEdit.setTitle(_("&Edit"))
+        self.menuCol.setTitle(_("&File"))
+        self.menuTools.setTitle(_("&Tools"))
         self.actionExit.setText(_("E&xit"))
         self.actionExit.setShortcut(_("Ctrl+Q"))
         self.actionPreferences.setText(_("&Preferences..."))
@@ -113,5 +153,4 @@ class Ui_MainWindow(object):
         self.actionNoteTypes.setShortcut(_("Ctrl+Shift+N"))
         self.actionAdd_ons.setText(_("Add-ons"))
         self.actionAdd_ons.setShortcut(_("Ctrl+Shift+A"))
-        self.actionFUCK.setText(_("FUCK"))
 from . import icons_rc

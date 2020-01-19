@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1084</width>
-    <height>830</height>
+    <width>412</width>
+    <height>301</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -39,6 +39,62 @@
    <property name="autoFillBackground">
     <bool>true</bool>
    </property>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>412</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionDocumentation"/>
+    <addaction name="separator"/>
+    <addaction name="actionDonate"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+   </widget>
+   <widget class="QMenu" name="menuCol">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionSwitchProfile"/>
+    <addaction name="separator"/>
+    <addaction name="actionImport"/>
+    <addaction name="actionExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionStudyDeck"/>
+    <addaction name="actionCreateFiltered"/>
+    <addaction name="separator"/>
+    <addaction name="actionFullDatabaseCheck"/>
+    <addaction name="actionCheckMediaDatabase"/>
+    <addaction name="actionEmptyCards"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_ons"/>
+    <addaction name="separator"/>
+    <addaction name="actionNoteTypes"/>
+    <addaction name="actionPreferences"/>
+   </widget>
+   <addaction name="menuCol"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuHelp"/>
   </widget>
   <action name="actionExit">
    <property name="text">
@@ -179,11 +235,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+A</string>
-   </property>
-  </action>
-  <action name="actionFUCK">
-   <property name="text">
-    <string>FUCK</string>
    </property>
   </action>
  </widget>

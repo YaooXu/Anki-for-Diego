@@ -279,9 +279,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
     ######################################################################
 
     drawLinks = [
-            # ["", "shared", _("Get Shared")],
-            # ["", "create", _("Create Deck")],
-            # ["Ctrl+I", "import", _("Import File")],  # Ctrl+I works from menu
+            ["", "shared", _("Get Shared")],
+            ["", "create", _("Create Deck")],
+            ["Ctrl+I", "import", _("Import File")],  # Ctrl+I works from menu
     ]
 
     def _drawButtons(self):
