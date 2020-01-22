@@ -61,13 +61,16 @@ class AnkiQt(QMainWindow):
             addCard.editor.note.fields[1] = word_info['accent']
             addCard.editor.note.fields[2] = word_info['mean_cn']
             addCard.editor.note.fields[3] = word_info['st']
-            addCard.editor.note.fields[4] = word_info['img']            #链接
+            # addCard.editor.note.fields[4] = word_info['img']            #链接
 
             res = requests.get(word_info['img'])
-            with open('{}.jpg'.format(word_info['word']), 'wb') as f:
+            if os.path.isdir("./images") != True:
+                os.mkdir("./images")
+            with open("./images/{}.jpg".format(word_info['word']),"wb") as f:
                 f.write(res.content)
-            
-            addCard.editor.note.fields[4] = '{}.jpg'.format(word_info['word'])
+            addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
+            # print(os.getcwd())
+            # addCard.editor.note.fields[4] = [res.content]
 
             print(addCard.editor.note.fields)
             # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
