@@ -28,6 +28,18 @@
 
    **SOLVE：调用AddCards._addCards**，addCards涉及的函数太多了，暂时没法搞明白
 
+
+#### 添加Note Type
+
+- **流程**
+ 1. 在工具栏点击Tools，选择Manage Note Types 或者在addcards中选择marge type，调用aqt\main.py下的onNoteTypes函数；
+ 2. 进入aqt\models.py创建一个models对象（界面），展示Note Types界面，右边栏包括：Add、Rename、Delete等操作；
+ 3. 点击Add，调用aqt\models.py下的onAdd()函数，创建一个AddModel()对象，AddModel类定义在aqt\models.py里面；
+ 4. 创建AddModel对象时，读取anki\stdmodels中预置的标准Note Type，共五种：BasicModel、BasicTypingModel、ForwardReverse、ForwardOptionalReverse、ClozeModel，读取预置model之后，将这五种model再copy一遍，共十种model；
+ 5. 在添加Note Type界面中给出的十种model中选择一种作为新的model，命名，保存新的model，然后调用updateModelsList()方法，重新加载，完成Note Type整个添加流程。
+
+
+
 ## TODO
 
 > 按优先级排列
