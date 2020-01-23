@@ -7,6 +7,7 @@ import aqt
 from anki.sound import clearAudioQueue
 from anki.lang import _
 
+
 class Overview:
     "Deck overview."
 
@@ -33,8 +34,6 @@ class Overview:
 
     def _linkHandler(self, url):
         if url == "study":
-            # 把主页面的frame隐藏掉
-            self.mw.frame.hide()
             self.mw.col.startTimebox()
             self.mw.moveToState("review")
             if self.mw.state == "overview":
@@ -55,7 +54,7 @@ class Overview:
         elif url == "decks":
             self.mw.moveToState("deckBrowser")
         elif url == "review":
-            openLink(aqt.appShared+"info/%s?v=%s"%(self.sid, self.sidVer))
+            openLink(aqt.appShared + "info/%s?v=%s" % (self.sid, self.sidVer))
         elif url == "studymore":
             self.onStudyMore()
         elif url == "unbury":
@@ -132,11 +131,11 @@ class Overview:
         else:
             shareLink = ""
         self.web.stdHtml(self._body % dict(
-                deck=deck['name'],
-                shareLink=shareLink,
-                desc=self._desc(deck),
-                table=self._table()
-            ),
+            deck=deck['name'],
+            shareLink=shareLink,
+            desc=self._desc(deck),
+            table=self._table()
+        ),
                          css=["overview.css"],
                          js=["jquery.js", "overview.js"])
 
@@ -159,7 +158,7 @@ to their original deck.""")
         else:
             dyn = ""
         return '<div class="descfont descmid description %s">%s</div>' % (
-                dyn, desc)
+            dyn, desc)
 
     def _table(self):
         counts = list(self.mw.col.sched.counts())
@@ -183,11 +182,10 @@ to their original deck.""")
 </table>
 </td><td align=center>
 %s</td></tr></table>''' % (
-    _("New"), counts[0],
-    _("Learning"), counts[1],
-    _("To Review"), counts[2],
-    but("study", _("Study Now"), id="study",extra=" autofocus"))
-
+                _("New"), counts[0],
+                _("Learning"), counts[1],
+                _("To Review"), counts[2],
+                but("study", _("Study Now"), id="study", extra=" autofocus"))
 
     _body = """
 <center>
@@ -210,7 +208,7 @@ to their original deck.""")
             links.append(["E", "empty", _("Empty")])
         else:
             links.append(["C", "studymore", _("Custom Study")])
-            #links.append(["F", "cram", _("Filter/Cram")])
+            # links.append(["F", "cram", _("Filter/Cram")])
         if self.mw.col.sched.haveBuried():
             links.append(["U", "unbury", _("Unbury")])
         buf = ""

@@ -9,15 +9,17 @@ from aqt.qt import *
 from anki.consts import *
 import aqt
 from anki.sound import playFromText, clearAudioQueue
-from aqt.utils import saveGeom, restoreGeom, mungeQA,\
+from aqt.utils import saveGeom, restoreGeom, mungeQA, \
     showInfo, askUser, getOnlyText, \
-     showWarning, openHelp, downArrow
+    showWarning, openHelp, downArrow
 from anki.utils import isMac, isWin, joinFields, bodyClass
 from aqt.webview import AnkiWebView
 import json
 from anki.hooks import runFilter
 from anki.lang import _, ngettext
 
+
+# 管理card type的页面
 class CardLayout(QDialog):
 
     def __init__(self, mw, note, ord=0, parent=None, addMode=False):
@@ -50,7 +52,7 @@ class CardLayout(QDialog):
         v1.addWidget(self.topArea)
         v1.addWidget(self.mainArea)
         v1.addLayout(self.buttons)
-        v1.setContentsMargins(12,12,12,12)
+        v1.setContentsMargins(12, 12, 12, 12)
         self.setLayout(v1)
         self.redraw()
         restoreGeom(self, "CardLayout")
@@ -62,7 +64,7 @@ class CardLayout(QDialog):
 
     def redraw(self):
         did = None
-        if hasattr(self.parent,"deckChooser"):
+        if hasattr(self.parent, "deckChooser"):
             did = self.parent.deckChooser.selectedId()
         self.cards = self.col.previewCards(self.note, 2, did=did)
         idx = self.ord
@@ -76,18 +78,18 @@ class CardLayout(QDialog):
         self.onCardSelected(self.ord)
 
     def setupShortcuts(self):
-        for i in range(1,9):
+        for i in range(1, 9):
             QShortcut(QKeySequence("Ctrl+%d" % i), self, activated=lambda i=i: self.selectCard(i))
 
     def selectCard(self, n):
-        self.ord = n-1
+        self.ord = n - 1
         self.redraw()
 
     def setupTopArea(self):
         self.topArea = QWidget()
         self.topAreaForm = aqt.forms.clayout_top.Ui_Form()
         self.topAreaForm.setupUi(self.topArea)
-        self.topAreaForm.templateOptions.setText(_("Options") + " "+downArrow())
+        self.topAreaForm.templateOptions.setText(_("Options") + " " + downArrow())
         self.topAreaForm.templateOptions.clicked.connect(self.onMore)
         self.topAreaForm.templatesBox.currentIndexChanged.connect(self.onCardSelected)
 
@@ -144,7 +146,7 @@ class CardLayout(QDialog):
     def setupMainArea(self):
         w = self.mainArea = QWidget()
         l = QHBoxLayout()
-        l.setContentsMargins(0,0,0,0)
+        l.setContentsMargins(0, 0, 0, 0)
         l.setSpacing(3)
         left = QWidget()
         # template area
@@ -185,7 +187,7 @@ class CardLayout(QDialog):
         pform.frontPrevBox.addWidget(pform.frontWeb)
         pform.backWeb = AnkiWebView()
         pform.backPrevBox.addWidget(pform.backWeb)
-        jsinc = ["jquery.js","browsersel.js",
+        jsinc = ["jquery.js", "browsersel.js",
                  "mathjax/conf.js", "mathjax/MathJax.js",
                  "reviewer.js"]
         pform.frontWeb.stdHtml(self.mw.reviewer.revHtml(),
@@ -193,7 +195,7 @@ class CardLayout(QDialog):
                                js=jsinc)
         pform.backWeb.stdHtml(self.mw.reviewer.revHtml(),
                               css=["reviewer.css"],
-                               js=jsinc)
+                              js=jsinc)
 
     def updateMainArea(self):
         if self._isCloze():
@@ -209,7 +211,7 @@ class CardLayout(QDialog):
         cards = self.mm.tmplUseCount(self.model, idx)
         cards = ngettext("%d card", "%d cards", cards) % cards
         msg = (_("Delete the '%(a)s' card type, and its %(b)s?") %
-            dict(a=self.model['tmpls'][idx]['name'], b=cards))
+               dict(a=self.model['tmpls'][idx]['name'], b=cards))
         if not askUser(msg):
             return
         if not self.mm.remTemplate(self.model, self.cards[idx].template()):
@@ -327,11 +329,13 @@ Please create a new card type first."""))
         origLen = len(txt)
         txt = txt.replace("<hr id=answer>", "")
         hadHR = origLen != len(txt)
+
         def answerRepl(match):
             res = self.mw.reviewer.correct("exomple", "an example")
             if hadHR:
                 res = "<hr id=answer>" + res
             return res
+
         if type == 'q':
             repl = "<input id='typeans' type=text value='exomple' readonly='readonly'>"
             repl = "<center>%s</center>" % repl
@@ -355,7 +359,7 @@ Please create a new card type first."""))
 
     def onReorder(self):
         n = len(self.cards)
-        cur = self.card.template()['ord']+1
+        cur = self.card.template()['ord'] + 1
         pos = getOnlyText(
             _("Enter new card position (1...%s):") % n,
             default=str(cur))
@@ -443,7 +447,7 @@ adjust the template manually to switch the question and answer."""))
         a = m.addAction(_("Browser Appearance..."))
         a.triggered.connect(self.onBrowserDisplay)
 
-        m.exec_(self.topAreaForm.templateOptions.mapToGlobal(QPoint(0,0)))
+        m.exec_(self.topAreaForm.templateOptions.mapToGlobal(QPoint(0, 0)))
 
     def onBrowserDisplay(self):
         d = QDialog()
@@ -480,7 +484,7 @@ adjust the template manually to switch the question and answer."""))
         l = QVBoxLayout()
         lab = QLabel(_("""\
 Enter deck to place new %s cards in, or leave blank:""") %
-                           self.card.template()['name'])
+                     self.card.template()['name'])
         lab.setWordWrap(True)
         l.addWidget(lab)
         te = TagEdit(d, type=1)
@@ -529,7 +533,7 @@ Enter deck to place new %s cards in, or leave blank:""") %
 
     def _addField(self, widg, field, font, size):
         t = widg.toPlainText()
-        t +="\n<div style='font-family: %s; font-size: %spx;'>{{%s}}</div>\n" % (
+        t += "\n<div style='font-family: %s; font-size: %spx;'>{{%s}}</div>\n" % (
             font, size, field)
         widg.setPlainText(t)
         self.saveCard()

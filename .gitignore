@@ -4,3 +4,7 @@ aqt/template/
 __pycache__/
 Anki2
 *.spec
+build/
+dist
+learn_pyqt/progress_dialog.py
+learn_pyqt

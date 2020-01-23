@@ -12,7 +12,11 @@ from anki.sound import clearAudioQueue
 from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
+import requests
+from get_word import get_word, report_add_res
 
+
+# 牌组浏览
 class DeckBrowser:
 
     def __init__(self, mw):
@@ -23,6 +27,7 @@ class DeckBrowser:
 
     def show(self):
         clearAudioQueue()
+        # 重置点击处理
         self.web.resetHandlers()
         self.web.onBridgeCmd = self._linkHandler
         self._renderPage()
@@ -30,7 +35,7 @@ class DeckBrowser:
     def refresh(self):
         self._renderPage()
 
-    # Event handlers
+    # 处理事件
     ##########################################################################
 
     def _linkHandler(self, url):
@@ -61,6 +66,12 @@ class DeckBrowser:
             self._dragDeckOnto(draggedDeckDid, ontoDeckDid)
         elif cmd == "collapse":
             self._collapse(arg)
+        elif cmd == "add_from_text":
+            print(cmd, arg)
+            self._add_from_text(arg)
+        elif cmd == "add_form_file":
+            print(cmd)
+            self._add_from_file()
         return False
 
     def _selDeck(self, did):
@@ -69,7 +80,7 @@ class DeckBrowser:
 
     # HTML generation
     ##########################################################################
-
+    # 主体部分的html
     _body = """
 <center>
 <table cellspacing=0 cellpading=3>
@@ -81,6 +92,18 @@ class DeckBrowser:
 %(countwarn)s
 </center>
 """
+    # 添加单词部分的html
+    _add_word_body = """
+<center>
+
+<br>
+
+<textarea id="words-area"></textarea>
+<button type="button" id="add_from_text_bt">添加文本框中单词</button>
+<button type="button" id="add_from_file_bt">从文件导入单词</button>
+
+</center>
+"""
 
     def _renderPage(self, reuse=False):
         if not reuse:
@@ -90,13 +113,17 @@ class DeckBrowser:
         self.web.evalWithCallback("window.pageYOffset", self.__renderPage)
 
     def __renderPage(self, offset):
+        # 加载所有牌组信息的html
         tree = self._renderDeckTree(self._dueTree)
         stats = self._renderStats()
-        self.web.stdHtml(self._body%dict(
+        # 点击html中的某个链接会返回一个类似于pycmd('open:1')的东西
+        # 其中pycmd是js中的函数
+        self.web.stdHtml((self._body + self._add_word_body) % dict(
             tree=tree, stats=stats, countwarn=self._countWarn()),
                          css=["deckbrowser.css"],
-                         js=["jquery.js", "jquery-ui.js", "deckbrowser.js"])
+                         js=["jquery.js", "jquery-ui.js", "deckbrowser.js", "add_words.js"])
         self.web.key = "deckBrowser"
+        # 设置牌组浏览的下面三个button
         self._drawButtons()
         if offset is not None:
             self._scrollToOffset(offset)
@@ -107,7 +134,7 @@ class DeckBrowser:
     def _renderStats(self):
         cards, thetime = self.mw.col.db.first("""
 select count(), sum(time)/1000 from revlog
-where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
+where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         cards = cards or 0
         thetime = thetime or 0
         msgp1 = ngettext("<!--studied-->%d card", "<!--studied-->%d cards", cards) % cards
@@ -119,13 +146,13 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
         if (self.mw.col.decks.count() < 25 or
                 self.mw.pm.profile.get("hideDeckLotsMsg")):
             return ""
-        return "<br><div style='width:50%;border: 1px solid #000;padding:5px;'>"+(
-            _("You have a lot of decks. Please see %(a)s. %(b)s") % dict(
-                a=("<a href=# onclick=\"return pycmd('lots')\">%s</a>" % _(
-                    "this page")),
-                b=("<br><small><a href=# onclick='return pycmd(\"hidelots\")'>("
-                   "%s)</a></small>" % (_("hide"))+
-                    "</div>")))
+        return "<br><div style='width:50%;border: 1px solid #000;padding:5px;'>" + (
+                _("You have a lot of decks. Please see %(a)s. %(b)s") % dict(
+            a=("<a href=# onclick=\"return pycmd('lots')\">%s</a>" % _(
+                "this page")),
+            b=("<br><small><a href=# onclick='return pycmd(\"hidelots\")'>("
+               "%s)</a></small>" % (_("hide")) +
+               "</div>")))
 
     def _renderDeckTree(self, nodes, depth=0):
         if not nodes:
@@ -134,7 +161,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
             buf = """
 <tr><th colspan=5 align=left>%s</th><th class=count>%s</th>
 <th class=count>%s</th><th class=optscol></th></tr>""" % (
-            _("Deck"), _("Due"), _("New"))
+                _("Deck"), _("Due"), _("New"))
             buf += self._topLevelDragRow()
         else:
             buf = ""
@@ -161,8 +188,10 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
         if self.mw.col.decks.get(did)['collapsed']:
             prefix = "+"
         due += lrn
+
         def indent():
-            return "&nbsp;"*6*depth
+            return "&nbsp;" * 6 * depth
+
         if did == self.mw.col.conf['curDeck']:
             klass = 'deck current'
         else:
@@ -180,8 +209,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
         buf += """
 
         <td class=decktd colspan=5>%s%s<a class="deck %s"
-        href=# onclick="return pycmd('open:%d')">%s</a></td>"""% (
+        href=# onclick="return pycmd('open:%d')">%s</a></td>""" % (
             indent(), collapse, extraclass, did, name)
+
         # due counts
         def nonzeroColour(cnt, colour):
             if not cnt:
@@ -189,14 +219,15 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
             if cnt >= 1000:
                 cnt = "1000+"
             return "<font color='%s'>%s</font>" % (colour, cnt)
+
         buf += "<td align=right>%s</td><td align=right>%s</td>" % (
             nonzeroColour(due, "#007700"),
             nonzeroColour(new, "#000099"))
         # options
         buf += ("<td align=center class=opts><a onclick='return pycmd(\"opts:%d\");'>"
-        "<img src='/_anki/imgs/gears.svg' class=gears></a></td></tr>" % did)
+                "<img src='/_anki/imgs/gears.svg' class=gears></a></td></tr>" % did)
         # children
-        buf += self._renderDeckTree(children, depth+1)
+        buf += self._renderDeckTree(children, depth + 1)
         return buf
 
     def _topLevelDragRow(self):
@@ -204,6 +235,97 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
 
     # Options
     ##########################################################################
+    def __add_words_by_content(self, content):
+        # 根据content得到所有单词的信息
+        # 并添加单词
+        """
+
+        :param content:
+        :return: words (list of string)
+                 word_infos (list of dict)
+        """
+        messageBox = QMessageBox()
+
+        words = content.strip().split('\n')
+        word_infos = []
+        for word in words:
+            info = get_word(word)
+            if info and 'word' in info:
+                word_infos.append(info)
+
+        res_to_show = ""
+        for info in word_infos:
+            res_to_show += str(info) + '\n'
+
+        messageBox.setText(res_to_show)
+        messageBox.exec_()
+
+        self.__add_words(word_infos)
+        # self.words_text.setText("")
+
+        report_add_res(len(words), len(word_infos))
+        return words, word_infos
+
+    def _add_from_text(self, content):
+        """
+
+        :param content: textarea中的内容
+        :return:
+        """
+        if not content:
+            return
+
+        self.__add_words_by_content(content)
+
+    def _add_from_file(self):
+        file_path = QFileDialog.getOpenFileName(self, '选择文件', './', "txt (*.txt)")[0]
+        messageBos = QMessageBox()
+
+        if file_path:
+            if file_path.endswith('txt'):
+                with open(file_path, 'r') as f:
+                    content = f.read()
+                self.__add_words_by_content(content)
+            else:
+                messageBos.setText("必须是txt文件!")
+                messageBos.exec_()
+
+    def __add_words(self, word_infos: list):
+        r"""
+        把从服务器得到的单词批量加入牌组
+        :param word_infos:
+        :return:
+        """
+        for word_info in word_infos:
+            addCard = self.mw.onAddCard(hidden=True)
+            # 一开始有一个 '.'?
+            # addCard.editor.note.fields.clear()
+            addCard.editor.note.fields[0] = word_info['word']
+            addCard.editor.note.fields[1] = word_info['accent']
+            addCard.editor.note.fields[2] = word_info['mean_cn']
+            addCard.editor.note.fields[3] = word_info['st']
+
+            res = requests.get(word_info['img'])
+            if not os.path.isdir("./images"):
+                os.mkdir("./images")
+            with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
+                f.write(res.content)
+            addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
+
+            res = requests.get(word_info['sound'])
+            if not os.path.isdir("./sound"):
+                os.mkdir("./sound")
+            with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
+                f.write(res.content)
+            addCard.editor.note.fields[4] = "./sound/{}.mp3".format(word_info['word'])
+
+            # print(os.getcwd())
+            # addCard.editor.note.fields[4] = [res.content]
+
+            print(addCard.editor.note.fields)
+            # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
+            addCard._addCards()
+            addCard.close()
 
     def _showOptions(self, did):
         m = QMenu(self.mw)
@@ -268,8 +390,8 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
             else:
                 extra = None
         if deck['dyn'] or not extra or askUser(
-            (_("Are you sure you wish to delete %s?") % deck['name']) +
-            extra):
+                (_("Are you sure you wish to delete %s?") % deck['name']) +
+                extra):
             self.mw.progress.start(immediate=True)
             self.mw.col.decks.rem(did, True)
             self.mw.progress.finish()
@@ -279,9 +401,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
     ######################################################################
 
     drawLinks = [
-            ["", "shared", _("Get Shared")],
-            ["", "create", _("Create Deck")],
-            ["Ctrl+I", "import", _("Import File")],  # Ctrl+I works from menu
+        ["", "shared", _("Get Shared")],
+        ["", "create", _("Create Deck")],
+        ["Ctrl+I", "import", _("Import File")],  # Ctrl+I works from menu
     ]
 
     def _drawButtons(self):
@@ -296,4 +418,4 @@ where id > ?""", (self.mw.col.sched.dayCutoff-86400)*1000)
         self.bottom.web.onBridgeCmd = self._linkHandler
 
     def _onShared(self):
-        openLink(aqt.appShared+"decks/")
+        openLink(aqt.appShared + "decks/")
