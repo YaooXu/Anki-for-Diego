@@ -31,114 +31,16 @@ from aqt.utils import saveGeom, restoreGeom, showInfo, showWarning, \
 from aqt.qt import sip
 from anki.lang import _, ngettext
 from PyQt5 import QtWidgets
-from get_word import get_word
-from tkinter import filedialog
-import tkinter
-import os
+from get_word import get_word, report_add_res
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QColorDialog, QFontDialog, QTextEdit, QFileDialog
 import requests
 
 
-def report_add_res(tot_num, success_num):
-    fail_num = tot_num - success_num
-    alert = QMessageBox()
-    content = "共%d个单词，添加成功%d个，失败%d个" % (tot_num, success_num, fail_num)
-    alert.setText(content)
-    alert.exec_()
-
-
 class AnkiQt(QMainWindow):
-    def add_words(self, word_infos: list):
-        r"""
-        把从服务器得到的单词批量加入牌组
-        :param word_infos:
-        :return:
-        """
-        for word_info in word_infos:
-            addCard = self.onAddCard(hidden=True)
-            # 一开始有一个 '.'?
-            # addCard.editor.note.fields.clear()
-            addCard.editor.note.fields[0] = word_info['word']
-            addCard.editor.note.fields[1] = word_info['accent']
-            addCard.editor.note.fields[2] = word_info['mean_cn']
-            addCard.editor.note.fields[3] = word_info['st']
-            # addCard.editor.note.fields[4] = word_info['img']            #链接
-
-            res = requests.get(word_info['img'])
-            if os.path.isdir("./images") != True:
-                os.mkdir("./images")
-            with open("./images/{}.jpg".format(word_info['word']),"wb") as f:
-                f.write(res.content)
-            addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
-            # print(os.getcwd())
-            # addCard.editor.note.fields[4] = [res.content]
-
-            print(addCard.editor.note.fields)
-            # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
-            addCard._addCards()
-            addCard.close()
-
-    def get_word_in_text(self):
-        alert = QMessageBox()
-        content = self.words_text.toPlainText()
-        if not content:
-            return
-        words = content.strip().split('\n')
-        word_infos = []
-        for word in words:
-            info = get_word(word)
-            if info != None and 'word' in info:
-                word_infos.append(info)
-
-        res_to_show = ""
-        for info in word_infos:
-            res_to_show += str(info) + '\n'
-
-        alert.setText(res_to_show)
-        alert.exec_()
-
-        self.add_words(word_infos)
-        self.words_text.setText("")
-        report_add_res(len(words), len(word_infos))
-
-    def get_word_from_file(self):
-        alert = QMessageBox()
-        root = tkinter.Tk()
-        root.withdraw()
-        file_path = filedialog.askopenfilename()
-
-        if file_path and file_path.endswith('txt'):
-            word_infos = []
-            with open(file_path, 'r') as f:
-                msg = f.read()
-            words = msg.strip().split('\n')
-            for msg in words:
-                info = get_word(msg)
-                if info != None and 'word' in info:
-                    word_infos.append(info)
-
-            res_to_show = ""
-            for info in word_infos:
-                res_to_show += str(info) + '\n'
-
-            alert.setText(res_to_show)
-            alert.exec_()
-
-            self.add_words(word_infos)
-            self.words_text.setText("")
-            report_add_res(len(words), len(word_infos))
-        elif file_path and not file_path.endswith('txt'):
-            alert.setText("必须是txt文件!")
-            alert.exec_()
-
     def __init__(self, app, profileManager, opts, args):
         QMainWindow.__init__(self)
-        self.words_text = QTextEdit(self)
-        self.get_word_in_text_button = QPushButton('添加文本框中的单词', self)
-        self.get_word_from_file_button = QPushButton('添加文本文档中的单词', self)
 
-        self.get_word_in_text_button.clicked.connect(self.get_word_in_text)
-        self.get_word_from_file_button.clicked.connect(self.get_word_from_file)
-
+        # 当前页面的状态
         self.state = "startup"
         self.opts = opts
         aqt.mw = self
@@ -583,7 +485,8 @@ from the profile screen."))
     ##########################################################################
 
     def moveToState(self, state, *args):
-        # print("-> move from", self.state, "to", state)
+        # 主页面进行页面切换
+        print("-> move from", self.state, "to", state)
         oldState = self.state or "dummy"
         cleanup = getattr(self, "_" + oldState + "Cleanup", None)
         if cleanup:
@@ -592,6 +495,7 @@ from the profile screen."))
         self.clearStateShortcuts()
         self.state = state
         runHook('beforeStateChange', state, oldState, *args)
+        # 调用相应页面的显示函数
         getattr(self, "_" + state + "State")(oldState, *args)
         if state != "resetRequired":
             self.bottomWeb.show()
@@ -713,7 +617,7 @@ title="%s" %s>%s</button>''' % (
         tweb = self.toolbarWeb = aqt.webview.AnkiWebView()
         tweb.title = "top toolbar"
         tweb.setFocusPolicy(Qt.WheelFocus)
-        # TODO：tweb干嘛的？
+        # tweb是toolbar构造函数的参数
         self.toolbar = aqt.toolbar.Toolbar(self, tweb)
         self.toolbar.draw()
         # main area
@@ -731,23 +635,6 @@ title="%s" %s>%s</button>''' % (
         self.mainLayout.setSpacing(0)
         self.mainLayout.addWidget(tweb)  # Toolbar
         self.mainLayout.addWidget(self.web)  # 牌组信息
-
-        # 单词添加信息, 使用frame可以在其他页面中隐藏起来
-        self.frame = QtWidgets.QFrame()
-        self.sub_layout = QHBoxLayout()  # 整体水平
-        self.left_layout, self.right_layout = QVBoxLayout(), QVBoxLayout()  # 按钮垂直布局
-        # 左侧输入框
-        self.left_layout.addWidget(self.words_text)
-        # 右侧按钮
-        self.right_layout.addWidget(self.get_word_in_text_button)
-        self.right_layout.addWidget(self.get_word_from_file_button)
-        # 整合
-        self.sub_layout.addLayout(self.left_layout)
-        self.sub_layout.addLayout(self.right_layout)
-        self.frame.setLayout(self.sub_layout)
-        self.mainLayout.addWidget(self.frame)
-        # self.frame.hide()
-
         self.mainLayout.addWidget(sweb)  # 底部Toolbar (开始学习、创建牌组、导入文件)
         self.form.centralwidget.setLayout(self.mainLayout)
 
@@ -1494,11 +1381,14 @@ Please ensure a profile is open and Anki is not busy, then try again."""),
         # import
         self.handleImport(buf)
 
-    # GC
+    # GC garbage collector
     ##########################################################################
     # ensure gc runs in main thread
 
     def setupDialogGC(self, obj):
+        # This finished signal is emitted when the dialog's result code has been set,
+        # either by the user or by calling done(), accept(), or reject().
+        # 通过lambda表达式向槽函数传递参数
         obj.finished.connect(lambda: self.gcWindow(obj))
 
     def gcWindow(self, obj):

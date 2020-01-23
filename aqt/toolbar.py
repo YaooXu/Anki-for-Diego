@@ -57,8 +57,6 @@ class Toolbar:
         return False
 
     def _deckLinkHandler(self):
-        # 要把frame打开！
-        self.mw.frame.show()
         self.mw.moveToState("deckBrowser")
 
     def _studyLinkHandler(self):

@@ -44,12 +44,7 @@
 
 > 按优先级排列
 
-- 修复添加卡片的bug
-- 实现anki默认牌组，默认卡片模板
-- UI进行整合，看能不能兼容
-- PC文档详细化（模块运行流程图、文件夹作用，主要类的作用）
-
-- UI美化（把添加单词那块的间距和button调一下）
+- 点击html的return pycmd以及后续的槽函数机制
 
 ### Type默认配置的加载
 1. 程序启动 调用 **anki\storage.py** 中的 `Collection` 函数  `Collection` 接收一个核心参数path <br>

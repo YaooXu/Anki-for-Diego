@@ -30,8 +30,10 @@ class AnkiWebPage(QWebEnginePage):
 
     def _setupBridge(self):
         class Bridge(QObject):
+            # 与js通讯的类
             @pyqtSlot(str, result=str)
             def cmd(self, str):
+                print(str)
                 return json.dumps(self.onCmd(str))
 
         self._bridge = Bridge()
@@ -60,6 +62,7 @@ class AnkiWebPage(QWebEnginePage):
                     channel.objects.py.cmd(arg, resultCB);
                     return false;                   
                 }
+                // 'domDone': dom加载完毕
                 pycmd("domDone");
             });
         ''')
@@ -319,7 +322,8 @@ body {{ zoom: {}; background: {}; {} }}
     def eval(self, js):
         self.evalWithCallback(js, None)
 
-    def evalWithCallback(self, js, cb):  # TODO: js是个啥？
+    def evalWithCallback(self, js, cb):
+        # JavaScript and CallBack
         self._queueAction("eval", js, cb)
 
     def _evalWithCallback(self, js, cb):
