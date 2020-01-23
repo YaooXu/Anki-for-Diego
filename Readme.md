@@ -38,6 +38,12 @@
  4. 创建AddModel对象时，读取anki\stdmodels中预置的标准Note Type，共五种：BasicModel、BasicTypingModel、ForwardReverse、ForwardOptionalReverse、ClozeModel，读取预置model之后，将这五种model再copy一遍，共十种model；
  5. 在添加Note Type界面中给出的十种model中选择一种作为新的model，命名，保存新的model，然后调用updateModelsList()方法，重新加载，完成Note Type整个添加流程。
 
+#### 修改字段fields
+- **流程**
+ 1. 点击Add之后进入添加单词界面，点击Fields...，注意此时修改字段是修改对应的Note Type，即model，调用aqt\editor.py的onFields函数，进而调用self._onFields私有方法，进入修改字段页面；
+ 2. 创建一个FieldDialog对象，该类定义在apt\fields.py文件中，具体函数有Add、Delete、Rename等，修改的都是当前model；
+ 3. 以Add为例，调用onAdd方法，输入新field的name，先调用self.saveField()（先保存？），然后调用anki\models.py文件下的newField()方法，创建新的field，命名为输入的name；
+ 4. 之后调用anki\models.py文件下的addField()方法，将新的field添加到当前的model中，重新加载，完成add流程；
 
 
 ## TODO

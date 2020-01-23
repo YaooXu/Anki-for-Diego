@@ -8,7 +8,7 @@ from aqt.utils import showWarning, openHelp, getOnlyText, askUser
 from anki.lang import _, ngettext
 
 class FieldDialog(QDialog):
-
+    # 该类是修改字段时的界面
     def __init__(self, mw, note, ord=0, parent=None):
         QDialog.__init__(self, parent or mw) #, Qt.Window)
         self.mw = aqt.mw
