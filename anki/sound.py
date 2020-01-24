@@ -8,6 +8,8 @@ import  random
 from anki.hooks import addHook, runHook
 from anki.utils import  tmpdir, isWin, isMac, isLin
 from anki.lang import _
+from playsound import playsound
+import _thread
 
 # Shared utils
 ##########################################################################
@@ -15,10 +17,18 @@ from anki.lang import _
 _soundReg = r"\[sound:(.*?)\]"
 
 def playFromText(text):
+    AllMatch = []
     for match in allSounds(text):
-        # filename is html encoded
         match = html.unescape(match)
-        play(match)
+        AllMatch.append(match)
+    try:
+        _thread.start_new_thread(playAllSound,(AllMatch,))
+    except:
+        print ("Error: 无法启动线程")
+
+def playAllSound(text):
+    for match in text:
+        playsound(match)
 
 def allSounds(text):
     return re.findall(_soundReg, text)

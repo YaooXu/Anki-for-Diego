@@ -8,3 +8,4 @@ jsonschema
 pyqt5
 pywin32
 psutil
+playsound
