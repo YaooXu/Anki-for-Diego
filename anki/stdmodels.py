@@ -24,10 +24,12 @@ def addBasicModel(col):
     mm.addField(m, fm)
     fm = mm.newField(_("图片"))
     mm.addField(m, fm)
+    fm = mm.newField(_("音频"))
+    mm.addField(m, fm)
 
     t = mm.newTemplate(_("Card 1"))
     t['qfmt'] = "{{" + _("Front") + "}}"
-    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}"
+    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}" + '<span class="voice"{{' + _("音频") +"}}</span>"
     t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("释义") + "}}<br>{{" + _(
         "例句") + "}}" + "<img src={{" + _("图片") + "}} alt=\"" + _("图片") + "\">"
     mm.addTemplate(m, t)

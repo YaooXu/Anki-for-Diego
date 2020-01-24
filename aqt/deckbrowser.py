@@ -317,7 +317,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 os.mkdir("./sound")
             with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
                 f.write(res.content)
-            addCard.editor.note.fields[4] = "./sound/{}.mp3".format(word_info['word'])
+            addCard.editor.note.fields[5] = "[sound:./sound/{}.mp3]".format(word_info['word'])
 
             # print(os.getcwd())
             # addCard.editor.note.fields[4] = [res.content]
