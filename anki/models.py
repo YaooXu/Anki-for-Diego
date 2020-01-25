@@ -367,6 +367,7 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
         "Note: should col.genCards() afterwards."
         if m['id']:
             self.col.modSchema(check=True)
+        # 一个model对应多个template
         m['tmpls'].append(template)
         self._updateTemplOrds(m)
         self.save(m)

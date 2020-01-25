@@ -9,6 +9,10 @@ function init() {
     });
 
     $('#add_from_file_bt').click(function () {
-        return pycmd('add_form_file')
+        return pycmd('add_from_file')
+    });
+
+    $('#import_model').click(function () {
+        return pycmd('import_model')
     });
 }

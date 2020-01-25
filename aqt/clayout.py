@@ -105,6 +105,7 @@ class CardLayout(QDialog):
         self.redrawing = True
         combo = self.topAreaForm.templatesBox
         combo.clear()
+        # 加载当前model的所有template的名字
         combo.addItems(self._summarizedName(t) for t in self.model['tmpls'])
         combo.setCurrentIndex(self.ord)
         combo.setEnabled(not self._isCloze())
@@ -249,6 +250,7 @@ Please create a new card type first."""))
     ##########################################################################
 
     def onCardSelected(self, idx):
+        # 加载template
         if self.redrawing:
             return
         self.card = self.cards[idx]

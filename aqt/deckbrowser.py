@@ -14,6 +14,7 @@ from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
 from get_word import get_word, report_add_res
+import json
 
 
 # 牌组浏览
@@ -69,9 +70,11 @@ class DeckBrowser:
         elif cmd == "add_from_text":
             print(cmd, arg)
             self._add_from_text(arg)
-        elif cmd == "add_form_file":
+        elif cmd == "add_from_file":
             print(cmd)
             self._add_from_file()
+        elif cmd == "import_model":
+            self._import_model()
         return False
 
     def _selDeck(self, did):
@@ -101,6 +104,7 @@ class DeckBrowser:
 <textarea id="words-area"></textarea>
 <button type="button" id="add_from_text_bt">添加文本框中单词</button>
 <button type="button" id="add_from_file_bt">从文件导入单词</button>
+<button type="button" id="import_model">导入新的模板</button>
 
 </center>
 """
@@ -233,7 +237,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
     def _topLevelDragRow(self):
         return "<tr class='top-level-drag-row'><td colspan='6'>&nbsp;</td></tr>"
 
-    # Options
+    # 添加单词
     ##########################################################################
     def __add_words_by_content(self, content):
         # 根据content得到所有单词的信息
@@ -278,17 +282,19 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         self.__add_words_by_content(content)
 
     def _add_from_file(self):
-        file_path = QFileDialog.getOpenFileName(self, '选择文件', './', "txt (*.txt)")[0]
-        messageBos = QMessageBox()
+        file_path = QFileDialog.getOpenFileName(None, '选择文件', './', "txt (*.txt)")[0]
 
-        if file_path:
-            if file_path.endswith('txt'):
-                with open(file_path, 'r') as f:
-                    content = f.read()
-                self.__add_words_by_content(content)
-            else:
-                messageBos.setText("必须是txt文件!")
-                messageBos.exec_()
+        if not file_path:
+            return
+
+        messageBos = QMessageBox()
+        if file_path.endswith('txt'):
+            with open(file_path, 'r') as f:
+                content = f.read()
+            self.__add_words_by_content(content)
+        else:
+            messageBos.setText("必须是txt文件!")
+            messageBos.exec_()
 
     def __add_words(self, word_infos: list):
         r"""
@@ -327,6 +333,65 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             addCard._addCards()
             addCard.close()
 
+    # 导入model
+    ##########################################################################
+    def __check_json(self, model_json, must_include=None):
+        """
+        检测json格式
+        :param model_json: json
+        :param must_include: 待检测的json中的键值
+        :return:
+        """
+        if not must_include:
+            must_include = ['name', 'fileds', 'template']
+
+        for item in must_include:
+            if item not in model_json:
+                return False
+            if item == 'template':
+                return self.__check_json(model_json['template'], ['name', 'qfmt', 'afmt'])
+        return True
+
+    def __import_json(self, content_json):
+        if not self.__check_json(content_json):
+            messageBos = QMessageBox()
+            messageBos.setText("json文件模板格式错误!")
+            messageBos.exec_()
+            return None
+
+        mm = self.mw.col.models
+        m = mm.new(_(content_json['name']))
+        for filed_name in content_json['fileds']:
+            fm = mm.newField(_(filed_name))
+            mm.addField(m, fm)
+
+        t = mm.newTemplate(_(content_json['template']['name']))
+        t['qfmt'] = content_json['template']['qfmt']
+        t['afmt'] = content_json['template']['afmt']
+        mm.addTemplate(m, t)
+        mm.add(m)
+
+        return m
+
+    def _import_model(self):
+        file_path = QFileDialog.getOpenFileName(None, '选择模板文件', './', "json (*.json)")[0]
+        if not file_path:
+            return
+
+        messageBos = QMessageBox()
+        if file_path.endswith('json'):
+            with open(file_path, 'r') as f:
+                content = json.load(f)
+                res = self.__import_json(content)
+                if res:
+                    messageBos.setText("模板导入成功!")
+                    messageBos.exec_()
+        else:
+            messageBos.setText("必须是json文件!")
+            messageBos.exec_()
+
+    # Options
+    ##########################################################################
     def _showOptions(self, did):
         m = QMenu(self.mw)
         a = m.addAction(_("Rename"))

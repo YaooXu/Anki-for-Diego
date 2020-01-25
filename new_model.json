@@ -1,0 +1,12 @@
+{
+  "name": "test",
+  "fileds": [
+    "fld1",
+    "fld2"
+  ],
+  "template": {
+    "name": "default",
+    "qfmt": "{{fld1}}",
+    "afmt": "{{FrontSide}}\n\n<hr id=answer>\n\n{{fld2}}"
+  }
+}
