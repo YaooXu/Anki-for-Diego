@@ -49,6 +49,10 @@ class MyThread(threading.Thread):
         super(MyThread, self).__init__()  # 重构run函数必须要写
         self.word = word
         self.timeout = timeout
+        self.result = None
+
+    def get_result(self):
+        return self.result
 
     def run(self):
         r"""
@@ -76,6 +80,7 @@ class MyThread(threading.Thread):
             result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + self.word + ".mp3"
 
         print(result)
+        self.result = result
         if result['errorCode'] == 1:
             return None
         else:
@@ -83,11 +88,14 @@ class MyThread(threading.Thread):
 
 
 if __name__ == '__main__':
-    #word_info = get_word('test')
-    t1=MyThread('test')
-    t2=MyThread('file')
+    # word_info = get_word('test')
+    t1 = MyThread('test')
+    t2 = MyThread('file')
     t1.start()
     t2.start()
-    #将t1,t2加入主线程
+    # 将t1,t2加入主线程
     t1.join()
     t2.join()
+    print(t1.get_result())
+    print(t2.get_result())
+    print(t1.get_result())

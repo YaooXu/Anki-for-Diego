@@ -13,7 +13,7 @@ from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
-from get_word import get_word, report_add_res
+from get_word import report_add_res,MyThread
 import json
 
 
@@ -252,11 +252,19 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
 
         words = content.strip().split('\n')
         word_infos = []
-        for word in words:
-            info = get_word(word)
-            if info and 'word' in info:
-                word_infos.append(info)
-
+        # for word in words:
+        #     info = get_word(word)
+        #     if info and 'word' in info:
+        #         word_infos.append(info)
+        threads = []
+        for i in range(len(words)):
+            t = MyThread(words[i])
+            t.start()
+            threads.append(t)
+        for i in range(len(threads)):
+            threads[i].join()
+            info = threads[i].get_result()
+            word_infos.append(info)
         res_to_show = ""
         for info in word_infos:
             res_to_show += str(info) + '\n'
