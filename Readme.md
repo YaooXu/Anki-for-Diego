@@ -63,6 +63,28 @@
 1. 在aqt/main.py的setupProfile中调用loadProfile，再调用loadCollection
 2. 尝试调用_loadCollection，再调用anki/storage.Collection函数，在该函数中完成数据库的初始化工作，并创建 _Collection类（该类是数据库的接口，提供model，decks等内容的管理类，同时创建这个类的时候会调用load函数从数据库中把所有的models、deck、conf加载），如果是新创建的用户则还需要使用stdmodels中的模板生成函数生成标准模板。
 
+### 音频播放相关操作
+
+#### 关于卡片音频如何播放
+
+1. 在aqt\reviewer.py中，有函数_showQuestion，这个函数在点击显示答案按钮之后调用anki\sound.py中的playFromText函数，在playFromText函数中，调用anki\sound.py中allSounds从显示答案的html中匹配出音频，匹配正则为`r"\[sound:(.*?)\]"`，所以有关音频的字段应以这个正则形式保存，playFromText将所有匹配出的音频交付给playsound进行播放
+
+#### 录音流程及播放
+
+1. 点击录音按钮后，调用aqt\reviewer.py中的onRecordVoice函数，该函数内首先调用aqt\sound.py中的getAudio函数，该函数内实例化一个anki\sound.py中的PyAudioRecorder类，该类内实例一个PyAudioThreadedRecorder多线程录音类，在getAudio中完成多线程录音操作(录音及保存的具体实现在PyAudioThreadedRecorder类中)。录音的播放使用aqt\reviewer.py中的onReplayRecorded函数，调用playsound进行播放
+
+#### 关于playsound的修改
+
+1. playsound库在播放音频后，不会收回对文件的控制，此时其他代码需要更改音频则会失败(多次录音),需要对playsound进行修改，在playsound.py中`winCommand`函数内添加如下
+
+```python
+        winCommand('play', alias, 'from 0 to', durationInMS.decode())
+
+    while True:
+        if winCommand('status', alias, 'mode').decode() == 'stopped':
+            winCommand('close', alias)
+            break
+```
 
 ## TODO
 

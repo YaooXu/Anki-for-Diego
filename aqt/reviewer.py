@@ -18,6 +18,9 @@ from aqt.utils import mungeQA, tooltip, askUserDialog, \
     downArrow, qtMenuShortcutWorkaround
 from aqt.sound import getAudio
 import aqt
+from playsound import playsound
+import _thread
+import threading
 
 
 class Reviewer:
@@ -705,8 +708,13 @@ time = %(time)d;
         self._recordedAudio = getAudio(self.mw, encode=False)
         self.onReplayRecorded()
 
+
     def onReplayRecorded(self):
         if not self._recordedAudio:
             return tooltip(_("You haven't recorded your voice yet."))
-        clearAudioQueue()
-        play(self._recordedAudio)
+        # clearAudioQueue()
+        try:
+            _thread.start_new_thread(playsound,(self._recordedAudio,))
+        # play(self._recordedAudio)
+        except:
+            print("Error")
