@@ -10,6 +10,8 @@ from aqt.utils import saveGeom, restoreGeom
 import collections
 from anki.lang import _, ngettext
 
+
+# 管理卡片的note type
 class Models(QDialog):
     def __init__(self, mw, parent=None, fromMain=False):
         self.mw = mw
@@ -31,7 +33,8 @@ class Models(QDialog):
 
     def setupModels(self):
         self.model = None
-        f = self.form; box = f.buttonBox
+        f = self.form;
+        box = f.buttonBox
         t = QDialogButtonBox.ActionRole
         b = box.addButton(_("Add"), t)
         b.clicked.connect(self.onAdd)
@@ -80,6 +83,7 @@ class Models(QDialog):
         self.model = self.models[idx]
 
     def onAdd(self):
+        # 点击Add
         m = AddModel(self.mw, self).get()
         if m:
             txt = getText(_("Name:"), default=m['name'])[0]
@@ -127,7 +131,7 @@ class Models(QDialog):
         self.mm.setCurrent(self.model)
         n = self.col.newNote(forDeck=False)
         for name in list(n.keys()):
-            n[name] = "("+name+")"
+            n[name] = "(" + name + ")"
         try:
             if "{{cloze:Text}}" in self.model['tmpls'][0]['qfmt']:
                 n['Text'] = _("This is a {{c1::sample}} cloze deletion.")
@@ -157,6 +161,8 @@ class Models(QDialog):
         saveGeom(self, "models")
         QDialog.reject(self)
 
+
+# 添加note type时的页面
 class AddModel(QDialog):
 
     def __init__(self, mw, parent=None):

@@ -12,6 +12,7 @@ models = []
 ##########################################################################
 
 def addBasicModel(col):
+    # ModelManager
     mm = col.models
     m = mm.new(_("Basic"))
     fm = mm.newField(_("单词"))
@@ -29,7 +30,7 @@ def addBasicModel(col):
 
     t = mm.newTemplate(_("Card 1"))
     t['qfmt'] = "{{" + _("Front") + "}}"
-    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}" + '<span class="voice"{{' + _("音频") +"}}</span>"
+    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}" + "<span class='voice'>{{" + _("音频") + "}}</span>"
     t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("释义") + "}}<br>{{" + _(
         "例句") + "}}" + "<img src={{" + _("图片") + "}} alt=\"" + _("图片") + "\">"
     mm.addTemplate(m, t)

@@ -43,6 +43,7 @@ class AddCards(QDialog):
             self.mw, self.form.fieldsArea, self, True)
 
     def setupChoosers(self):
+        # 设置AddCards上面的选择model和deck
         self.modelChooser = aqt.modelchooser.ModelChooser(
             self.mw, self.form.modelArea)
         self.deckChooser = aqt.deckchooser.DeckChooser(

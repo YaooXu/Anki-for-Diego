@@ -4,9 +4,11 @@
 
 from aqt.qt import *
 from anki.hooks import addHook, remHook, runHook
-from aqt.utils import  shortcut
+from aqt.utils import shortcut
 from anki.lang import _
 
+
+# Add cards上面选择model的页面
 class ModelChooser(QHBoxLayout):
 
     def __init__(self, mw, widget, label=True):
@@ -15,7 +17,7 @@ class ModelChooser(QHBoxLayout):
         self.mw = mw
         self.deck = mw.col
         self.label = label
-        self.setContentsMargins(0,0,0,0)
+        self.setContentsMargins(0, 0, 0, 0)
         self.setSpacing(8)
         self.setupModels()
         addHook('reset', self.onReset)
@@ -27,7 +29,7 @@ class ModelChooser(QHBoxLayout):
             self.addWidget(self.modelLabel)
         # models box
         self.models = QPushButton()
-        #self.models.setStyleSheet("* { text-align: left; }")
+        # self.models.setStyleSheet("* { text-align: left; }")
         self.models.setToolTip(shortcut(_("Change Note Type (Ctrl+N)")))
         s = QShortcut(QKeySequence(_("Ctrl+N")), self.widget, activated=self.onModelChange)
         self.models.setAutoDefault(False)
@@ -61,8 +63,10 @@ class ModelChooser(QHBoxLayout):
         current = self.deck.models.current()['name']
         # edit button
         edit = QPushButton(_("Manage"), clicked=self.onEdit)
+
         def nameFunc():
             return sorted(self.deck.models.allNames())
+
         ret = StudyDeck(
             self.mw, names=nameFunc,
             accept=_("Choose"), title=_("Choose Note Type"),

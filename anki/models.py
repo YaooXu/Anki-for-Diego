@@ -3,7 +3,7 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 import copy, re, json
-from anki.utils import intTime, joinFields, splitFields, ids2str,\
+from anki.utils import intTime, joinFields, splitFields, ids2str, \
     checksum
 from anki.lang import _
 from anki.consts import *
@@ -30,7 +30,7 @@ defaultModel = {
     'latexPost': "\\end{document}",
     'mod': 0,
     'usn': 0,
-    'vers': [], # FIXME: remove when other clients have caught up
+    'vers': [],  # FIXME: remove when other clients have caught up
     'type': MODEL_STD,
     'css': """\
 .card {
@@ -65,10 +65,12 @@ defaultTemplate = {
     'bqfmt': "",
     'bafmt': "",
     # we don't define these so that we pick up system font size until set
-    #'bfont': "Arial",
-    #'bsize': 12,
+    # 'bfont': "Arial",
+    # 'bsize': 12,
 }
 
+
+# 管理卡片的model和template
 class ModelManager:
 
     # Saving/loading registry
@@ -98,7 +100,7 @@ class ModelManager:
         if self.changed:
             self.ensureNotEmpty()
             self.col.db.execute("update col set models = ?",
-                                 json.dumps(self.models))
+                                json.dumps(self.models))
             self.changed = False
 
     def ensureNotEmpty(self):
@@ -132,6 +134,7 @@ class ModelManager:
         return list(self.models.values())
 
     def allNames(self):
+        # 得到所有model的名称
         return [m['name'] for m in self.all()]
 
     def byName(self, name):
@@ -159,7 +162,7 @@ class ModelManager:
         # delete notes/cards
         self.col.remCards(self.col.db.list("""
 select id from cards where nid in (select id from notes where mid = ?)""",
-                                      m['id']))
+                                           m['id']))
         # then the model
         del self.models[str(m['id'])]
         self.save()
@@ -231,6 +234,7 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
     ##################################################
 
     def newField(self, name):
+        # 为model增加新的字段
         f = defaultField.copy()
         f['name'] = name
         return f
@@ -259,9 +263,11 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
         m['flds'].append(field)
         self._updateFieldOrds(m)
         self.save(m)
+
         def add(fields):
             fields.append("")
             return fields
+
         self._transformFields(m, add)
 
     def remField(self, m, field):
@@ -277,9 +283,11 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
                 m['sortf'] = c
                 break
         self._updateFieldOrds(m)
+
         def delete(fields):
             del fields[idx]
             return fields
+
         self._transformFields(m, delete)
         if m['flds'][m['sortf']]['name'] != sortFldName:
             # need to rebuild sort field
@@ -301,20 +309,25 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
         m['sortf'] = m['flds'].index(sortf)
         self._updateFieldOrds(m)
         self.save(m)
+
         def move(fields, oldidx=oldidx):
             val = fields[oldidx]
             del fields[oldidx]
             fields.insert(idx, val)
             return fields
+
         self._transformFields(m, move)
 
     def renameField(self, m, field, newName):
         self.col.modSchema(check=True)
         pat = r'{{([^{}]*)([:#^/]|[^:#/^}][^:}]*?:|)%s}}'
+
         def wrap(txt):
             def repl(match):
-                return '{{' + match.group(1) + match.group(2) + txt +  '}}'
+                return '{{' + match.group(1) + match.group(2) + txt + '}}'
+
             return repl
+
         for t in m['tmpls']:
             for fmt in ('qfmt', 'afmt'):
                 if newName:
@@ -322,7 +335,7 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
                         pat % re.escape(field['name']), wrap(newName), t[fmt])
                 else:
                     t[fmt] = re.sub(
-                        pat  % re.escape(field['name']), "", t[fmt])
+                        pat % re.escape(field['name']), "", t[fmt])
         field['name'] = newName
         self.save(m)
 
@@ -336,7 +349,7 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
             return
         r = []
         for (id, flds) in self.col.db.execute(
-            "select id, flds from notes where mid = ?", m['id']):
+                "select id, flds from notes where mid = ?", m['id']):
             r.append((joinFields(fn(splitFields(flds))),
                       intTime(), self.col.usn(), id))
         self.col.db.executemany(
@@ -365,7 +378,7 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
         ord = m['tmpls'].index(template)
         cids = self.col.db.list("""
 select c.id from cards c, notes f where c.nid=f.id and mid = ? and ord = ?""",
-                                 m['id'], ord)
+                                m['id'], ord)
         # all notes with this template must have at least two cards, or we
         # could end up creating orphaned notes
         if self.col.db.scalar("""
@@ -382,7 +395,7 @@ limit 1""" % ids2str(cids)):
         self.col.db.execute("""
 update cards set ord = ord - 1, usn = ?, mod = ?
  where nid in (select id from notes where mid = ?) and ord > ?""",
-                             self.col.usn(), intTime(), m['id'], ord)
+                            self.col.usn(), intTime(), m['id'], ord)
         m['tmpls'].remove(template)
         self._updateTemplOrds(m)
         self.save(m)
@@ -409,7 +422,7 @@ update cards set ord = ord - 1, usn = ?, mod = ?
         self.col.db.execute("""
 update cards set ord = (case %s end),usn=?,mod=? where nid in (
 select id from notes where mid = ?)""" % " ".join(map),
-                             self.col.usn(), intTime(), m['id'])
+                            self.col.usn(), intTime(), m['id'])
 
     def _syncTemplates(self, m):
         rem = self.col.genCards(self.nids(m))
@@ -432,7 +445,7 @@ select id from notes where mid = ?)""" % " ".join(map),
         d = []
         nfields = len(newModel['flds'])
         for (nid, flds) in self.col.db.execute(
-            "select id, flds from notes where id in "+ids2str(nids)):
+                "select id, flds from notes where id in " + ids2str(nids)):
             newflds = {}
             flds = splitFields(flds)
             for old, new in list(map.items()):
@@ -442,7 +455,7 @@ select id from notes where mid = ?)""" % " ".join(map),
                 flds.append(newflds.get(c, ""))
             flds = joinFields(flds)
             d.append(dict(nid=nid, flds=flds, mid=newModel['id'],
-                      m=intTime(),u=self.col.usn()))
+                          m=intTime(), u=self.col.usn()))
         self.col.db.executemany(
             "update notes set flds=:flds,mid=:mid,mod=:m,usn=:u where id = :nid", d)
         self.col.updateFieldCache(nids)
@@ -451,7 +464,7 @@ select id from notes where mid = ?)""" % " ".join(map),
         d = []
         deleted = []
         for (cid, ord) in self.col.db.execute(
-            "select id, ord from cards where nid in "+ids2str(nids)):
+                "select id, ord from cards where nid in " + ids2str(nids)):
             # if the src model is a cloze, we ignore the map, as the gui
             # doesn't currently support mapping them
             if oldModel['type'] == MODEL_CLOZE:
@@ -466,7 +479,7 @@ select id from notes where mid = ?)""" % " ".join(map),
                 new = map[ord]
             if new is not None:
                 d.append(dict(
-                    cid=cid,new=new,u=self.col.usn(),m=intTime()))
+                    cid=cid, new=new, u=self.col.usn(), m=intTime()))
             else:
                 deleted.append(cid)
         self.col.db.executemany(
@@ -581,7 +594,7 @@ select id from notes where mid = ?)""" % " ".join(map),
             if fname not in map:
                 continue
             ord = map[fname][0]
-            ords.update([int(m)-1 for m in re.findall(
+            ords.update([int(m) - 1 for m in re.findall(
                 r"(?s){{c(\d+)::.+?}}", sflds[ord])])
         if -1 in ords:
             ords.remove(-1)

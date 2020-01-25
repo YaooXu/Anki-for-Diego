@@ -99,6 +99,7 @@ class AnkiQt(QMainWindow):
         self.setupReviewer()
 
     def setupProfileAfterWebviewsLoaded(self):
+        # TODO：为什么windows和mac的加载方式还不一样
         for w in (self.web, self.bottomWeb):
             if not w._domDone:
                 self.progress.timer(10, self.setupProfileAfterWebviewsLoaded, False, requiresCollection=False)

@@ -43,7 +43,7 @@ class StudyDeck(QDialog):
             self.origNames = names
         else:
             self.nameFunc = names
-            self.origNames = names()
+            self.origNames = names() # 所有models的名称
         self.name = None
         self.ok = self.form.buttonBox.addButton(
             accept or _("Study"), QDialogButtonBox.AcceptRole)

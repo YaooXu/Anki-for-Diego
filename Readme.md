@@ -8,7 +8,9 @@
 - **TODO**
 
 ## 部分核心功能流程及实现方式
-### 卡片添加
+### 卡片添加相关
+
+#### 添加卡片
 
 - **流程**
 1. 点击add， 打开AddCards Dialog同时创建Editor对象在AddCards页面中填写内容，此时填写的内容均保存在Editor对象中,具体保存在Editor.note.fields（list)中
@@ -28,8 +30,17 @@
 
    **SOLVE：调用AddCards._addCards**，addCards涉及的函数太多了，暂时没法搞明白
 
+#### 选择model和template
 
-#### 添加Note Type
+1. 在AddCards类初始化的时候调用setupChoosers函数，该函数设置AddCards上面的选择model和deck。
+2. 生成aqt.modelchooser.ModelChooser和aqt.deckchooser.DeckChooser两个类，分别负责选择model和deck。
+3. 以选择model为例。ModelChooser的初始化中会调用setupModels函数来加载那一小块的页面，并把按钮点击信号连接到onModelChange函数。
+4. 当点击按钮，调用onModelChange函数，该函数中构造StudyDeck类，该类可以通过传入的参数加载多种选择列表，这里加载的是model的选择列表。
+5. 当选中choose note type中的model，触发StudyDeck的accept函数，并把当前选中的model的name赋值给self.name,Qdialog调用accept方法关闭model选择页面。
+6. choose note type页面关闭后，onModelChange继续运行，检测StudyDeck类中的name是否非空，如果非空则说明在上一页面选择了model。若非空，通过model名称得到model信息，并设置为当前model（self.deck.conf['curModel']）
+
+
+### 添加Note Type
 
 - **流程**
  1. 在工具栏点击Tools，选择Manage Note Types 或者在addcards中选择marge type，调用aqt\main.py下的onNoteTypes函数；
@@ -45,14 +56,16 @@
  3. 以Add为例，调用onAdd方法，输入新field的name，先调用self.saveField()（先保存？），然后调用anki\models.py文件下的newField()方法，创建新的field，命名为输入的name；
  4. 之后调用anki\models.py文件下的addField()方法，将新的field添加到当前的model中，重新加载，完成add流程；
 
+### 数据库相关操作
+
+#### 初始化
+
+1. 在aqt/main.py的setupProfile中调用loadProfile，再调用loadCollection
+2. 尝试调用_loadCollection，再调用anki/storage.Collection函数，在该函数中完成数据库的初始化工作，并创建 _Collection类（该类是数据库的接口，提供model，decks等内容的管理类，同时创建这个类的时候会调用load函数从数据库中把所有的models、deck、conf加载），如果是新创建的用户则还需要使用stdmodels中的模板生成函数生成标准模板。
+
 
 ## TODO
 
 > 按优先级排列
 
-- 点击html的return pycmd以及后续的槽函数机制
-
-### Type默认配置的加载
-1. 程序启动 调用 **anki\storage.py** 中的 `Collection` 函数  `Collection` 接收一个核心参数path <br>
-2. path理解为保存数据库的路径，若第一次调用即无数据库，那么就使用默认配置生成一个数据库 <br>
-3. 关于Type的默认配置的生成 系统会调用 **anki\stdmodels.py** 中的 几个函数`addBasicModel`，`addBasicTypingModel`，`addForwardReverse`，`addForwardOptionalReverse`，`addClozeModel`
+- 
