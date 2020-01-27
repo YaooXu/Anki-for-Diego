@@ -15,4 +15,8 @@ function init() {
     $('#import_model').click(function () {
         return pycmd('import_model')
     });
+
+    $('#choose_model').change(function () {
+        return pycmd('change_model:'+$(this).val())
+    });
 }

@@ -13,7 +13,7 @@ from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
-from get_word import report_add_res,MyThread
+from get_word import report_add_res, MyThread
 import json
 
 
@@ -75,6 +75,8 @@ class DeckBrowser:
             self._add_from_file()
         elif cmd == "import_model":
             self._import_model()
+        elif cmd == 'change_model':
+            self._change_model(arg)
         return False
 
     def _selDeck(self, did):
@@ -117,11 +119,8 @@ class DeckBrowser:
     </div>
     </br>
     <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp请选择模板&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-    <select>
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="opel">Opel</option>
-        <option value="audi">Audi</option>
+    <select id='choose_model'>
+        %(models)s
     </select>
 </div>
 </center>
@@ -138,10 +137,11 @@ class DeckBrowser:
         # 加载所有牌组信息的html
         tree = self._renderDeckTree(self._dueTree)
         stats = self._renderStats()
+        models = self._renderModels()
         # 点击html中的某个链接会返回一个类似于pycmd('open:1')的东西
         # 其中pycmd是js中的函数
         self.web.stdHtml((self._body + self._add_word_body) % dict(
-            tree=tree, stats=stats, countwarn=self._countWarn()),
+            tree=tree, stats=stats, models=models, countwarn=self._countWarn()),
                          css=["deckbrowser.css"],
                          js=["jquery.js", "jquery-ui.js", "deckbrowser.js", "add_words.js"])
         self.web.key = "deckBrowser"
@@ -152,6 +152,20 @@ class DeckBrowser:
 
     def _scrollToOffset(self, offset):
         self.web.eval("$(function() { window.scrollTo(0, %d, 'instant'); });" % offset)
+
+    def _renderModels(self):
+        # 加载页面的时候自动加载下拉框内容
+        model_names = self.mw.col.models.allNames()
+        current_name = self.mw.col.models.current().get('name')
+        item_template = '<option value ="%s">%s</option>\n'
+        select_template = '<option value=%s selected="selected">%s</option>'
+        res = ''
+        for name in reversed(model_names):
+            if name != current_name:
+                res += item_template % (name, name)
+            else:
+                res += select_template % (name, name)
+        return res
 
     def _renderStats(self):
         cards, thetime = self.mw.col.db.first("""
@@ -415,6 +429,20 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         else:
             messageBos.setText("必须是json文件!")
             messageBos.exec_()
+
+        # 导入新模板之后重新加载deckBrowser页面
+        self.mw.moveToState("deckBrowser")
+
+    # 导入model
+    ##########################################################################
+    def _change_model(self, model_name):
+        m = self.mw.col.models.byName(model_name)
+        self.mw.col.conf['curModel'] = m['id']
+        cdeck = self.mw.col.decks.current()
+        cdeck['mid'] = m['id']
+        self.mw.col.decks.save(cdeck)
+        runHook("currentModelChanged")
+        self.mw.reset()
 
     # Options
     ##########################################################################
