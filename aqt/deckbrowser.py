@@ -339,28 +339,59 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         :param word_infos:
         :return:
         """
+
         for word_info in word_infos:
             addCard = self.mw.onAddCard(hidden=True)
+            print(addCard.editor.note._model['flds'])
+            cnt = 0 #记录当前model的field下标
+            for flds in addCard.editor.note._model['flds']:
+                #读取当前model的字段，根据当前字段将word_info内容添加进去
+                flds_name = flds['name']
+                if flds_name == '图片':
+                    res = requests.get(word_info['img'])
+                    if not os.path.isdir("./images"):
+                        os.mkdir("./images")
+                    with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
+                        f.write(res.content)
+                    addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word_info['word'])
+                elif flds_name == '音频':
+                    res = requests.get(word_info['sound'])
+                    if not os.path.isdir("./sound"):
+                        os.mkdir("./sound")
+                    with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
+                        f.write(res.content)
+                    addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word_info['word'])
+                elif flds_name == '单词':
+                    addCard.editor.note.fields[cnt] = word_info['word']
+                elif flds_name == '音标':
+                    addCard.editor.note.fields[cnt] = word_info['accent']
+                elif flds_name == '释义':
+                    addCard.editor.note.fields[cnt] = word_info['mean_cn']
+                elif flds_name == '例句':
+                    addCard.editor.note.fields[cnt] = word_info['st']
+                else:
+                    addCard.editor.note.fields[cnt] = "空"
+                cnt = cnt + 1
             # 一开始有一个 '.'?
             # addCard.editor.note.fields.clear()
-            addCard.editor.note.fields[0] = word_info['word']
-            addCard.editor.note.fields[1] = word_info['accent']
-            addCard.editor.note.fields[2] = word_info['mean_cn']
-            addCard.editor.note.fields[3] = word_info['st']
-
-            res = requests.get(word_info['img'])
-            if not os.path.isdir("./images"):
-                os.mkdir("./images")
-            with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
-                f.write(res.content)
-            addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
-
-            res = requests.get(word_info['sound'])
-            if not os.path.isdir("./sound"):
-                os.mkdir("./sound")
-            with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
-                f.write(res.content)
-            addCard.editor.note.fields[5] = "[sound:./sound/{}.mp3]".format(word_info['word'])
+            # addCard.editor.note.fields[0] = word_info['word']
+            # addCard.editor.note.fields[1] = word_info['accent']
+            # addCard.editor.note.fields[2] = word_info['mean_cn']
+            # addCard.editor.note.fields[3] = word_info['st']
+            #
+            # res = requests.get(word_info['img'])
+            # if not os.path.isdir("./images"):
+            #     os.mkdir("./images")
+            # with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
+            #     f.write(res.content)
+            # addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
+            #
+            # res = requests.get(word_info['sound'])
+            # if not os.path.isdir("./sound"):
+            #     os.mkdir("./sound")
+            # with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
+            #     f.write(res.content)
+            # addCard.editor.note.fields[5] = "[sound:./sound/{}.mp3]".format(word_info['word'])
 
             # print(os.getcwd())
             # addCard.editor.note.fields[4] = [res.content]
