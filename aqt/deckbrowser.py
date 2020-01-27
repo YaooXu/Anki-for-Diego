@@ -13,7 +13,7 @@ from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
-from get_word import report_add_res, MyThread
+from get_word import report_add_res, MyThread, MyBar, Worker
 import json
 
 
@@ -280,10 +280,8 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         :return: words (list of string)
                  word_infos (list of dict)
         """
-        messageBox = QMessageBox()
 
         words = content.strip().split('\n')
-        word_infos = []
         # for word in words:
         #     info = get_word(word)
         #     if info and 'word' in info:
@@ -293,22 +291,18 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             t = MyThread(words[i])
             t.start()
             threads.append(t)
-        for i in range(len(threads)):
-            threads[i].join()
-            info = threads[i].get_result()
-            word_infos.append(info)
-        res_to_show = ""
-        for info in word_infos:
-            res_to_show += str(info) + '\n'
+        # word_infos = []
+        # for i in range(len(threads)):
+        #     threads[i].join()
+        #     info = threads[i].get_result()
+        #     word_infos.append(info)
+        bar = MyBar(threads, self)
+        bar.setupUi()
+        bar.show()
 
-        messageBox.setText(res_to_show)
+        messageBox = QMessageBox()
+        messageBox.setText("点击取消")
         messageBox.exec_()
-
-        self.__add_words(word_infos)
-        # self.words_text.setText("")
-
-        report_add_res(len(words), len(word_infos))
-        return words, word_infos
 
     def _add_from_text(self, content):
         """
@@ -335,6 +329,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         else:
             messageBos.setText("必须是txt文件!")
             messageBos.exec_()
+
+    def my_add(self, word_infos: list):
+        self.__add_words(word_infos)
 
     def __add_words(self, word_infos: list):
         r"""

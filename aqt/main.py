@@ -31,7 +31,7 @@ from aqt.utils import saveGeom, restoreGeom, showInfo, showWarning, \
 from aqt.qt import sip
 from anki.lang import _, ngettext
 from PyQt5 import QtWidgets
-from get_word import get_word, report_add_res
+from get_word import report_add_res
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QColorDialog, QFontDialog, QTextEdit, QFileDialog
 import requests
 
