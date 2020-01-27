@@ -98,14 +98,32 @@ class DeckBrowser:
     # 添加单词部分的html
     _add_word_body = """
 <center>
-
 <br>
-
-<textarea id="words-area"></textarea>
-<button type="button" id="add_from_text_bt">添加文本框中单词</button>
-<button type="button" id="add_from_file_bt">从文件导入单词</button>
-<button type="button" id="import_model">导入新的模板</button>
-
+<br>
+<div class="buttonbox">
+    <div><textarea id="words-area"></textarea></div>
+    <div>
+        <table>
+            <tr>
+                <th><button type="button" id="add_from_text_bt">添加文本框中单词</button></th>
+            </tr>
+            <tr>
+                <th><button type="button" id="add_from_file_bt">从文件导入单词</button></th>
+            </tr>
+            <tr>
+                <th><button type="button" id="import_model">导入新的模板</button></th>
+            </tr>
+        </table>
+    </div>
+    </br>
+    <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp请选择模板&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+    <select>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="opel">Opel</option>
+        <option value="audi">Audi</option>
+    </select>
+</div>
 </center>
 """
 

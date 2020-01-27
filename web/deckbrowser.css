@@ -67,3 +67,32 @@ body {
     opacity: .5;
     padding-top: 0.2em;
 }
+
+div{
+    display: inline-block;
+}
+
+.buttonbox {
+    display:inline-block;
+}
+
+.buttonbox button{
+    width: 10em;
+    height: 2em;
+}
+
+.buttonbox textarea{
+    width: 10em;
+    height: 6em;
+}
+
+.buttonbox select{
+    width: 9em;
+    height: 2em;
+}
+
+.buttonbox label{
+    font-size: 1.2em;
+    width: 10em;
+    height: 2em;
+}
