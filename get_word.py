@@ -60,7 +60,7 @@ class Worker(QThread):
     def run(self):
         for i in range(len(self.threads)):
             self.threads[i].join()
-            time.sleep(1)
+            # time.sleep(1)
             info = self.threads[i].get_result()
             self.word_infos.append(info)
             self.progressBarValue.emit(1)  # 发送进度条的值信号

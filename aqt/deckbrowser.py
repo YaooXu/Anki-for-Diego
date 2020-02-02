@@ -296,13 +296,12 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         #     threads[i].join()
         #     info = threads[i].get_result()
         #     word_infos.append(info)
-        bar = MyBar(threads, self)
-        bar.setupUi()
-        bar.show()
 
-        messageBox = QMessageBox()
-        messageBox.setText("点击取消")
-        messageBox.exec_()
+        self.bar = MyBar(threads, self)
+        self.bar.setupUi()
+        self.bar.show()
+
+
 
     def _add_from_text(self, content):
         """
@@ -343,9 +342,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         for word_info in word_infos:
             addCard = self.mw.onAddCard(hidden=True)
             print(addCard.editor.note._model['flds'])
-            cnt = 0 #记录当前model的field下标
+            cnt = 0  # 记录当前model的field下标
             for flds in addCard.editor.note._model['flds']:
-                #读取当前model的字段，根据当前字段将word_info内容添加进去
+                # 读取当前model的字段，根据当前字段将word_info内容添加进去
                 flds_name = flds['name']
                 if flds_name == '图片':
                     res = requests.get(word_info['img'])
