@@ -96,24 +96,66 @@
 
 ​	当改变下拉框中内容时，触发js中的函数，把改变之后的内容返回给python，再在python中实现默认模板变更。
 
-## TODO
+### 爬取单词进度条的实现
 
-> 按优先级排列
-
-- 爬虫可以根据当前模板的字段进行爬取和填充
-- 爬取单词的进度条
-
-## 爬取单词进度条的实现
 整个实现流程相对比较复杂，对于一些原来的函数也有所修改
 
 总体运行流程为：
+
 - 创建线程列表threads每个线程爬取一个单词
 - 将线程列表传入进度条类mybar
 - mybar调用worker类传入线程列表threads进行爬取
 - worker类执行完每个进程后更新mybar的进度条
 
-
 为了方便查看我在爬取的是我设置了爬完一个停1秒方便发现错误
 
 还有一个问题就是我发现单词卡会重复，如果他有这个单词依然会重复添加，不知道这个需不需要处理
+
+## TODO
+
+> 按优先级排列
+
+- 根据字段的来源进行爬取填充
+
+  **思路**
+
+  - 导入的json模板新加一个键值“source”用来存放字段信息的来源,如下
+
+    ```json
+    {  
+        "name": "test",  
+        "fileds": [    "fld1",    "fld2"  ],  
+        "template": {    
+            "name": "default",    
+            "qfmt": "{{fld1}}",    
+            "afmt": "{{FrontSide}}\n\n<hr id=answer>\n\n{{fld2}}"  },  
+        "source":{    
+            "fld1": "Baicizhan:word",   
+            "fld2": "Youdao:mean-cn"  
+        }
+    }
+    ```
+
+    存取source信息方式未定，字段 or 数据库？
+
+  - 爬取单词的时候把当前模板所有来源信息存在list里面 `['Baicizhan, Youdao']`传给单词爬取模块。
+
+  - 单词爬取模块根据来源返回一个json，如下
+
+    ```json
+    {
+    	"Baicizhan": {
+    		"st": "",
+    		"mean-cn": "",
+            "..."
+    	},
+        "Youdao": {
+    		"st": "",
+    		"mean-cn": "",
+            "..."
+        }
+    }
+    ```
+
+  - 添加的时候直接根据source里面的信息进行添加，如`fields['fld1'] = word_info['baicizhan']['word']`,但是fileds是一个list，可能需要一个name->idx的转化函数。
 
