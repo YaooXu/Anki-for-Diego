@@ -137,6 +137,10 @@ class ModelManager:
         # 得到所有model的名称
         return [m['name'] for m in self.all()]
 
+    def allImportNames(self):
+        # 所有自己导入的model
+        return [m['name'] for m in self.all() if 'source' in m]
+
     def byName(self, name):
         "Get model with NAME."
         for m in list(self.models.values()):
@@ -229,6 +233,22 @@ and notes.mid = ? and cards.ord = ?""", m['id'], ord)
         m2['name'] = _("%s copy") % m2['name']
         self.add(m2)
         return m2
+
+    # 增加来源
+    ##################################################
+    def addSource(self, m: dict, source: dict):
+        if m['id']:
+            self.col.modSchema(check=True)
+        m['source'] = source
+        self.save(m)
+
+    def getCurrentSource(self):
+        # 得到当前模板的source，如果没有改属性则返回None
+        m = self.current()
+        if 'source' not in m:
+            return None
+        else:
+            return m['source']
 
     # Fields
     ##################################################

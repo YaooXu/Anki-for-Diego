@@ -155,7 +155,7 @@ class DeckBrowser:
 
     def _renderModels(self):
         # 加载页面的时候自动加载下拉框内容
-        model_names = self.mw.col.models.allNames()
+        model_names = self.mw.col.models.allImportNames()
         current_name = self.mw.col.models.current().get('name')
         item_template = '<option value ="%s">%s</option>\n'
         select_template = '<option value=%s selected="selected">%s</option>'
@@ -280,6 +280,20 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         :return: words (list of string)
                  word_infos (list of dict)
         """
+        source = self.mw.col.models.getCurrentSource()
+        if not source:
+            messageBox = QMessageBox()
+            # 只有导入的模板才带有source
+            messageBox.setText("未指定导入模板!")
+            messageBox.exec_()
+            return
+
+        # 这个模板所需要的所有来源 ex: ['Baicizhan', 'Youdao']
+        source_list = []
+        for key, val in source.items():
+            source_name = val.split(':')[0]
+            if source_name not in source_list:
+                source_list.append(source_name)
 
         words = content.strip().split('\n')
         # for word in words:
@@ -300,8 +314,6 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         self.bar = MyBar(threads, self)
         self.bar.setupUi()
         self.bar.show()
-
-
 
     def _add_from_text(self, content):
         """
@@ -410,7 +422,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         :return:
         """
         if not must_include:
-            must_include = ['name', 'fileds', 'template']
+            must_include = ['name', 'fileds', 'template', 'source']
 
         for item in must_include:
             if item not in model_json:
@@ -419,7 +431,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 return self.__check_json(model_json['template'], ['name', 'qfmt', 'afmt'])
         return True
 
-    def __import_json(self, content_json):
+    def __import_json(self, content_json: dict):
         if not self.__check_json(content_json):
             messageBos = QMessageBox()
             messageBos.setText("json文件模板格式错误!")
@@ -436,6 +448,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         t['qfmt'] = content_json['template']['qfmt']
         t['afmt'] = content_json['template']['afmt']
         mm.addTemplate(m, t)
+
+        mm.addSource(m, content_json['source'])
+
         mm.add(m)
 
         return m
@@ -447,7 +462,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
 
         messageBos = QMessageBox()
         if file_path.endswith('json'):
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf8') as f:
                 content = json.load(f)
                 res = self.__import_json(content)
                 if res:

@@ -1,12 +1,24 @@
 {
   "name": "test",
   "fileds": [
-    "fld1",
-    "fld2"
+    "单词",
+    "音标",
+    "释义",
+    "例句",
+    "图片",
+    "音频"
   ],
   "template": {
     "name": "default",
-    "qfmt": "{{fld1}}",
-    "afmt": "{{FrontSide}}\n\n<hr id=answer>\n\n{{fld2}}"
+    "qfmt": "{{单词}}<br>{{音标}}<span class='voice'>{{音频}}</span>",
+    "afmt": "{{FrontSide}}\n\n<hr id=answer>\n\n{{释义}}<br>{{例句}}<img src={{图片}} alt=\"图片\">"
+  },
+  "source":{
+    "单词": "Baicizhan:word",
+    "音标": "Baicizhan:accent",
+    "释义": "Baicizhan:mean-cn",
+    "例句": "Baicizhan:st",
+    "图片": "Baicizhan:img",
+    "音频": "Baicizhan:sound"
   }
 }
