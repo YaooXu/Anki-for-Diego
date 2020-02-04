@@ -33,6 +33,8 @@ class AddCards(QDialog):
         addHook('reset', self.onReset)
         addHook('currentModelChanged', self.onModelChange)
         addCloseShortcut(self)
+
+        self.hidden = hidden
         if hidden:
             self.hide()
         else:
@@ -258,5 +260,6 @@ question on all cards."""), help="AddItems")
         self.editor.cleanup()
         self.modelChooser.cleanup()
         self.deckChooser.cleanup()
+        # 需要标记为已关闭
         aqt.dialogs.markClosed("AddCards")
         self.close()

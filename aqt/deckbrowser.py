@@ -1,7 +1,7 @@
 # Copyright: Ankitects Pty Ltd and contributors
 # -*- coding: utf-8 -*-
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
-
+import time
 from aqt.qt import *
 from aqt.utils import askUser, getOnlyText, openLink, showWarning, shortcut, \
     openHelp
@@ -13,7 +13,7 @@ from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
-from get_word import report_add_res, MyThread, MyBar, Worker
+from get_word import report_add_res, MyThread, MyBar, Worker, WordThread, WordsAdder
 import json
 
 
@@ -296,24 +296,11 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 source_list.append(source_name)
 
         words = content.strip().split('\n')
-        # for word in words:
-        #     info = get_word(word)
-        #     if info and 'word' in info:
-        #         word_infos.append(info)
-        threads = []
-        for i in range(len(words)):
-            t = MyThread(words[i])
-            t.start()
-            threads.append(t)
-        # word_infos = []
-        # for i in range(len(threads)):
-        #     threads[i].join()
-        #     info = threads[i].get_result()
-        #     word_infos.append(info)
-
-        self.bar = MyBar(threads, self)
-        self.bar.setupUi()
-        self.bar.show()
+        # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
+        adder = WordsAdder(self, words, source_list)
+        word_infos = adder.get_res()
+        success_num = self.add_words(word_infos)
+        report_add_res(len(words), success_num)
 
     def _add_from_text(self, content):
         """
@@ -341,77 +328,70 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             messageBos.setText("必须是txt文件!")
             messageBos.exec_()
 
-    def my_add(self, word_infos: list):
-        self.__add_words(word_infos)
-
-    def __add_words(self, word_infos: list):
+    def add_words(self, word_infos: list):
         r"""
         把从服务器得到的单词批量加入牌组
         :param word_infos:
-        :return:
+        :return: 成功的个数
         """
+        success_num = 0
 
-        for word_info in word_infos:
-            addCard = self.mw.onAddCard(hidden=True)
-            print(addCard.editor.note._model['flds'])
-            cnt = 0  # 记录当前model的field下标
-            for flds in addCard.editor.note._model['flds']:
+        progress = QProgressDialog()
+        progress.setWindowTitle("请稍等2")
+        progress.setLabelText("正在添加单词...")
+        progress.setCancelButtonText("取消")
+        progress.setMinimumDuration(5)
+        progress.setWindowModality(Qt.WindowModal)
+        progress.setRange(0, 100)
+        progress.setValue(1)
+        progress.show()
+
+        source_list = self.mw.col.models.getCurrentSource()
+
+        addCard = self.mw.onAddCard(hidden=True)
+        for idx, word_info in enumerate(word_infos):
+            # 这个单词是否添加成功
+            flag = 1
+            for cnt, flds in enumerate(addCard.editor.note._model['flds']):
                 # 读取当前model的字段，根据当前字段将word_info内容添加进去
-                flds_name = flds['name']
-                if flds_name == '图片':
-                    res = requests.get(word_info['img'])
-                    if not os.path.isdir("./images"):
-                        os.mkdir("./images")
-                    with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
-                        f.write(res.content)
-                    addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word_info['word'])
-                elif flds_name == '音频':
-                    res = requests.get(word_info['sound'])
-                    if not os.path.isdir("./sound"):
-                        os.mkdir("./sound")
-                    with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
-                        f.write(res.content)
-                    addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word_info['word'])
-                elif flds_name == '单词':
-                    addCard.editor.note.fields[cnt] = word_info['word']
-                elif flds_name == '音标':
-                    addCard.editor.note.fields[cnt] = word_info['accent']
-                elif flds_name == '释义':
-                    addCard.editor.note.fields[cnt] = word_info['mean_cn']
-                elif flds_name == '例句':
-                    addCard.editor.note.fields[cnt] = word_info['st']
-                else:
-                    addCard.editor.note.fields[cnt] = "空"
-                cnt = cnt + 1
-            # 一开始有一个 '.'?
-            # addCard.editor.note.fields.clear()
-            # addCard.editor.note.fields[0] = word_info['word']
-            # addCard.editor.note.fields[1] = word_info['accent']
-            # addCard.editor.note.fields[2] = word_info['mean_cn']
-            # addCard.editor.note.fields[3] = word_info['st']
-            #
-            # res = requests.get(word_info['img'])
-            # if not os.path.isdir("./images"):
-            #     os.mkdir("./images")
-            # with open("./images/{}.jpg".format(word_info['word']), "wb") as f:
-            #     f.write(res.content)
-            # addCard.editor.note.fields[4] = "./images/{}.jpg".format(word_info['word'])
-            #
-            # res = requests.get(word_info['sound'])
-            # if not os.path.isdir("./sound"):
-            #     os.mkdir("./sound")
-            # with open("./sound/{}.mp3".format(word_info['word']), "wb") as f:
-            #     f.write(res.content)
-            # addCard.editor.note.fields[5] = "[sound:./sound/{}.mp3]".format(word_info['word'])
+                try:
+                    flds_name = flds['name']
+                    source = source_list[flds_name]
+                    key1, key2 = source.split(':')
+                    addCard.editor.note.fields[cnt] = word_info[key1][key2]
+                    if key2 in ['img']:
+                        res = requests.get(word_info[key1][key2])
+                        if not os.path.isdir("./images"):
+                            os.mkdir("./images")
+                        with open("./images/{}.jpg".format(word_info[key1]['word']), "wb") as f:
+                            f.write(res.content)
+                        addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word_info[key1]['word'])
+                    elif key2 in ['sound']:
+                        res = requests.get(word_info[key1]['sound'])
+                        if not os.path.isdir("./sound"):
+                            os.mkdir("./sound")
+                        with open("./sound/{}.mp3".format(word_info[key1]['word']), "wb") as f:
+                            f.write(res.content)
+                        addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word_info[key1]['word'])
+                except Exception as e:
+                    flag = 0
+                    break
+                    print(e)
 
-            # print(os.getcwd())
-            # addCard.editor.note.fields[4] = [res.content]
-
+            success_num += flag
             print(addCard.editor.note.fields)
-            # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
             addCard.addCards_hidden()
 
-            addCard.close_hidden()
+            print((idx + 1) * 100 / len(word_infos))
+            progress.setValue(int((idx + 1) * 100 / len(word_infos)))
+
+        addCard.close_hidden()
+
+        progress.setLabelText("添加完成")
+        time.sleep(1)
+        progress.close()
+
+        return success_num
 
     # 导入model
     ##########################################################################

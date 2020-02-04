@@ -5,7 +5,7 @@ import requests
 import json
 import threading
 import time
-
+from aqt.utils import showInfo
 
 
 class MyBar(QWidget):
@@ -115,6 +115,141 @@ class MyThread(threading.Thread):
             return None
         else:
             return result
+
+
+# 徐遥重构
+#################################################################
+def get_from_Baicizhan(word, timeout=5):
+    r"""
+    从百词斩获得单词
+    :param word: 需要查询的单词
+    :param timeout: 时间限制
+    :return: 如果查询成功，返回该单词的信息的字典，否则返回None
+    {
+        "word": 单词 str
+        "img": 图片的网页链接 str
+        "st":例句 str
+        "sttr":例句翻译 str
+        "mean_cn": 中文释义 str
+        "accent": 音标 str
+        "sound": 发音的链接 str
+    }
+    """
+    url = u"http://mall.baicizhan.com/ws/search?w={word}".format(word=word)
+    response = requests.get(url)
+    result = response.json()
+    if len(result) == 1:
+        result['errorCode'] = 1
+    else:
+        result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + word + ".mp3"
+
+    print(result)
+    if result['errorCode'] == 1:
+        return None
+    else:
+        return result
+
+
+def get_from_Youdao(word, timeout=5):
+    # TODO:Youdao返回的有多级，比如query['basic']['phonetic']
+    # 为了让添加单词的接口统一，需要把多级的全部变为一级，即直接通过query['phonetic']访问
+    URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
+    query = requests.get(URL + '&q=' + word)
+    query = query.json()
+    query['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + word + ".mp3"  # 美音 type=0 英音type=1
+    return query
+
+
+source_func_map = {
+    'Baicizhan': get_from_Baicizhan,
+    'Youdao': get_from_Youdao
+}
+
+
+class WordThread(QThread):
+    query_finish = pyqtSignal()
+
+    def __init__(self, word, source_list, timeout=5):
+        super().__init__()
+        self.word = word
+        self.source_list = source_list
+        self.timeout = timeout
+        self.word_info = None
+
+    def run(self):
+        all_res = {}
+        for source_name in self.source_list:
+            func = source_func_map[source_name]
+            res = func(self.word, self.timeout)
+            all_res[source_name] = res
+        self.word_info = all_res
+        self.query_finish.emit()
+
+    def get_info(self):
+        return self.word_info
+
+    def __del__(self):
+        self.wait()
+
+
+class WordsAdder(QWidget):
+    def __init__(self, browser, word_list, source_list, timeout=5):
+        """
+
+        :param word_list: 单词列表
+        :param source_list: 来源列表
+        :param timeout: 最长时间
+        """
+        super().__init__()
+        self.words_num = len(word_list)
+        self.cur_num = 0
+        self.browser = browser
+
+        # 设置进度条
+        self.progress = QProgressDialog(self)
+        self.progress.setWindowTitle("请稍等")
+        self.progress.setLabelText("正在查询单词...")
+        self.progress.setCancelButtonText("取消")
+        self.progress.setMinimumDuration(5)
+        self.progress.setWindowModality(Qt.WindowModal)
+        self.progress.setRange(0, 100)
+        self.progress.setValue(1)
+        self.progress.show()
+
+        self.threads = []
+        for word in word_list:
+            thread = WordThread(word, source_list, timeout)
+            self.threads.append(thread)
+            thread.query_finish.connect(self.change_progress_dialog)
+            thread.start()
+
+        # 所有单词的最终信息
+        self.word_infos = []
+
+    def change_progress_dialog(self):
+        # TODO:因为查询单词的速度太快了，这个好像有点跟不上...
+        # 所以有时候这块显示有点问题
+        # 可以改为直接在查询单词的线程里面setValue而不是通过信号
+        self.cur_num += 1
+        print(self.cur_num)
+        self.progress.setValue(self.cur_num * 100 / self.words_num)
+        if self.cur_num == self.words_num:
+            self.progress.setLabelText("查询完成, 正在添加")
+            time.sleep(1)
+            self.progress.close()
+
+    def get_res(self):
+        for thread in self.threads:
+            thread.wait()
+
+        for thread in self.threads:
+            word_info = thread.get_info()
+            if word_info:
+                self.word_infos.append(word_info)
+
+        return self.word_infos
+        # self.browser.add_words(self.word_infos)
+        # report_add_res(self.words_num, len(self.word_infos))
 
 
 if __name__ == '__main__':
