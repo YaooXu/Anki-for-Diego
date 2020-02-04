@@ -199,6 +199,16 @@ question on all cards."""), help="AddItems")
         self.onReset(keep=True)
         self.mw.col.autosave()
 
+    def addCards_hidden(self):
+        self.editor.saveAddModeVars()
+        note = self.editor.note
+        note = self.addNote(note)
+        if not note:
+            return
+        self.onReset(keep=True)
+
+        self.mw.col.autosave()
+
     def keyPressEvent(self, evt):
         "Show answer on RET or register answer."
         if (evt.key() in (Qt.Key_Enter, Qt.Key_Return)
@@ -238,3 +248,15 @@ question on all cards."""), help="AddItems")
             cb()
 
         self.ifCanClose(doClose)
+
+    def close_hidden(self):
+        # 隐藏页面时关闭的方法
+        remHook('reset', self.onReset)
+        remHook('currentModelChanged', self.onModelChange)
+        clearAudioQueue()
+        self.removeTempNote(self.editor.note)
+        self.editor.cleanup()
+        self.modelChooser.cleanup()
+        self.deckChooser.cleanup()
+        aqt.dialogs.markClosed("AddCards")
+        self.close()

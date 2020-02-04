@@ -409,8 +409,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
 
             print(addCard.editor.note.fields)
             # 直接调用_addCards， addCards涉及的函数太多了，暂时没法搞明白
-            addCard._addCards()
-            addCard.close()
+            addCard.addCards_hidden()
+
+            addCard.close_hidden()
 
     # 导入model
     ##########################################################################
