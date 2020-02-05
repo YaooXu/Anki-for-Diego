@@ -159,10 +159,108 @@ def get_from_Youdao(word, timeout=5):
     query['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + word + ".mp3"  # 美音 type=0 英音type=1
     return query
 
+from bs4 import BeautifulSoup
+
+def _get_element(soup, tag, id=None, class_=None, subtag=None):
+    # element = soup.find(tag, id=id, class_=class_)  # bs4
+    """
+    爬虫辅助函数，获取soup中的相关信息
+    :param soup:
+    :param tag:
+    :param id:
+    :param class_:
+    :param subtag:
+    :return:
+    """
+    element = None
+    if id:
+        element = soup.find(tag, {"id": id})
+    if class_:
+        element = soup.find(tag, {"class": class_})
+    if subtag and element:
+        element = getattr(element, subtag, '')
+    return element
+
+def get_from_Bing(word, timeout=5):
+    """
+    爬取bing词典
+    返回值：{'phonitic_us': '美\xa0[ˈæp(ə)l] ', 'phonitic_uk': "英\xa0['æpl] ", 'participle': '复数：apples\xa0\xa0', 'def': 'n.苹果公司；【植】苹果；【植】苹果树网络苹果电脑；美国苹果；美国苹果公司'}
+    phonitic_us：美式发音
+    phonitic_uk：英式发音
+    participle：词语时态
+    def：释义
+    """
+    req = requests.get(url=
+        "http://cn.bing.com/dict/search?q={}&mkt=zh-cn".format(word),timeout=timeout)
+    req.encoding=req.apparent_encoding
+    data=req.text
+
+    soup = BeautifulSoup(data,"html.parser")
+    result = {}
+    element = _get_element(soup, 'div', class_='hd_prUS').get_text()
+    if element:
+        result['phonitic_us'] = str(element)
+    element = _get_element(soup, 'div', class_='hd_pr').get_text()
+    if element:
+        result['phonitic_uk'] = str(element)
+    element = _get_element(soup, 'div', class_='hd_if').get_text()
+    if element:
+        result['participle'] = str(element)
+    element = _get_element(soup, 'div', class_='qdef', subtag='ul')
+    if element:
+        result['def'] = u''.join([str(content.get_text())
+                                for content in element.contents])
+    return result
+
+def get_from_Iciba(word,timeout=5):
+    URL= 'http://www.iciba.com/index.php?a=getWordMean&c=search&word='
+    query =  requests.get(URL + word,timeout=timeout)
+    query = query.json()
+    result = {}
+    result['ph_am'] = query["baesInfo"]['symbols'][0]['ph_am'] #美式音标
+    result['ph_en'] = query["baesInfo"]['symbols'][0]['ph_en']  #英式音标
+    result['ph_am_mp3'] = query["baesInfo"]['symbols'][0]['ph_am_mp3'] #美式发音
+    result['ph_en_mp3'] = query["baesInfo"]['symbols'][0]['ph_en_mp3']  #英式发音
+    parts=query["baesInfo"]['symbols'][0]['parts']
+    result['parts'] = u'<br>'.join([part['part'] + ' ' + '; '.join(part['means']) for part in parts])#释义
+    sentences = ''
+    segs = query["sentence"]
+    for i, seg in enumerate(segs):
+        sentences = sentences +\
+            u"""<li>
+                    <div class="sen_en">{0}</div>
+                    <div class="sen_cn">{1}</div>
+                </li>""".format(seg['Network_en'], seg['Network_cn'])
+    sentences= u"""<ol>{}</ol>""".format(sentences)
+    result['sentence']=sentences  #双语例句
+
+
+    # sentences = ''
+    # segs = query["auth_sentence"]
+    # for i, seg in enumerate(segs):
+    #     sentences = sentences +\
+    #         u"""<li>{0}  [{1}]</li>""".format(
+    #             seg['res_content'], seg['source'])
+    # result['auth_sentence']=u"""<ol>{}</ol>""".format(sentences) #权威例句
+
+    # sentences = ''
+    # segs = query["jushi"]
+    # for i, seg in enumerate(segs):
+    #     sentences = sentences +\
+    #         u"""<li>
+    #                 <div class="sen_en">{0}</div>
+    #                 <div class="sen_cn">{1}</div>
+    #             </li>""".format(seg['english'], seg['chinese'])
+    # result['jushi']= u"""<ol>{}</ol>""".format(sentences) #句法用式
+
+
+    return result
 
 source_func_map = {
     'Baicizhan': get_from_Baicizhan,
-    'Youdao': get_from_Youdao
+    'Youdao': get_from_Youdao,
+    'Bing' : get_from_Bing,
+    'Iciba' : get_from_Iciba
 }
 
 
