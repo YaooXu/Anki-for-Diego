@@ -115,47 +115,10 @@
 
 > 按优先级排列
 
-- 根据字段的来源进行爬取填充
-
-  **思路**
-
-  - 导入的json模板新加一个键值“source”用来存放字段信息的来源,如下
-
-    ```json
-    {  
-        "name": "test",  
-        "fileds": [    "fld1",    "fld2"  ],  
-        "template": {    
-            "name": "default",    
-            "qfmt": "{{fld1}}",    
-            "afmt": "{{FrontSide}}\n\n<hr id=answer>\n\n{{fld2}}"  },  
-        "source":{    
-            "fld1": "Baicizhan:word",   
-            "fld2": "Youdao:mean-cn"  
-        }
-    }
-    ```
-
-    存取source信息方式未定，字段 or 数据库？
-
-  - 爬取单词的时候把当前模板所有来源信息存在list里面 `['Baicizhan, Youdao']`传给单词爬取模块。
-
-  - 单词爬取模块根据来源返回一个json，如下
-
-    ```json
-    {
-    	"Baicizhan": {
-    		"st": "",
-    		"mean-cn": "",
-            "..."
-    	},
-        "Youdao": {
-    		"st": "",
-    		"mean-cn": "",
-            "..."
-        }
-    }
-    ```
-
-  - 添加的时候直接根据source里面的信息进行添加，如`fields['fld1'] = word_info['baicizhan']['word']`,但是fileds是一个list，可能需要一个name->idx的转化函数。
-
+- 修改有道爬取返回的字典，使其格式与百词斩相同
+- 增加更多的爬取代码
+- 查询单词时候的进度调显示问题（可能是因为查询速度太快，但是emit的速度跟不上，可以考虑直接在进程中设置progress的值）
+- 错误处理
+  - 创建一个标准json文件，包含了每个来源能爬取的字段，导入模板检查模板source格式以及给定的键值是否都在标准json中
+  - 添加单词有时候有可能字典没有某个键值，比如查询fuck，是没有img的，可以考虑使用get代替
+  - 网络连接错误，需要设置timeout，同时告知用户无网络连接
