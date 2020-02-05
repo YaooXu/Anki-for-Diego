@@ -143,7 +143,7 @@ def get_from_Baicizhan(word, timeout=5):
     else:
         result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + word + ".mp3"
 
-    print(result)
+    # print(result)
     if result['errorCode'] == 1:
         return None
     else:
@@ -235,7 +235,6 @@ class WordsAdder(QWidget):
         self.progress.setValue(self.cur_num * 100 / self.words_num)
         if self.cur_num == self.words_num:
             self.progress.setLabelText("查询完成, 正在添加")
-            time.sleep(1)
             self.progress.close()
 
     def get_res(self):
