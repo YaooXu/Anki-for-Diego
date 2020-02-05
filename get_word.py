@@ -150,13 +150,19 @@ def get_from_Baicizhan(word, timeout=5):
         return result
 
 
-def get_from_Youdao(word, timeout=5):
-    # TODO:Youdao返回的有多级，比如query['basic']['phonetic']
-    # 为了让添加单词的接口统一，需要把多级的全部变为一级，即直接通过query['phonetic']访问
-    URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
-    query = requests.get(URL + '&q=' + word)
-    query = query.json()
-    query['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + word + ".mp3"  # 美音 type=0 英音type=1
+def get_from_Youdao(words,timeout=5):
+    """
+    {'us-phonetic': 'ˈæpl',
+    'phonetic': 'ˈæpl',
+    'uk-phonetic': 'ˈæpl',
+    'explains': 'n. 苹果，苹果树，苹果似的东西；[美俚]炸弹，手榴弹，（棒球的）球；[美俚]人，家伙。',
+    'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple.mp3'}
+    """
+    URL= 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
+    query =  requests.get(URL + '&q=' + words,timeout=timeout)
+    query = query.json()['basic']
+    query['explains']=query['explains'][0]
+    query['sound']="http://dict.youdao.com/dictvoice?type=0&audio="+words+".mp3" #美音 type=0 英音type=1
     return query
 
 from bs4 import BeautifulSoup
@@ -165,12 +171,6 @@ def _get_element(soup, tag, id=None, class_=None, subtag=None):
     # element = soup.find(tag, id=id, class_=class_)  # bs4
     """
     爬虫辅助函数，获取soup中的相关信息
-    :param soup:
-    :param tag:
-    :param id:
-    :param class_:
-    :param subtag:
-    :return:
     """
     element = None
     if id:
@@ -184,7 +184,10 @@ def _get_element(soup, tag, id=None, class_=None, subtag=None):
 def get_from_Bing(word, timeout=5):
     """
     爬取bing词典
-    返回值：{'phonitic_us': '美\xa0[ˈæp(ə)l] ', 'phonitic_uk': "英\xa0['æpl] ", 'participle': '复数：apples\xa0\xa0', 'def': 'n.苹果公司；【植】苹果；【植】苹果树网络苹果电脑；美国苹果；美国苹果公司'}
+    {'phonitic_us': '美\xa0[ˈæp(ə)l] ',
+    'phonitic_uk': "英\xa0['æpl] ",
+     'participle': '复数：apples\xa0\xa0',
+     'def': 'n.苹果公司；【植】苹果；【植】苹果树网络苹果电脑；美国苹果；美国苹果公司'}
     phonitic_us：美式发音
     phonitic_uk：英式发音
     participle：词语时态
@@ -212,6 +215,7 @@ def get_from_Bing(word, timeout=5):
                                 for content in element.contents])
     return result
 
+
 def get_from_Iciba(word,timeout=5):
     URL= 'http://www.iciba.com/index.php?a=getWordMean&c=search&word='
     query =  requests.get(URL + word,timeout=timeout)
@@ -225,15 +229,9 @@ def get_from_Iciba(word,timeout=5):
     result['parts'] = u'<br>'.join([part['part'] + ' ' + '; '.join(part['means']) for part in parts])#释义
     sentences = ''
     segs = query["sentence"]
-    for i, seg in enumerate(segs):
-        sentences = sentences +\
-            u"""<li>
-                    <div class="sen_en">{0}</div>
-                    <div class="sen_cn">{1}</div>
-                </li>""".format(seg['Network_en'], seg['Network_cn'])
-    sentences= u"""<ol>{}</ol>""".format(sentences)
+    if segs :
+        sentences =segs[0]['Network_en']+'\n'+segs[0]['Network_cn']+'\n'
     result['sentence']=sentences  #双语例句
-
 
     # sentences = ''
     # segs = query["auth_sentence"]
