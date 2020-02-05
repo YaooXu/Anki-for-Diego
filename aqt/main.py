@@ -71,7 +71,7 @@ class AnkiQt(QMainWindow):
 
     def setupUI(self):
         # 动态加载主界面的内容
-        self.col = None  # TODO：col是啥？
+        self.col = None
         self.setupCrashLog()
         self.disableGC()
         self.setupAppMsg()

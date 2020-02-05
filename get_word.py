@@ -165,7 +165,9 @@ def get_from_Youdao(words,timeout=5):
     query['sound']="http://dict.youdao.com/dictvoice?type=0&audio="+words+".mp3" #美音 type=0 英音type=1
     return query
 
+
 from bs4 import BeautifulSoup
+
 
 def _get_element(soup, tag, id=None, class_=None, subtag=None):
     # element = soup.find(tag, id=id, class_=class_)  # bs4
@@ -180,6 +182,7 @@ def _get_element(soup, tag, id=None, class_=None, subtag=None):
     if subtag and element:
         element = getattr(element, subtag, '')
     return element
+
 
 def get_from_Bing(word, timeout=5):
     """
@@ -251,8 +254,8 @@ def get_from_Iciba(word,timeout=5):
     #             </li>""".format(seg['english'], seg['chinese'])
     # result['jushi']= u"""<ol>{}</ol>""".format(sentences) #句法用式
 
-
     return result
+
 
 source_func_map = {
     'Baicizhan': get_from_Baicizhan,

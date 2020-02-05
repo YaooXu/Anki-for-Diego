@@ -352,6 +352,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         for idx, word_info in enumerate(word_infos):
             # 这个单词是否添加成功
             flag = 1
+            word = None
             for cnt, flds in enumerate(addCard.editor.note._model['flds']):
                 # 读取当前model的字段，根据当前字段将word_info内容添加进去
                 try:
@@ -359,20 +360,22 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                     source = source_list[flds_name]
                     key1, key2 = source.split(':')
                     addCard.editor.note.fields[cnt] = word_info[key1][key2]
-                    if key2 in ['img']:
+                    if key2 in ['word']:
+                        word = word_info[key1][key2]
+                    elif key2 in ['img']:
                         res = requests.get(word_info[key1][key2])
                         if not os.path.isdir("./images"):
                             os.mkdir("./images")
-                        with open("./images/{}.jpg".format(word_info[key1]['word']), "wb") as f:
+                        with open("./images/{}.jpg".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word_info[key1]['word'])
+                        addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word)
                     elif key2 in ['sound']:
-                        res = requests.get(word_info[key1]['sound'])
+                        res = requests.get(word_info[key1][key2])
                         if not os.path.isdir("./sound"):
                             os.mkdir("./sound")
-                        with open("./sound/{}.mp3".format(word_info[key1]['word']), "wb") as f:
+                        with open("./sound/{}.mp3".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word_info[key1]['word'])
+                        addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word)
                 except Exception as e:
                     flag = 0
                     break

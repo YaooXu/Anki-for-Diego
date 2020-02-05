@@ -353,7 +353,7 @@ class Editor:
             self.mw.progress.timer(10, callback, False)
             return
         self.saveTags() # TODO：Tag貌似可以为空，作用是啥？
-        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback()) # TODO：这个函数作用？ self.Web?
+        self.web.evalWithCallback("saveNow(%d)" % keepFocus, lambda res: callback())
 
     def checkValid(self):
         cols = []

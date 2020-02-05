@@ -34,7 +34,6 @@ class AddCards(QDialog):
         addHook('currentModelChanged', self.onModelChange)
         addCloseShortcut(self)
 
-        self.hidden = hidden
         if hidden:
             self.hide()
         else:

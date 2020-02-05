@@ -334,6 +334,7 @@ body {{ zoom: {}; background: {}; {} }}
                     return
                 cb(val)
 
+            # When the script has been executed, resultCallback is called with the result of the last executed statement
             self.page().runJavaScript(js, handler)
         else:
             self.page().runJavaScript(js)
