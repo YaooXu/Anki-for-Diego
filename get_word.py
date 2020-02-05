@@ -7,6 +7,8 @@ import threading
 import time
 from aqt.utils import showInfo
 
+SearchLock = threading.Lock()
+Emit = 0
 
 class MyBar(QWidget):
 
@@ -160,6 +162,7 @@ def get_from_Youdao(words,timeout=5):
     """
     URL= 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
     query =  requests.get(URL + '&q=' + words,timeout=timeout)
+    print(query.json())
     query = query.json()['basic']
     query['explains']=query['explains'][0]
     query['sound']="http://dict.youdao.com/dictvoice?type=0&audio="+words+".mp3" #美音 type=0 英音type=1
@@ -282,7 +285,13 @@ class WordThread(QThread):
             res = func(self.word, self.timeout)
             all_res[source_name] = res
         self.word_info = all_res
-        self.query_finish.emit()
+        SearchLock.acquire()
+        try:
+            global Emit
+            Emit += 1
+        finally:
+            SearchLock.release()
+        # self.query_finish.emit()
 
     def get_info(self):
         return self.word_info
@@ -316,12 +325,22 @@ class WordsAdder(QWidget):
         self.progress.show()
 
         self.threads = []
+        global Emit
+        Emit = 0
         for word in word_list:
             thread = WordThread(word, source_list, timeout)
             self.threads.append(thread)
-            thread.query_finish.connect(self.change_progress_dialog)
+            # thread.query_finish.connect(self.change_progress_dialog)
             thread.start()
-
+        
+        while True:
+            if Emit != self.words_num:
+                self.progress.setValue(Emit * 100 / self.words_num)
+                continue
+            else:
+                break
+        self.progress.setLabelText("查询完成, 正在添加")
+        self.progress.close()
         # 所有单词的最终信息
         self.word_infos = []
 
