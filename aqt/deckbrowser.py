@@ -359,7 +359,13 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                     flds_name = flds['name']
                     source = source_list[flds_name]
                     key1, key2 = source.split(':')
-                    addCard.editor.note.fields[cnt] = word_info[key1][key2]
+                    # print(word_info[key1][key2])
+                    # 判断word_info中是否有对应的field，若没有，则置为None
+                    if key1 in word_info and key2 in word_info[key1]:
+                        addCard.editor.note.fields[cnt] = word_info[key1][key2]
+                    else:
+                        addCard.editor.note.fields[cnt] = None
+
                     if key2 in ['word']:
                         word = word_info[key1][key2]
                     elif key2 in ['img']:
@@ -378,8 +384,8 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word)
                 except Exception as e:
                     flag = 0
-                    break
                     print(e)
+                    break
 
             success_num += flag
             print(addCard.editor.note.fields)
@@ -415,8 +421,22 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 return self.__check_json(model_json['template'], ['name', 'qfmt', 'afmt'])
         return True
 
+    def __check_modelfield(self, model_json):
+        # 检查导入模板source的字段键值是否标准
+        # 注意这里的当前路径是Anki2下面的，而不是anki
+        file_path = os.path.join(os.path.abspath(os.path.join(os.getcwd(), "../../..")), "stdfield.json")
+
+        with open(file_path, 'r', encoding='utf8') as f:
+            stdfield = json.load(f)
+            for fld in model_json['source']:
+                fld_source = model_json['source'][fld].split(":")[0]
+                fld_name = model_json['source'][fld].split(":")[1]
+                if fld_name != stdfield[fld_source][fld]:
+                    return False
+        return True
+
     def __import_json(self, content_json: dict):
-        if not self.__check_json(content_json):
+        if not (self.__check_json(content_json) and self.__check_modelfield(content_json)):
             messageBos = QMessageBox()
             messageBos.setText("json文件模板格式错误!")
             messageBos.exec_()

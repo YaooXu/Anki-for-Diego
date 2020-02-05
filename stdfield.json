@@ -1,0 +1,32 @@
+{
+  "Baicizhan":{
+    "单词": "word",
+    "音标": "accent",
+    "释义": "mean_cn",
+    "例句": "st",
+    "例句翻译": "sttr",
+    "图片": "img",
+    "音频": "sound"
+  },
+  "Youdao":{
+    "美式发音": "us-phonetic",
+    "英式发音": "uk-phonetic",
+    "音标": "phonetic",
+    "词语时态": "participle",
+    "释义": "explains",
+    "音频": "sound"
+  },
+  "Bing":{
+    "美式发音": "phonitic_us",
+    "英式发音": "phonitic_uk",
+    "词语时态": "participle",
+    "释义": "def"
+  },
+  "Iciba": {
+    "美式音标": "ph_am",
+    "英式音标": "ph_en",
+    "美式发音": "ph_am_mp3",
+    "英式发音": "ph_en_mp3",
+    "释义": "parts"
+  }
+}
