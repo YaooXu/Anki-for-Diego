@@ -10,6 +10,7 @@ from aqt.utils import showInfo
 SearchLock = threading.Lock()
 Emit = 0
 
+
 class MyBar(QWidget):
 
     def __init__(self, threads, browser):
@@ -119,8 +120,9 @@ class MyThread(threading.Thread):
             return result
 
 
-# 徐遥重构
-#################################################################
+from bs4 import BeautifulSoup
+
+
 def get_from_Baicizhan(word, timeout=5):
     r"""
     从百词斩获得单词
@@ -135,41 +137,54 @@ def get_from_Baicizhan(word, timeout=5):
         "mean_cn": 中文释义 str
         "accent": 音标 str
         "sound": 发音的链接 str
+        "errormsg" 返回码。0代表正常，-2是网络超时， -1是其他错误
     }
     """
-    url = u"http://mall.baicizhan.com/ws/search?w={word}".format(word=word)
-    response = requests.get(url)
-    result = response.json()
-    if len(result) == 1:
-        result['errorCode'] = 1
-    else:
+    try:
+        url = u"http://mall.baicizhan.com/ws/search?w={word}".format(word=word)
+        response = requests.get(url)
+        result = response.json()
+        if len(result) == 1:
+            result['errormsg'] = -1
+            return result
         result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + word + ".mp3"
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
+    return result
 
-    # print(result)
-    if result['errorCode'] == 1:
-        return None
-    else:
-        return result
 
-
-def get_from_Youdao(words,timeout=5):
+def get_from_Youdao(words, timeout=5):
     """
-    {'us-phonetic': 'ˈæpl',
+    {'word' : 'apple'
+    'us-phonetic': 'ˈæpl',
     'phonetic': 'ˈæpl',
     'uk-phonetic': 'ˈæpl',
     'explains': 'n. 苹果，苹果树，苹果似的东西；[美俚]炸弹，手榴弹，（棒球的）球；[美俚]人，家伙。',
-    'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple.mp3'}
+    'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple.mp3',
+    'errormsg': 0}
     """
-    URL= 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
-    query =  requests.get(URL + '&q=' + words,timeout=timeout)
-    print(query.json())
-    query = query.json()['basic']
-    query['explains']=query['explains'][0]
-    query['sound']="http://dict.youdao.com/dictvoice?type=0&audio="+words+".mp3" #美音 type=0 英音type=1
-    return query
-
-
-from bs4 import BeautifulSoup
+    result = {}
+    try:
+        URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
+        result = requests.get(URL + '&q=' + words, timeout=timeout)
+        result = result.json()
+        result = result['basic']
+        result['explains'] = result['explains'][0]
+        result['word'] = words
+        result['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + words + ".mp3"  # 美音 type=0 英音type=1
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
+    return result
 
 
 def _get_element(soup, tag, id=None, class_=None, subtag=None):
@@ -190,81 +205,95 @@ def _get_element(soup, tag, id=None, class_=None, subtag=None):
 def get_from_Bing(word, timeout=5):
     """
     爬取bing词典
-    {'phonitic_us': '美\xa0[ˈæp(ə)l] ',
-    'phonitic_uk': "英\xa0['æpl] ",
-     'participle': '复数：apples\xa0\xa0',
-     'def': 'n.苹果公司；【植】苹果；【植】苹果树网络苹果电脑；美国苹果；美国苹果公司'}
+    {
+        'word' : 'apple'
+        'phonitic_us': '美 [ˈæp(ə)l] ',
+        'phonitic_uk': "英 ['æpl] ",
+        'participle': '复数：apples  ',
+        'def': 'n.苹果公司；【植】苹果；【植】苹果树网络苹果电脑；美国苹果；美国苹果公司',
+        'errormsg': 0
+    }
     phonitic_us：美式发音
     phonitic_uk：英式发音
     participle：词语时态
     def：释义
     """
-    req = requests.get(url=
-        "http://cn.bing.com/dict/search?q={}&mkt=zh-cn".format(word),timeout=timeout)
-    req.encoding=req.apparent_encoding
-    data=req.text
-
-    soup = BeautifulSoup(data,"html.parser")
     result = {}
-    element = _get_element(soup, 'div', class_='hd_prUS').get_text()
-    if element:
-        result['phonitic_us'] = str(element)
-    element = _get_element(soup, 'div', class_='hd_pr').get_text()
-    if element:
-        result['phonitic_uk'] = str(element)
-    element = _get_element(soup, 'div', class_='hd_if').get_text()
-    if element:
-        result['participle'] = str(element)
-    element = _get_element(soup, 'div', class_='qdef', subtag='ul')
-    if element:
-        result['def'] = u''.join([str(content.get_text())
-                                for content in element.contents])
+    try:
+        req = requests.get(url=
+                           "http://cn.bing.com/dict/search?q={}&mkt=zh-cn".format(word), timeout=timeout)
+        req.encoding = req.apparent_encoding
+        data = req.text
+        soup = BeautifulSoup(data, "html.parser")
+        result['word'] = word
+        element = _get_element(soup, 'div', class_='hd_prUS').get_text()
+        if element:
+            result['phonitic_us'] = str(element).replace('\xa0', ' ')
+        element = _get_element(soup, 'div', class_='hd_pr').get_text()
+        if element:
+            result['phonitic_uk'] = str(element).replace('\xa0', ' ')
+        element = _get_element(soup, 'div', class_='hd_if').get_text()
+        if element:
+            result['participle'] = str(element).replace('\xa0', ' ')
+        element = _get_element(soup, 'div', class_='qdef', subtag='ul')
+        if element:
+            result['def'] = u''.join([str(content.get_text())
+                                      for content in element.contents])
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
 
 
-def get_from_Iciba(word,timeout=5):
-    URL= 'http://www.iciba.com/index.php?a=getWordMean&c=search&word='
-    query =  requests.get(URL + word,timeout=timeout)
-    query = query.json()
+def get_from_Iciba(word, timeout=5):
+    '''
+    {
+        'word' : 'apple'
+        'ph_am': 'ˈæpəl',
+        'ph_en': 'ˈæpl',
+        'ph_am_mp3': 'http://res.iciba.com/resource/amp3/1/0/1f/38/1f3870be274f6c49b3e31a0c6728957f.mp3',
+        'ph_en_mp3': 'http://res.iciba.com/resource/amp3/oxford/0/44/29/44297283b5e4b5b0a991213897f0b14a.mp3',
+        'parts': 'n. 苹果; 苹果树; 苹果公司',
+        'sentence': 'What will be the effect of the alliance between IBM and Apple?\n若IBM公司和苹果公司联手将会有什么效果呢？\n',
+        'errormsg': 0
+        }
+    '''
     result = {}
-    result['ph_am'] = query["baesInfo"]['symbols'][0]['ph_am'] #美式音标
-    result['ph_en'] = query["baesInfo"]['symbols'][0]['ph_en']  #英式音标
-    result['ph_am_mp3'] = query["baesInfo"]['symbols'][0]['ph_am_mp3'] #美式发音
-    result['ph_en_mp3'] = query["baesInfo"]['symbols'][0]['ph_en_mp3']  #英式发音
-    parts=query["baesInfo"]['symbols'][0]['parts']
-    result['parts'] = u'<br>'.join([part['part'] + ' ' + '; '.join(part['means']) for part in parts])#释义
-    sentences = ''
-    segs = query["sentence"]
-    if segs :
-        sentences =segs[0]['Network_en']+'\n'+segs[0]['Network_cn']+'\n'
-    result['sentence']=sentences  #双语例句
-
-    # sentences = ''
-    # segs = query["auth_sentence"]
-    # for i, seg in enumerate(segs):
-    #     sentences = sentences +\
-    #         u"""<li>{0}  [{1}]</li>""".format(
-    #             seg['res_content'], seg['source'])
-    # result['auth_sentence']=u"""<ol>{}</ol>""".format(sentences) #权威例句
-
-    # sentences = ''
-    # segs = query["jushi"]
-    # for i, seg in enumerate(segs):
-    #     sentences = sentences +\
-    #         u"""<li>
-    #                 <div class="sen_en">{0}</div>
-    #                 <div class="sen_cn">{1}</div>
-    #             </li>""".format(seg['english'], seg['chinese'])
-    # result['jushi']= u"""<ol>{}</ol>""".format(sentences) #句法用式
-
+    try:
+        URL = 'http://www.iciba.com/index.php?a=getWordMean&c=search&word='
+        query = requests.get(URL + word, timeout=timeout)
+        query = query.json()
+        result['word'] = word
+        result['ph_am'] = query["baesInfo"]['symbols'][0]['ph_am']  # 美式音标
+        result['ph_en'] = query["baesInfo"]['symbols'][0]['ph_en']  # 英式音标
+        result['ph_am_mp3'] = query["baesInfo"]['symbols'][0]['ph_am_mp3']  # 美式发音
+        result['ph_en_mp3'] = query["baesInfo"]['symbols'][0]['ph_en_mp3']  # 英式发音
+        parts = query["baesInfo"]['symbols'][0]['parts']
+        result['parts'] = u'<br>'.join([part['part'] + ' ' + '; '.join(part['means']) for part in parts])  # 释义
+        sentences = ''
+        segs = query["sentence"]
+        if segs:
+            sentences = segs[0]['Network_en'] + '\n' + segs[0]['Network_cn'] + '\n'
+        result['sentence'] = sentences  # 双语例句
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
 
 
 source_func_map = {
     'Baicizhan': get_from_Baicizhan,
     'Youdao': get_from_Youdao,
-    'Bing' : get_from_Bing,
-    'Iciba' : get_from_Iciba
+    'Bing': get_from_Bing,
+    'Iciba': get_from_Iciba
 }
 
 
@@ -332,7 +361,7 @@ class WordsAdder(QWidget):
             self.threads.append(thread)
             # thread.query_finish.connect(self.change_progress_dialog)
             thread.start()
-        
+
         while True:
             if Emit != self.words_num:
                 self.progress.setValue(Emit * 100 / self.words_num)
