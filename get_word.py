@@ -119,7 +119,10 @@ class MyThread(threading.Thread):
         else:
             return result
 
+
 from bs4 import BeautifulSoup
+
+
 def get_from_Baicizhan(word, timeout=5):
     r"""
     从百词斩获得单词
@@ -134,11 +137,10 @@ def get_from_Baicizhan(word, timeout=5):
         "mean_cn": 中文释义 str
         "accent": 音标 str
         "sound": 发音的链接 str
-        "errormsg" 返回码。0代表正常，1代表出错
+        "errormsg" 返回码。0代表正常，-2是网络超时， -1是其他错误
     }
     """
     try:
-
         url = u"http://mall.baicizhan.com/ws/search?w={word}".format(word=word)
         response = requests.get(url)
         result = response.json()
@@ -146,12 +148,14 @@ def get_from_Baicizhan(word, timeout=5):
             result['errormsg'] = -1
             return result
         result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + word + ".mp3"
-        result['errormsg']=0
-    except:
-        result["errormsg"]=-1
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
-
-
 
 
 def get_from_Youdao(words, timeout=5):
@@ -164,18 +168,24 @@ def get_from_Youdao(words, timeout=5):
     'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple.mp3',
     'errormsg': 0}
     """
+    result = {}
     try:
         URL = 'http://fanyi.youdao.com/openapi.do?keyfrom=youdaoci&key=694691143&type=data&doctype=json&version=1.1'
         result = requests.get(URL + '&q=' + words, timeout=timeout)
         result = result.json()
-        result =result['basic']
+        result = result['basic']
         result['explains'] = result['explains'][0]
-        result['word']=words
+        result['word'] = words
         result['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + words + ".mp3"  # 美音 type=0 英音type=1
-        result['errormsg']=0
-    except :
-        result['errormsg']=-1
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
+
 
 def _get_element(soup, tag, id=None, class_=None, subtag=None):
     # element = soup.find(tag, id=id, class_=class_)  # bs4
@@ -208,30 +218,34 @@ def get_from_Bing(word, timeout=5):
     participle：词语时态
     def：释义
     """
-    try :
+    result = {}
+    try:
         req = requests.get(url=
-                        "http://cn.bing.com/dict/search?q={}&mkt=zh-cn".format(word), timeout=timeout)
+                           "http://cn.bing.com/dict/search?q={}&mkt=zh-cn".format(word), timeout=timeout)
         req.encoding = req.apparent_encoding
         data = req.text
         soup = BeautifulSoup(data, "html.parser")
-        result = {}
-        result['word']=word
+        result['word'] = word
         element = _get_element(soup, 'div', class_='hd_prUS').get_text()
         if element:
-            result['phonitic_us'] = str(element).replace('\xa0',' ')
+            result['phonitic_us'] = str(element).replace('\xa0', ' ')
         element = _get_element(soup, 'div', class_='hd_pr').get_text()
         if element:
-            result['phonitic_uk'] = str(element).replace('\xa0',' ')
+            result['phonitic_uk'] = str(element).replace('\xa0', ' ')
         element = _get_element(soup, 'div', class_='hd_if').get_text()
         if element:
-            result['participle'] = str(element).replace('\xa0',' ')
+            result['participle'] = str(element).replace('\xa0', ' ')
         element = _get_element(soup, 'div', class_='qdef', subtag='ul')
         if element:
             result['def'] = u''.join([str(content.get_text())
-                                    for content in element.contents])
-        result['errormsg']=0
-    except :
-        result['errormsg']=-1
+                                      for content in element.contents])
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
 
 
@@ -248,12 +262,12 @@ def get_from_Iciba(word, timeout=5):
         'errormsg': 0
         }
     '''
+    result = {}
     try:
         URL = 'http://www.iciba.com/index.php?a=getWordMean&c=search&word='
         query = requests.get(URL + word, timeout=timeout)
         query = query.json()
-        result = {}
-        result['word']=word
+        result['word'] = word
         result['ph_am'] = query["baesInfo"]['symbols'][0]['ph_am']  # 美式音标
         result['ph_en'] = query["baesInfo"]['symbols'][0]['ph_en']  # 英式音标
         result['ph_am_mp3'] = query["baesInfo"]['symbols'][0]['ph_am_mp3']  # 美式发音
@@ -265,14 +279,14 @@ def get_from_Iciba(word, timeout=5):
         if segs:
             sentences = segs[0]['Network_en'] + '\n' + segs[0]['Network_cn'] + '\n'
         result['sentence'] = sentences  # 双语例句
-        result['errormsg']=0
-    except:
-        result['errormsg']=-1
+        result['errormsg'] = 0
+    except  requests.exceptions.RequestException:
+        result = {}
+        result['errormsg'] = -2
+    except Exception:
+        result = {}
+        result['errormsg'] = -1
     return result
-
-
-
-
 
 
 source_func_map = {
