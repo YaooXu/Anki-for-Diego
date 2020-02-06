@@ -431,7 +431,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             for fld in model_json['source']:
                 fld_source = model_json['source'][fld].split(":")[0]
                 fld_name = model_json['source'][fld].split(":")[1]
-                if fld_name != stdfield[fld_source][fld]:
+                if fld_name not in stdfield[fld_source]:
                     return False
         return True
 
