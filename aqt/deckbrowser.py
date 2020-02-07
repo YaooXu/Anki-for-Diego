@@ -318,7 +318,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         errormsg = {}
 
         check_word_infos = word_infos.copy()
-        count = [-1,-1]
+        count = [-1, -1]
         flag = 0
         for word_info in check_word_infos:
             count[0] += 1
@@ -334,9 +334,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         count[0] -= 1
                         flag = 1
                         break
-        
+
         success_num = self.add_words(word_infos)
-        report_add_res(len(words), success_num,errormsg)
+        report_add_res(len(words), success_num, errormsg)
 
     def _add_from_text(self, content):
         """
@@ -363,7 +363,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         else:
             messageBos.setText("必须是txt文件!")
             messageBos.exec_()
-        
+
     def add_words(self, word_infos: list):
         r"""
         把从服务器得到的单词批量加入牌组
@@ -373,14 +373,13 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         success_num = 0
 
         progress = QProgressDialog()
-        progress.setWindowTitle("请稍等2")
+        progress.setWindowTitle("请稍等")
         progress.setLabelText("正在添加单词...")
         progress.setCancelButtonText("取消")
-        progress.setMinimumDuration(5)
+        progress.setMinimumDuration(500)
         progress.setWindowModality(Qt.WindowModal)
         progress.setRange(0, 100)
         progress.setValue(1)
-        progress.show()
 
         source_list = self.mw.col.models.getCurrentSource()
 
@@ -400,7 +399,8 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                     if key1 in word_info and key2 in word_info[key1]:
                         addCard.editor.note.fields[cnt] = word_info[key1][key2]
                     else:
-                        addCard.editor.note.fields[cnt] = None
+                        addCard.editor.note.fields[cnt] = ''
+                        continue
 
                     if key2 in ['word']:
                         word = word_info[key1][key2]
@@ -408,16 +408,16 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         res = requests.get(word_info[key1][key2])
                         if not os.path.isdir("./images"):
                             os.mkdir("./images")
-                        with open("./images/{}.jpg".format(word), "wb") as f:
+                        with open("./{}.jpg".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "./images/{}.jpg".format(word)
+                        addCard.editor.note.fields[cnt] = "./{}.jpg".format(word)
                     elif key2 in ['sound']:
                         res = requests.get(word_info[key1][key2])
                         if not os.path.isdir("./sound"):
                             os.mkdir("./sound")
-                        with open("./sound/{}.mp3".format(word), "wb") as f:
+                        with open("./{}.mp3".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "[sound:./sound/{}.mp3]".format(word)
+                        addCard.editor.note.fields[cnt] = "[sound:./{}.mp3]".format(word)
                 except Exception as e:
                     flag = 0
                     print(e)
@@ -427,14 +427,11 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             print(addCard.editor.note.fields)
             addCard.addCards_hidden()
 
-            print((idx + 1) * 100 / len(word_infos))
+            if idx + 1 == len(word_infos):
+                progress.setLabelText("添加完成")
             progress.setValue(int((idx + 1) * 100 / len(word_infos)))
 
         addCard.close_hidden()
-
-        progress.setLabelText("添加完成")
-        time.sleep(1)
-        progress.close()
 
         return success_num
 

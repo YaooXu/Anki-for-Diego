@@ -69,18 +69,17 @@ class Worker(QThread):
             self.progressBarValue.emit(1)  # 发送进度条的值信号
 
 
-def report_add_res(tot_num, success_num,errormsg):
-    msg = ["网络错误","其他原因"]
+def report_add_res(tot_num, success_num, errormsg):
+    msg = ["网络错误", "其他原因"]
     fail_num = tot_num - success_num
     alert = QMessageBox()
-    content = "共%d个单词，添加成功%d个，失败%d个" % (tot_num, success_num, fail_num)
-    alert.setText(content)
-    alert.exec_()
+    content = "共%d个单词，添加成功%d个，失败%d个\n" % (tot_num, success_num, fail_num)
 
-    alert = QMessageBox()
-    content = ""
-    for key in errormsg.keys():
-        content += "单词 %s 出错原因 %s\n" % (key,msg[errormsg[key]+2])
+    if errormsg:
+        error_content = ""
+        for key in errormsg.keys():
+            error_content += "单词 %s 出错原因 %s\n" % (key, msg[errormsg[key] + 2])
+        content += error_content
     alert.setText(content)
     alert.exec_()
 
@@ -355,11 +354,11 @@ class WordsAdder(QWidget):
         self.progress.setWindowTitle("请稍等")
         self.progress.setLabelText("正在查询单词...")
         self.progress.setCancelButtonText("取消")
-        self.progress.setMinimumDuration(5)
         self.progress.setWindowModality(Qt.WindowModal)
         self.progress.setRange(0, 100)
+        self.progress.setMinimumDuration(500)
         self.progress.setValue(1)
-        self.progress.show()
+        # self.progress.show()
 
         self.threads = []
         global Emit
@@ -370,14 +369,11 @@ class WordsAdder(QWidget):
             # thread.query_finish.connect(self.change_progress_dialog)
             thread.start()
 
-        while True:
-            if Emit != self.words_num:
-                self.progress.setValue(Emit * 100 / self.words_num)
-                continue
-            else:
-                break
-        self.progress.setLabelText("查询完成, 正在添加")
-        self.progress.close()
+        while Emit < self.words_num:
+            self.progress.setValue(max(1, int(Emit * 100 / self.words_num)))
+        else:
+            self.progress.setLabelText("查询完成, 正在添加")
+            self.progress.setValue(100)
         # 所有单词的最终信息
         self.word_infos = []
 
