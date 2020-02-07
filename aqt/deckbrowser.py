@@ -296,6 +296,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 source_list.append(source_name)
 
         words = content.strip().split('\n')
+
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
