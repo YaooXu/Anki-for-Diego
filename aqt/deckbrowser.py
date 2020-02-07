@@ -296,6 +296,21 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 source_list.append(source_name)
 
         words = content.strip().split('\n')
+        index = 0
+        # 保证了添加单词的顺序，且剔除空格
+        while True:
+            cnt = index
+            if index == len(words):
+                break
+            if " " in words[index]:
+                for tmp in words[index].split(' '):
+                    if tmp != "":
+                        words.insert(cnt + 1, tmp)
+                        cnt = cnt + 1
+                del words[index]
+                index = cnt
+            else:
+                index = index + 1
 
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
