@@ -155,6 +155,12 @@ def get_from_Baicizhan(word, timeout=5):
             result['errormsg'] = -1
             return result
         result['sound'] = "http://baicizhan.qiniucdn.com/word_audios/" + word + ".mp3"
+        try:
+            res = requests.get(result['sound'])
+            if res.status_code == 404:
+                del result['sound']
+        except:
+            pass
         result['errormsg'] = 0
     except  requests.exceptions.RequestException:
         result = {}
@@ -172,7 +178,7 @@ def get_from_Youdao(words, timeout=5):
     'phonetic': 'ˈæpl',
     'uk-phonetic': 'ˈæpl',
     'explains': 'n. 苹果，苹果树，苹果似的东西；[美俚]炸弹，手榴弹，（棒球的）球；[美俚]人，家伙。',
-    'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple.mp3',
+    'sound': 'http://dict.youdao.com/dictvoice?type=0&audio=apple',
     'errormsg': 0}
     """
     result = {}
@@ -183,7 +189,7 @@ def get_from_Youdao(words, timeout=5):
         result = result['basic']
         result['explains'] = result['explains'][0]
         result['word'] = words
-        result['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + words + ".mp3"  # 美音 type=0 英音type=1
+        result['sound'] = "http://dict.youdao.com/dictvoice?type=0&audio=" + words  # 美音 type=0 英音type=1
         result['errormsg'] = 0
     except  requests.exceptions.RequestException:
         result = {}
