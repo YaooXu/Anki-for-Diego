@@ -299,8 +299,28 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
+        errormsg = {}
+
+        check_word_infos = word_infos.copy()
+        count = [-1,-1]
+        flag = 0
+        for word_info in check_word_infos:
+            count[0] += 1
+            count[1] += 1
+            for key in word_info.keys():
+                if flag == 1:
+                    flag = 0
+                    break
+                for key2 in word_info[key]:
+                    if key2 == 'errormsg' and word_info[key][key2] != 0:
+                        errormsg[words[count[1]]] = word_info[key][key2]
+                        del word_infos[count[0]]
+                        count[0] -= 1
+                        flag = 1
+                        break
+        
         success_num = self.add_words(word_infos)
-        report_add_res(len(words), success_num)
+        report_add_res(len(words), success_num,errormsg)
 
     def _add_from_text(self, content):
         """
@@ -327,7 +347,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         else:
             messageBos.setText("必须是txt文件!")
             messageBos.exec_()
-
+        
     def add_words(self, word_infos: list):
         r"""
         把从服务器得到的单词批量加入牌组

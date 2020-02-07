@@ -69,10 +69,18 @@ class Worker(QThread):
             self.progressBarValue.emit(1)  # 发送进度条的值信号
 
 
-def report_add_res(tot_num, success_num):
+def report_add_res(tot_num, success_num,errormsg):
+    msg = ["网络错误","其他原因"]
     fail_num = tot_num - success_num
     alert = QMessageBox()
     content = "共%d个单词，添加成功%d个，失败%d个" % (tot_num, success_num, fail_num)
+    alert.setText(content)
+    alert.exec_()
+
+    alert = QMessageBox()
+    content = ""
+    for key in errormsg.keys():
+        content += "单词 %s 出错原因 %s\n" % (key,msg[errormsg[key]+2])
     alert.setText(content)
     alert.exec_()
 
