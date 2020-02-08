@@ -1,7 +1,7 @@
 /* Copyright: Ankitects Pty Ltd and contributors
  * License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html */
 
-a.deck {
+ a.deck {
     color: #000;
     text-decoration: none;
     min-width: 5em;
@@ -74,6 +74,7 @@ div{
 
 .buttonbox {
     display:inline-block;
+    text-align: center;
 }
 
 .buttonbox button{
@@ -83,7 +84,7 @@ div{
 
 .buttonbox textarea{
     width: 10em;
-    height: 6em;
+    height: 16em;
 }
 
 .buttonbox select{
@@ -95,4 +96,8 @@ div{
     font-size: 1.2em;
     width: 10em;
     height: 2em;
+}
+
+.buttonlist {
+    text-align: center;
 }

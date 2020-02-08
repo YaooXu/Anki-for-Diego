@@ -101,27 +101,34 @@ class DeckBrowser:
 <center>
 <br>
 <br>
-<div class="buttonbox">
-    <div><textarea id="words-area"></textarea></div>
-    <div>
-        <table>
-            <tr>
-                <th><button type="button" id="add_from_text_bt">添加文本框中单词</button></th>
-            </tr>
-            <tr>
-                <th><button type="button" id="add_from_file_bt">从文件导入单词</button></th>
-            </tr>
-            <tr>
-                <th><button type="button" id="import_model">导入新的模板</button></th>
-            </tr>
-        </table>
-    </div>
-    </br>
-    <label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp请选择模板&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-    <select id='choose_model'>
-        %(models)s
-    </select>
-</div>
+<hr style=" width: 30em;border-color: black;">
+        <div class="buttonbox">
+            <div><textarea id="words-area"></textarea></div>
+            <div class="buttonlist">
+                <label>请选择模板</label>
+                <br>
+                <br>
+                <select id='choose_model'>
+                    %(models)s
+                </select>
+                <br>
+                <br>
+                <button type="button" id="import_model">导入新的模板</button>
+                <br>
+                <br>
+                <hr style=" width: 12em;border-color: black;">
+                <br>
+                <button type="button" id="add_from_text_bt">添加文本框中单词</button>
+                <br>
+                <br>
+                <button type="button" id="add_from_file_bt">从文件导入单词</button>
+                <br>
+                <br>
+                
+            </div>
+
+        </div>
+        <hr style=" width: 30em;border-color: black;">
 </center>
 """
 
