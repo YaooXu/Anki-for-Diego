@@ -310,11 +310,32 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 index = cnt
             else:
                 index = index + 1
+        # 单词去重
+        duplicate_words = {}
+        errormsg = {}
 
+        for i in words:
+            if i in duplicate_words.keys():
+                duplicate_words[i] += 1
+            else:
+                duplicate_words[i] = 1
+        words_temp = []
+        for i in duplicate_words.keys():
+            words_temp.append(i)
+            if duplicate_words[i] != 1:
+                errormsg[i] = -3
+
+        words = []
+        note = self.mw.col.newNote()
+        for i in words_temp:
+            if note.newDupeOrEmpty(i) != 2:
+                words.append(i)
+            else:
+                errormsg[i] = -3
+        
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
-        errormsg = {}
 
         check_word_infos = word_infos.copy()
         count = [-1, -1]

@@ -145,6 +145,20 @@ insert or replace into notes values (?,?,?,?,?,?,?,?,?,?,?)""",
                     splitFields(flds)[0]) == stripHTMLMedia(self.fields[0]):
                 return 2
         return False
+    
+    def newDupeOrEmpty(self,word):
+        "1 if first is empty; 2 if first is a duplicate, False otherwise."
+        val = word
+        if not val.strip():
+            return 1
+        csum = fieldChecksum(val)
+        # find any matching csums and compare
+        for flds in self.col.db.list(
+                "select flds from notes where csum = ? and id != ? and mid = ?",
+                csum, self.id or 0, self.mid):
+                return 2
+        return False
+
 
     # Flushing cloze notes
     ##################################################

@@ -70,7 +70,7 @@ class Worker(QThread):
 
 
 def report_add_res(tot_num, success_num, errormsg):
-    msg = ["网络错误", "其他原因"]
+    msg = ["单词重复","网络错误", "其他原因"]
     fail_num = tot_num - success_num
     alert = QMessageBox()
     content = "共%d个单词，添加成功%d个，失败%d个\n" % (tot_num, success_num, fail_num)
@@ -78,7 +78,7 @@ def report_add_res(tot_num, success_num, errormsg):
     if errormsg:
         error_content = ""
         for key in errormsg.keys():
-            error_content += "单词 %s 出错原因 %s\n" % (key, msg[errormsg[key] + 2])
+            error_content += "单词 %s 出错原因 %s\n" % (key, msg[errormsg[key] + 3])
         content += error_content
     alert.setText(content)
     alert.exec_()
