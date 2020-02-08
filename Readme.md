@@ -56,6 +56,14 @@
  3. 以Add为例，调用onAdd方法，输入新field的name，先调用self.saveField()（先保存？），然后调用anki\models.py文件下的newField()方法，创建新的field，命名为输入的name；
  4. 之后调用anki\models.py文件下的addField()方法，将新的field添加到当前的model中，重新加载，完成add流程；
 
+#### 删除卡片
+
+- **流程**
+1. 点击主界面的Browse按钮，创建一个browser对象，在对应deck中找到想删除的卡片，鼠标右键创建一个Qmune对象，点击delete进行删除
+2. 删除时调用deleteNotes方法，进而调用_deleteNotes开始删除，首先定位当前的行数，注意这里是可以一次选中多行，多个卡片同时进行删除的
+3. 读取选中的行数中单词在数据库中对应的id，具体方法调用browser.selectedNotes方法，查询db中卡片id，返回值赋值给名为nids的一个list
+4. 然后调用collection中的remNote方法，从数据库中删除对应的card
+
 ### 数据库相关操作
 
 #### 初始化

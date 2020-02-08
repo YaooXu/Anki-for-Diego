@@ -1456,6 +1456,9 @@ where id in %s""" % ids2str(sf))
 
     def _deleteNotes(self):
         nids = self.selectedNotes()
+        # 获取选择行对应卡片的word
+        words = self.col.myGetWord(nids)
+        self.deleteMedia(words)
         if not nids:
             return
         self.mw.checkpoint(_("Delete Notes"))
@@ -1483,6 +1486,16 @@ where id in %s""" % ids2str(sf))
         self.model.endReset()
         self.mw.requireReset()
         tooltip(ngettext("%d note deleted.", "%d notes deleted.", len(nids)) % len(nids))
+
+    def deleteMedia(self, words):
+        # 删除words中单词对应的媒体文件
+        # print(os.getcwd())
+        file_path = os.getcwd()
+        for home, dirs, files in os.walk(file_path):
+            for filename in files:
+                if filename.split('.')[0] in words:
+                    os.remove(os.path.join(home, filename))
+
 
     # Deck change
     ######################################################################

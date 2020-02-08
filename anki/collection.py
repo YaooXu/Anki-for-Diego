@@ -312,6 +312,14 @@ crt=?, mod=?, scm=?, dty=?, usn=?, ls=?, conf=?""",
     def remNotes(self, ids):
         self.remCards(self.db.list("select id from cards where nid in " +
                                    ids2str(ids)))
+    def myGetWord(self, ids):
+        # 获取选择行对应卡片的word
+        snids = ids2str(ids)
+        ans = []
+        for nid, mid, flds in self.db.execute(
+                "select id, mid, flds from notes where id in " + snids):
+            ans.append(flds.split('/')[0][0:-1]) # flds中的word最后一个字符不要
+        return ans
 
     def _remNotes(self, ids):
         "Bulk delete notes by ID. Don't call this directly."
