@@ -12,121 +12,43 @@ models = []
 ##########################################################################
 
 def addBasicModel(col):
+    # 默认的单词模板
     # ModelManager
     mm = col.models
-    m = mm.new(_("Basic"))
-    fm = mm.newField(_("单词"))
+    m = mm.new("默认单词模板")
+    fm = mm.newField("单词")
     mm.addField(m, fm)
-    fm = mm.newField(_("音标"))
+    fm = mm.newField("音标")
     mm.addField(m, fm)
-    fm = mm.newField(_("释义"))
+    fm = mm.newField("释义")
     mm.addField(m, fm)
-    fm = mm.newField(_("例句"))
+    fm = mm.newField("例句")
     mm.addField(m, fm)
-    fm = mm.newField(_("图片"))
+    fm = mm.newField("图片")
     mm.addField(m, fm)
-    fm = mm.newField(_("音频"))
+    fm = mm.newField("音频")
     mm.addField(m, fm)
 
-    t = mm.newTemplate(_("Card 1"))
-    t['qfmt'] = "{{" + _("Front") + "}}"
-    t['qfmt'] = "{{" + _("单词") + "}}<br>{{" + _("音标") + "}}" + "<span class='voice'>{{" + _("音频") + "}}</span>"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("释义") + "}}<br>{{" + _(
-        "例句") + "}}" + "<img src={{" + _("图片") + "}} alt=\"" + _("图片") + "\">"
+    t = mm.newTemplate("默认显示样式")
+    t['qfmt'] = "{{单词}}<br>{{音标}}<span class='voice'>{{音频}}</span>"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n{{释义}}<br>{{例句}}<br><img src={{图片}} alt=\"图片\">"
     mm.addTemplate(m, t)
+
+    source = {
+        "单词": "Baicizhan:word",
+        "音标": "Baicizhan:accent",
+        "释义": "Baicizhan:mean_cn",
+        "例句": "Youdao:explains",
+        "图片": "Baicizhan:img",
+        "音频": "Youdao:sound"
+    }
+    mm.addSource(m, source)
     mm.add(m)
+
     return m
 
 
 models.append((lambda: _("Basic"), addBasicModel))
 
-
 # Basic w/ typing
 ##########################################################################
-
-def addBasicTypingModel(col):
-    mm = col.models
-    m = mm.new(_("Basic (type in the answer)"))
-    fm = mm.newField(_("Front"))
-    mm.addField(m, fm)
-    fm = mm.newField(_("Back"))
-    mm.addField(m, fm)
-    t = mm.newTemplate(_("Card 1"))
-    t['qfmt'] = "{{" + _("Front") + "}}\n\n{{type:" + _("Back") + "}}"
-    t['afmt'] = "{{" + _("Front") + "}}\n\n<hr id=answer>\n\n{{type:" + _("Back") + "}}"
-    mm.addTemplate(m, t)
-    mm.add(m)
-    return m
-
-
-models.append((lambda: _("Basic (type in the answer)"), addBasicTypingModel))
-
-
-# Forward & Reverse
-##########################################################################
-
-def addForwardReverse(col):
-    mm = col.models
-    m = addBasicModel(col)
-    m['name'] = _("Basic (and reversed card)")
-    t = mm.newTemplate(_("Card 2"))
-    t['qfmt'] = "{{" + _("Back") + "}}"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("Front") + "}}"
-    mm.addTemplate(m, t)
-    return m
-
-
-models.append((lambda: _("Basic (and reversed card)"), addForwardReverse))
-
-
-# Forward & Optional Reverse
-##########################################################################
-
-def addForwardOptionalReverse(col):
-    mm = col.models
-    m = addBasicModel(col)
-    m['name'] = _("Basic (optional reversed card)")
-    av = _("Add Reverse")
-    fm = mm.newField(av)
-    mm.addField(m, fm)
-    t = mm.newTemplate(_("Card 2"))
-    t['qfmt'] = "{{#%s}}{{%s}}{{/%s}}" % (av, _("Back"), av)
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n" + "{{" + _("Front") + "}}"
-    mm.addTemplate(m, t)
-    return m
-
-
-models.append((lambda: _("Basic (optional reversed card)"),
-               addForwardOptionalReverse))
-
-
-# Cloze
-##########################################################################
-
-def addClozeModel(col):
-    mm = col.models
-    m = mm.new(_("Cloze"))
-    m['type'] = MODEL_CLOZE
-    txt = _("Text")
-    fm = mm.newField(txt)
-    mm.addField(m, fm)
-    fm = mm.newField(_("Extra"))
-    mm.addField(m, fm)
-    t = mm.newTemplate(_("Cloze"))
-    fmt = "{{cloze:%s}}" % txt
-    m['css'] += """
-.cloze {
- font-weight: bold;
- color: blue;
-}
-.nightMode .cloze {
- color: lightblue;
-}"""
-    t['qfmt'] = fmt
-    t['afmt'] = fmt + "<br>\n{{%s}}" % _("Extra")
-    mm.addTemplate(m, t)
-    mm.add(m)
-    return m
-
-
-models.append((lambda: _("Cloze"), addClozeModel))

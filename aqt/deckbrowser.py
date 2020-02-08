@@ -13,9 +13,8 @@ from anki.hooks import runHook
 from copy import deepcopy
 from anki.lang import _, ngettext
 import requests
-from get_word import report_add_res, MyThread, MyBar, Worker, WordThread, WordsAdder
+from anki.get_word import report_add_res, WordsAdder
 import json
-
 
 # 牌组浏览
 class DeckBrowser:
@@ -379,7 +378,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         progress.setMinimumDuration(500)
         progress.setWindowModality(Qt.WindowModal)
         progress.setRange(0, 100)
-        progress.setValue(1)
+        progress.setValue(0)
 
         source_list = self.mw.col.models.getCurrentSource()
 

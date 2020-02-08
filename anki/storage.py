@@ -12,9 +12,7 @@ from anki.utils import intTime, isWin
 from anki.db import DB
 from anki.collection import _Collection
 from anki.consts import *
-from anki.stdmodels import addBasicModel, addClozeModel, addForwardReverse, \
-    addForwardOptionalReverse, addBasicTypingModel
-
+from anki.stdmodels import addBasicModel
 
 # 生成用户数据库的类的函数并初始化部分内容
 def Collection(path, lock=True, server=False, log=False):
@@ -47,10 +45,10 @@ def Collection(path, lock=True, server=False, log=False):
     elif create:
         # 第一次加载需要从stdmodels中读取标准模板
         # add in reverse order so basic is default
-        addClozeModel(col)
-        addBasicTypingModel(col)
-        addForwardOptionalReverse(col)
-        addForwardReverse(col)
+        # addClozeModel(col)
+        # addBasicTypingModel(col)
+        # addForwardOptionalReverse(col)
+        # addForwardReverse(col)
         addBasicModel(col)
         col.save()
     if lock:

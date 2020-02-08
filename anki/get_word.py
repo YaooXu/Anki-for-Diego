@@ -362,7 +362,7 @@ class WordsAdder(QWidget):
         self.progress.setCancelButtonText("取消")
         self.progress.setWindowModality(Qt.WindowModal)
         self.progress.setRange(0, 100)
-        self.progress.setMinimumDuration(500)
+        self.progress.setMinimumDuration(1000)
         self.progress.setValue(1)
         # self.progress.show()
 
@@ -379,7 +379,9 @@ class WordsAdder(QWidget):
             self.progress.setValue(max(1, int(Emit * 100 / self.words_num)))
         else:
             self.progress.setLabelText("查询完成, 正在添加")
+            self.progress.setValue(99)
             self.progress.setValue(100)
+
         # 所有单词的最终信息
         self.word_infos = []
 
