@@ -16,7 +16,11 @@ function init() {
         return pycmd('import_model')
     });
 
+    $('#smart_add').click(function () {
+        return pycmd('smart_add')
+    });
+
     $('#choose_model').change(function () {
-        return pycmd('change_model:'+$(this).val())
+        return pycmd('change_model:' + $(this).val())
     });
 }

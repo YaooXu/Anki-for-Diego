@@ -31,7 +31,7 @@ def addBasicModel(col):
 
     t = mm.newTemplate("默认显示样式")
     t['qfmt'] = "{{单词}}<br>{{音标}}<span class='voice'>{{音频}}</span>"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n{{释义}}<br>{{例句}}<br><img src={{图片}} alt=\"图片\">"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n{{释义}}<br>{{例句}}<br>{{图片}}"
     mm.addTemplate(m, t)
 
     source = {

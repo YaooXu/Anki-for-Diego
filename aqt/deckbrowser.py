@@ -77,6 +77,8 @@ class DeckBrowser:
             self._import_model()
         elif cmd == 'change_model':
             self._change_model(arg)
+        elif cmd == 'smart_add':
+            self._smart_add()
         return False
 
     def _selDeck(self, did):
@@ -124,8 +126,10 @@ class DeckBrowser:
                 <br>
                 <button type="button" id="add_from_file_bt">从文件导入单词</button>
                 <br>
+                <br>                
+                <button type="button" id="smart_add">智能添加文章</button>                
                 <br>
-                
+                <br>
             </div>
 
         </div>
@@ -455,6 +459,11 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         addCard.close_hidden()
 
         return success_num
+
+    # 智能添加
+    ##########################################################################
+    def _smart_add(self):
+        pass
 
     # 导入model
     ##########################################################################
