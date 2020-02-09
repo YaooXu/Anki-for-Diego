@@ -38,7 +38,7 @@ def addBasicModel(col):
         "单词": "Baicizhan:word",
         "音标": "Baicizhan:accent",
         "释义": "Baicizhan:mean_cn",
-        "例句": "Youdao:explains",
+        "例句": "Baicizhan:st",
         "图片": "Baicizhan:img",
         "音频": "Youdao:sound"
     }
