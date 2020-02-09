@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 import time
+from aqt.smart_add import SmartAdd
 from aqt.qt import *
 from aqt.utils import askUser, getOnlyText, openLink, showWarning, shortcut, \
     openHelp, showInfo
@@ -463,7 +464,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
     # 智能添加
     ##########################################################################
     def _smart_add(self):
-        pass
+        SmartAdd(self.mw)
 
     # 导入model
     ##########################################################################

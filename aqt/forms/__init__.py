@@ -36,6 +36,7 @@ __all__ = [
 	"reschedule",
 	"setgroup",
 	"setlang",
+	"smart_add",
 	"stats",
 	"studydeck",
 	"taglimit",
@@ -77,6 +78,7 @@ from . import reposition
 from . import reschedule
 from . import setgroup
 from . import setlang
+from . import smart_add
 from . import stats
 from . import studydeck
 from . import taglimit
