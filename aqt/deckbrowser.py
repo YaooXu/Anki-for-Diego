@@ -4,7 +4,7 @@
 import time
 from aqt.qt import *
 from aqt.utils import askUser, getOnlyText, openLink, showWarning, shortcut, \
-    openHelp
+    openHelp, showInfo
 from anki.utils import ids2str, fmtTimeSpan
 from anki.errors import DeckRenameError
 import aqt
@@ -15,6 +15,7 @@ from anki.lang import _, ngettext
 import requests
 from anki.get_word import report_add_res, WordsAdder
 import json
+
 
 # 牌组浏览
 class DeckBrowser:
@@ -288,10 +289,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         """
         source = self.mw.col.models.getCurrentSource()
         if not source:
-            messageBox = QMessageBox()
-            # 只有导入的模板才带有source
-            messageBox.setText("未指定导入模板!")
-            messageBox.exec_()
+            showWarning("未指定导入模板!")
             return
 
         # 这个模板所需要的所有来源 ex: ['Baicizhan', 'Youdao']
@@ -301,27 +299,28 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             if source_name not in source_list:
                 source_list.append(source_name)
 
-        words = content.strip().split('\n')
+        origin_words = content.strip().split('\n')
         index = 0
         # 保证了添加单词的顺序，且剔除空格
         while True:
             cnt = index
-            if index == len(words):
+            if index == len(origin_words):
                 break
-            if " " in words[index]:
-                for tmp in words[index].split(' '):
+            if " " in origin_words[index]:
+                for tmp in origin_words[index].split(' '):
                     if tmp != "":
-                        words.insert(cnt + 1, tmp)
+                        origin_words.insert(cnt + 1, tmp)
                         cnt = cnt + 1
-                del words[index]
+                del origin_words[index]
                 index = cnt
             else:
                 index = index + 1
-        # 单词去重
+
+        # 文本框去重
         duplicate_words = {}
         errormsg = {}
 
-        for i in words:
+        for i in origin_words:
             if i in duplicate_words.keys():
                 duplicate_words[i] += 1
             else:
@@ -329,9 +328,10 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         words_temp = []
         for i in duplicate_words.keys():
             words_temp.append(i)
-            if duplicate_words[i] != 1:
-                errormsg[i] = -3
+            # if duplicate_words[i] != 1:
+            #     errormsg[i] = -3
 
+        # 牌库去重
         words = []
         note = self.mw.col.newNote()
         for i in words_temp:
@@ -339,7 +339,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 words.append(i)
             else:
                 errormsg[i] = -3
-        
+
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
@@ -363,7 +363,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         break
 
         success_num = self.add_words(word_infos)
-        report_add_res(len(words), success_num, errormsg)
+        report_add_res(len(duplicate_words), success_num, errormsg)
 
     def _add_from_text(self, content):
         """
@@ -382,14 +382,12 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         if not file_path:
             return
 
-        messageBos = QMessageBox()
         if file_path.endswith('txt'):
             with open(file_path, 'r') as f:
                 content = f.read()
             self.__add_words_by_content(content)
         else:
-            messageBos.setText("必须是txt文件!")
-            messageBos.exec_()
+            showWarning("必须是txt文件!")
 
     def add_words(self, word_infos: list):
         r"""
@@ -433,15 +431,11 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         word = word_info[key1][key2]
                     elif key2 in ['img']:
                         res = requests.get(word_info[key1][key2])
-                        if not os.path.isdir("./images"):
-                            os.mkdir("./images")
                         with open("./{}.jpg".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "./{}.jpg".format(word)
+                        addCard.editor.note.fields[cnt] = "<img src='%s'>" % ("./{}.jpg".format(word))
                     elif key2 in ['sound']:
                         res = requests.get(word_info[key1][key2])
-                        if not os.path.isdir("./sound"):
-                            os.mkdir("./sound")
                         with open("./{}.mp3".format(word), "wb") as f:
                             f.write(res.content)
                         addCard.editor.note.fields[cnt] = "[sound:./{}.mp3]".format(word)
@@ -497,9 +491,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
 
     def __import_json(self, content_json: dict):
         if not (self.__check_json(content_json) and self.__check_modelfield(content_json)):
-            messageBos = QMessageBox()
-            messageBos.setText("json文件模板格式错误!")
-            messageBos.exec_()
+            showWarning("json文件模板格式错误!")
             return None
 
         mm = self.mw.col.models
@@ -524,17 +516,14 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         if not file_path:
             return
 
-        messageBos = QMessageBox()
         if file_path.endswith('json'):
             with open(file_path, 'r', encoding='utf8') as f:
                 content = json.load(f)
                 res = self.__import_json(content)
                 if res:
-                    messageBos.setText("模板导入成功!")
-                    messageBos.exec_()
+                    showInfo("模板导入成功!")
         else:
-            messageBos.setText("必须是json文件!")
-            messageBos.exec_()
+            showWarning("必须是json文件!")
 
         # 导入新模板之后重新加载deckBrowser页面
         self.mw.moveToState("deckBrowser")
