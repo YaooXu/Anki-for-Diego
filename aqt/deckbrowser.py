@@ -314,6 +314,8 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             if " " in origin_words[index]:
                 for tmp in origin_words[index].split(' '):
                     if tmp != "":
+                        if  not tmp[-1].isalpha():      #去掉常见标点
+                            tmp = tmp[0:-1]
                         origin_words.insert(cnt + 1, tmp)
                         cnt = cnt + 1
                 del origin_words[index]

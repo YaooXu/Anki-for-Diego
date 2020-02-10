@@ -63,6 +63,7 @@
 2. 删除时调用deleteNotes方法，进而调用_deleteNotes开始删除，首先定位当前的行数，注意这里是可以一次选中多行，多个卡片同时进行删除的
 3. 读取选中的行数中单词在数据库中对应的id，具体方法调用browser.selectedNotes方法，查询db中卡片id，返回值赋值给名为nids的一个list
 4. 然后调用collection中的remNote方法，从数据库中删除对应的card
+5. 删除之后根据删掉的行数重新加载整个页面
 
 ### 数据库相关操作
 
