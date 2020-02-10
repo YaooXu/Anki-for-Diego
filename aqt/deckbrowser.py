@@ -337,7 +337,9 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                 len(duplicate_words)
                 errormsg
         """
+        content = content.lower()#将content全部小写
         origin_words = content.strip().split('\n')
+
         index = 0
         # 保证了添加单词的顺序，且剔除空格
         while True:

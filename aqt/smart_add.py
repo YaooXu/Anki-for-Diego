@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from aqt.forms import smart_add
 from aqt.qt import *
+from aqt.showwords import *
 import aqt.forms
 from aqt.utils import saveGeom, restoreGeom, showWarning, askUser, shortcut, \
     tooltip, openHelp, addCloseShortcut, downArrow, showInfo
@@ -58,9 +59,13 @@ class SmartAdd( QDialog):
 
         de_duplicate_words, duplicate_num, errormsg = self.mw.deckBrowser.de_duplicate_and_format(content)
 
-        words = self.mw.col.wordmatch(de_duplicate_words, level)
-        #Todo 完成单词选择功能
-        showInfo("将导入以下单词，共{}个\n".format(len(words))  + str(words))
+        wordlist = self.mw.col.wordmatch(de_duplicate_words, level)
+        #完成单词选择功能
+        # showInfo("将导入以下单词，共{}个\n".format(len(words))  + str(words))
+        new = Showwords(self.mw,wordlist)
+        if new.exec_():
+           words = new.getwordlist()
+
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
@@ -82,7 +87,7 @@ class SmartAdd( QDialog):
                         flag = 1
                         break
         success_num = self.mw.deckBrowser.add_words(word_infos)
-        report_add_res(duplicate_num, success_num, errormsg)
+        report_add_res(len(wordlist), success_num, errormsg)
         self.form.textEdit.clear()
 
     def _add_from_text(self):
