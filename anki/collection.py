@@ -24,6 +24,7 @@ from anki.tags import TagManager
 from anki.consts import *
 from anki.errors import AnkiError
 from anki.sound import stripSounds
+from anki.ecdict import StarDict
 import anki.latex  # sets up hook
 import anki.cards
 import anki.notes
@@ -53,6 +54,7 @@ defaultConf = {
 class _Collection:
 
     def __init__(self, db, server=False, log=False):
+        self.ecdict = StarDict(os.path.join(os.path.dirname(__file__), 'test.db'))
         self._debugLog = log
         self.db = db
         self.path = db._path
@@ -951,3 +953,14 @@ and type=0""", [intTime(), self.usn()])
         assert 0 <= flag <= 7
         self.db.execute("update cards set flags = (flags & ~?) | ?, usn=?, mod=? where id in %s" %
                         ids2str(cids), 0b111, flag, self.usn(), intTime())
+    
+    def wordmatch(self,origin_words,level):
+        words = []
+        for origin_word in origin_words:
+            tag = self.ecdict.tag(origin_word)
+            if tag is None:
+                continue
+            tag = tag[0].split()
+            if level in tag:
+                words.append(origin_word)
+        return words
