@@ -287,7 +287,6 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
         # 根据content得到所有单词的信息
         # 并添加单词
         """
-
         :param content:
         :return: words (list of string)
                  word_infos (list of dict)
@@ -304,49 +303,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             if source_name not in source_list:
                 source_list.append(source_name)
 
-        origin_words = content.strip().split('\n')
-        index = 0
-        # 保证了添加单词的顺序，且剔除空格
-        while True:
-            cnt = index
-            if index == len(origin_words):
-                break
-            if " " in origin_words[index]:
-                for tmp in origin_words[index].split(' '):
-                    if tmp != "":
-                        if  not tmp[-1].isalpha():      #去掉常见标点
-                            tmp = tmp[0:-1]
-                        origin_words.insert(cnt + 1, tmp)
-                        cnt = cnt + 1
-                del origin_words[index]
-                index = cnt
-            else:
-                index = index + 1
-
-        # 文本框去重
-        duplicate_words = {}
-        errormsg = {}
-
-        for i in origin_words:
-            if i in duplicate_words.keys():
-                duplicate_words[i] += 1
-            else:
-                duplicate_words[i] = 1
-        words_temp = []
-        for i in duplicate_words.keys():
-            words_temp.append(i)
-            # if duplicate_words[i] != 1:
-            #     errormsg[i] = -3
-
-        # 牌库去重
-        words = []
-        note = self.mw.col.newNote()
-        for i in words_temp:
-            if note.newDupeOrEmpty(i) != 2:
-                words.append(i)
-            else:
-                errormsg[i] = -3
-
+        words, duplicate_num, errormsg = self.de_duplicate_and_format(content)
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
         word_infos = adder.get_res()
@@ -370,7 +327,58 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         break
 
         success_num = self.add_words(word_infos)
-        report_add_res(len(duplicate_words), success_num, errormsg)
+        report_add_res(duplicate_num, success_num, errormsg)
+
+    def de_duplicate_and_format(self, content):
+        #content内容格式化成word_list，然后进行单词去重，并且返回错误信息
+        """
+        :param content
+        :return de_duplicate_words
+                len(duplicate_words)
+                errormsg
+        """
+        origin_words = content.strip().split('\n')
+        index = 0
+        # 保证了添加单词的顺序，且剔除空格
+        while True:
+            cnt = index
+            if index == len(origin_words):
+                break
+            if " " in origin_words[index]:
+                for tmp in origin_words[index].split(' '):
+                    if tmp != "":
+                        if not tmp[-1].isalpha():  # 去掉常见标点
+                            tmp = tmp[0:-1]
+                        origin_words.insert(cnt + 1, tmp)
+                        cnt = cnt + 1
+                del origin_words[index]
+                index = cnt
+            else:
+                index = index + 1
+
+        # 文本框去重
+        duplicate_words = {}
+        errormsg = {}
+
+        for i in origin_words:
+            if i in duplicate_words.keys():
+                duplicate_words[i] += 1
+            else:
+                duplicate_words[i] = 1
+        words_temp = []
+        for i in duplicate_words.keys():
+            words_temp.append(i)
+
+        # 牌库去重
+        de_duplicate_words = []
+        note = self.mw.col.newNote()
+        for i in words_temp:
+            if note.newDupeOrEmpty(i) != 2:
+                de_duplicate_words.append(i)
+            else:
+                errormsg[i] = -3
+
+        return de_duplicate_words, len(duplicate_words), errormsg
 
     def _add_from_text(self, content):
         """
