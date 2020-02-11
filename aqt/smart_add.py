@@ -57,7 +57,7 @@ class SmartAdd( QDialog):
             if source_name not in source_list:
                 source_list.append(source_name)
 
-        de_duplicate_words, duplicate_num, errormsg = self.mw.deckBrowser.de_duplicate_and_format(content)
+        de_duplicate_words, duplicate_num, errormsg = self.mw.deckBrowser.de_duplicate_and_format(content, flag=True)
 
         wordlist = self.mw.col.wordmatch(de_duplicate_words, level)
         #完成单词选择功能
@@ -67,7 +67,8 @@ class SmartAdd( QDialog):
             words = new.getwordlist()
         else:
             # 这里填写 取消之后的操作
-            words = new.getwordlist()
+            # words = new.getwordlist()
+            return
 
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
