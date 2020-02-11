@@ -91,7 +91,7 @@ class SmartAdd( QDialog):
                         flag = 1
                         break
         success_num = self.mw.deckBrowser.add_words(word_infos)
-        report_add_res(len(wordlist), success_num, errormsg)
+        report_add_res(len(words), success_num, errormsg)
         self.form.textEdit.clear()
 
     def _add_from_text(self):
