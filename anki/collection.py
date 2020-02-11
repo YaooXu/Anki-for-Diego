@@ -955,12 +955,18 @@ and type=0""", [intTime(), self.usn()])
                         ids2str(cids), 0b111, flag, self.usn(), intTime())
     
     def wordmatch(self,origin_words,level):
+        leveldict = {"xx" : 5,"zk" : 4,"gk" : 3,"cet4" : 2,"cet6" : 1}
         words = []
         for origin_word in origin_words:
             tag = self.ecdict.tag(origin_word)
             if tag is None:
                 continue
             tag = tag[0].split()
-            if level in tag:
+            this_max_level = 0
+            for i in tag:
+                if i not in leveldict.keys():
+                    continue
+                this_max_level = leveldict[i] if leveldict[i] > this_max_level else  this_max_level
+            if leveldict[level] >= this_max_level and level in tag:
                 words.append(origin_word)
         return words

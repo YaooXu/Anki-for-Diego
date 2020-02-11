@@ -64,7 +64,10 @@ class SmartAdd( QDialog):
         # showInfo("将导入以下单词，共{}个\n".format(len(words))  + str(words))
         new = Showwords(self.mw,wordlist)
         if new.exec_():
-           words = new.getwordlist()
+            words = new.getwordlist()
+        else:
+            # 这里填写 取消之后的操作
+            words = new.getwordlist()
 
         # 查询单词模板只负责查询，添加由自己完成，避免过度耦合
         adder = WordsAdder(self, words, source_list)
@@ -108,7 +111,7 @@ class SmartAdd( QDialog):
         if not file_path:
             return
         if file_path.endswith('txt'):
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             self.form.textEdit.setText(content)
             # self.__add_words_by_content(content)
