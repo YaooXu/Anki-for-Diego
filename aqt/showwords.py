@@ -48,6 +48,8 @@ class Showwords(QDialog):
         #self.form.listWidget.takeItem(self.f)#删除行(实际上是断开了与list的联系)
         #注意：removeItemWidget(self, QListWidgetItem)  # 移除一个Item，无返回值
         #注意：takeItem(self, int)  # 切断一个Item与List的联系，返回该Item
+        if self.f == "":
+            return
         self.form.listWidget.removeItemWidget(self.form.listWidget.takeItem(int(self.f)))  #删除
         count = self.form.listWidget.count()
         # 遍历listwidget中的内容
