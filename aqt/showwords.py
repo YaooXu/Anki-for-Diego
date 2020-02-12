@@ -40,17 +40,18 @@ class Showwords(QDialog):
         #如果有选中项，则显示显示菜单
         items = self.form.listWidget.selectedIndexes()
         if items:
+            self.f = items[0].row()
             self.contextMenu.show()
             self.contextMenu.exec_(QCursor.pos())  # 在鼠标位置显示
+
     
     def remove(self,qAction):
         print(self.f)
         #self.form.listWidget.takeItem(self.f)#删除行(实际上是断开了与list的联系)
         #注意：removeItemWidget(self, QListWidgetItem)  # 移除一个Item，无返回值
         #注意：takeItem(self, int)  # 切断一个Item与List的联系，返回该Item
-        if self.f == "":
-            return
         self.form.listWidget.removeItemWidget(self.form.listWidget.takeItem(int(self.f)))  #删除
+        # self.form.listWidget.removeItemWidget(self.form.listWidget.takeItem(self.form.listWidget.row(self.item)))
         count = self.form.listWidget.count()
         # 遍历listwidget中的内容
         self.newwordlist = []
