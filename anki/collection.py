@@ -25,6 +25,7 @@ from anki.consts import *
 from anki.errors import AnkiError
 from anki.sound import stripSounds
 from anki.ecdict import StarDict
+from aqt.winpaths import get_current
 import anki.latex  # sets up hook
 import anki.cards
 import anki.notes
@@ -54,7 +55,7 @@ defaultConf = {
 class _Collection:
 
     def __init__(self, db, server=False, log=False):
-        self.ecdict = StarDict(os.path.join(os.path.dirname(__file__), 'test.db'))
+        self.ecdict = StarDict(os.path.join(get_current(), "test.db"))
         self._debugLog = log
         self.db = db
         self.path = db._path
