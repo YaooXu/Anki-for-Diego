@@ -28,6 +28,7 @@ __all__ = [
 	"main",
 	"modelopts",
 	"models",
+	"newabout",
 	"preferences",
 	"preview",
 	"profiles",
@@ -36,12 +37,12 @@ __all__ = [
 	"reschedule",
 	"setgroup",
 	"setlang",
+	"showwords",
 	"smart_add",
 	"stats",
 	"studydeck",
 	"taglimit",
 	"template",
-	"newabout",
 ]
 from . import about
 from . import addcards
@@ -71,6 +72,7 @@ from . import importing
 from . import main
 from . import modelopts
 from . import models
+from . import newabout
 from . import preferences
 from . import preview
 from . import profiles
@@ -79,9 +81,9 @@ from . import reposition
 from . import reschedule
 from . import setgroup
 from . import setlang
+from . import showwords
 from . import smart_add
 from . import stats
 from . import studydeck
 from . import taglimit
 from . import template
-from . import newabout

@@ -34,7 +34,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 412, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 500, 26))
         self.menubar.setObjectName("menubar")
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
@@ -120,7 +120,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_("Anki"))
+        MainWindow.setWindowTitle(_("Anki-Diego爸爸定制版"))
         self.menuHelp.setTitle(_("&Help"))
         self.menuEdit.setTitle(_("&Edit"))
         self.menuCol.setTitle(_("&File"))
@@ -131,7 +131,6 @@ class Ui_MainWindow(object):
         self.actionPreferences.setStatusTip(_("Configure interface language and options"))
         self.actionPreferences.setShortcut(_("Ctrl+P"))
         self.actionAbout.setText(_("&About..."))
-        self.actionAbout_us.setText(_("About us...")) # 翻译问题在这里
         self.actionUndo.setText(_("&Undo"))
         self.actionUndo.setShortcut(_("Ctrl+Z"))
         self.actionCheckMediaDatabase.setText(_("Check &Media..."))
@@ -157,4 +156,5 @@ class Ui_MainWindow(object):
         self.actionNoteTypes.setShortcut(_("Ctrl+Shift+N"))
         self.actionAdd_ons.setText(_("Add-ons"))
         self.actionAdd_ons.setShortcut(_("Ctrl+Shift+A"))
+        self.actionAbout_us.setText(_("关于Diego爸爸"))
 from . import icons_rc

@@ -40,7 +40,7 @@ def addBasicModel(col):
         "释义": "Baicizhan:mean_cn",
         "例句": "Baicizhan:st",
         "图片": "Baicizhan:img",
-        "音频": "Youdao:sound"
+        "音频": "Baicizhan:sound"
     }
     mm.addSource(m, source)
     mm.add(m)

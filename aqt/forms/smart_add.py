@@ -16,7 +16,7 @@ class Ui_SmartAdd(object):
         SmartAdd.setObjectName("SmartAdd")
         SmartAdd.resize(415, 326)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("designer\\icons/anki.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/anki.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         SmartAdd.setWindowIcon(icon)
         self.groupBox = QtWidgets.QGroupBox(SmartAdd)
         self.groupBox.setGeometry(QtCore.QRect(270, 20, 141, 181))

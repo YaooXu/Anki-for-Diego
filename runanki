@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
 
+# https://github.com/YaooXu/Anki-for-Diego
+
 import aqt
 aqt.run()

@@ -275,7 +275,7 @@ close the profile or restart Anki."""))
             restoreGeom(self, "mainWindow")
             restoreState(self, "mainWindow")
         # titlebar
-        self.setWindowTitle(self.pm.name + " - Anki")
+        self.setWindowTitle(self.pm.name + " - Anki-Diego爸爸定制版")
         # show and raise window for osx
         self.show()
         self.activateWindow()
@@ -1144,7 +1144,7 @@ will be lost. Continue?"""))
             return
         # show report and offer to delete
         diag = QDialog(self)
-        diag.setWindowTitle("Anki")
+        diag.setWindowTitle("Anki-Diego爸爸定制版")
         layout = QVBoxLayout(diag)
         diag.setLayout(layout)
         text = QTextEdit()
