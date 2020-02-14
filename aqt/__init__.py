@@ -60,7 +60,7 @@ from anki.utils import checksum
 
 
 from aqt import addcards, browser, editcurrent, stats, about, \
-    preferences
+    preferences, newabout
 
 
 class DialogManager:
@@ -72,6 +72,7 @@ class DialogManager:
         "EditCurrent": [editcurrent.EditCurrent, None],
         "DeckStats": [stats.DeckStats, None],
         "About": [about.show, None],
+        "NewAbout": [newabout.show, None],
         "Preferences": [preferences.Preferences, None],
     }
 

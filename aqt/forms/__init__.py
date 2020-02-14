@@ -41,6 +41,7 @@ __all__ = [
 	"studydeck",
 	"taglimit",
 	"template",
+	"newabout",
 ]
 from . import about
 from . import addcards
@@ -83,3 +84,4 @@ from . import stats
 from . import studydeck
 from . import taglimit
 from . import template
+from . import newabout

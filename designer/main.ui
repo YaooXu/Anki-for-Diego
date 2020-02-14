@@ -57,6 +57,7 @@
     <addaction name="separator"/>
     <addaction name="actionDonate"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionAbout_us"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -235,6 +236,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actionAbout_us">
+   <property name="text">
+    <string>About us...</string>
    </property>
   </action>
  </widget>

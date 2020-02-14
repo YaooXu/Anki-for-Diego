@@ -906,6 +906,9 @@ QTreeWidget {
 
     def onAbout(self):
         aqt.dialogs.open("About", self)
+    
+    def onNewAbout(self):
+        aqt.dialogs.open("NewAbout", self)       
 
     def onDonate(self):
         openLink(aqt.appDonate)
@@ -964,6 +967,7 @@ QTreeWidget {
         m.actionExit.triggered.connect(self.close)
         m.actionPreferences.triggered.connect(self.onPrefs)
         m.actionAbout.triggered.connect(self.onAbout)
+        m.actionAbout_us.triggered.connect(self.onNewAbout)
         m.actionUndo.triggered.connect(self.onUndo)
         if qtminor < 11:
             m.actionUndo.setShortcut(QKeySequence(_("Ctrl+Alt+Z")))
