@@ -2,6 +2,10 @@
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 
 from anki import version as _version
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 import getpass
 import sys
@@ -61,6 +65,7 @@ from aqt import addcards, browser, editcurrent, stats, about, \
 
 class DialogManager:
     # 管理当前所有的对话窗口
+    # 对话框模块
     _dialogs = {
         "AddCards": [addcards.AddCards, None],
         "Browser": [browser.Browser, None],
@@ -369,7 +374,6 @@ environment points to a valid, writable folder.""")
             QMessageBox.critical(None, "Error",
                                  "Your video driver is incompatible. Please start Anki again, and Anki will switch to a slower, more compatible mode.")
             sys.exit(1)
-
     # load the main window
     import aqt.main
     mw = aqt.main.AnkiQt(app, pm, opts, args)

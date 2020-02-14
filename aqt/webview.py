@@ -16,7 +16,7 @@ from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWebChannel import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-
+import logging
 
 # Page for debug messages
 ##########################################################################

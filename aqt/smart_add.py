@@ -8,7 +8,8 @@ from aqt.utils import saveGeom, restoreGeom, showWarning, askUser, shortcut, \
 from anki.get_word import report_add_res, WordsAdder
 import json
 
-class SmartAdd( QDialog):
+
+class SmartAdd(QDialog):
     def __init__(self, mw):
         QDialog.__init__(self, None, Qt.Window)
         mw.setupDialogGC(self)
@@ -19,7 +20,6 @@ class SmartAdd( QDialog):
         self.form.file_choose_bt.clicked.connect(self._add_from_file)
         self.form.smart_add_bt.clicked.connect(self._add_from_text)
         self.show()
-
 
     # 添加单词
     ##########################################################################
@@ -60,9 +60,9 @@ class SmartAdd( QDialog):
         de_duplicate_words, duplicate_num, errormsg = self.mw.deckBrowser.de_duplicate_and_format(content, flag=True)
 
         wordlist = self.mw.col.wordmatch(de_duplicate_words, level)
-        #完成单词选择功能
+        # 完成单词选择功能
         # showInfo("将导入以下单词，共{}个\n".format(len(words))  + str(words))
-        new = Showwords(self.mw,wordlist)
+        new = Showwords(self.mw, wordlist)
         if new.exec_():
             words = new.getwordlist()
         else:
@@ -119,4 +119,3 @@ class SmartAdd( QDialog):
             # self.form.textEdit.clear()
         else:
             showWarning("必须是txt文件!")
-

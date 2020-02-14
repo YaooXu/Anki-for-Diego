@@ -392,7 +392,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
             return
 
         if file_path.endswith('txt'):
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r', encoding='utf8') as f:
                 content = f.read()
             self.__add_words_by_content(content)
         else:
@@ -468,7 +468,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
     # 智能添加
     ##########################################################################
     def _smart_add(self):
-        SmartAdd(self.mw)
+        self.smart_add = SmartAdd(self.mw)
 
     # 导入model
     ##########################################################################
