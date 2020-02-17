@@ -9,3 +9,4 @@ dist
 learn_pyqt/progress_dialog.py
 learn_pyqt
 test.*
+*.docx
