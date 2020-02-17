@@ -1,6 +1,6 @@
 rm -r ./build ./dist
-pyinstaller runanki
+pyinstaller -w runanki
 cp test.db dist/runanki
 cp -r web dist/runanki
-cp -r local dist/local
-cp stdfield.json dist/stdfield.json
+cp -r locale dist/runanki
+cp stdfield.json dist/runanki

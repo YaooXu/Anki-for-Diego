@@ -15,10 +15,8 @@ def addBasicModel(col):
     # 默认的单词模板
     # ModelManager
     mm = col.models
-    m = mm.new("默认单词模板")
+    m = mm.new("Diego爸爸定制模板")
     fm = mm.newField("单词")
-    mm.addField(m, fm)
-    fm = mm.newField("音标")
     mm.addField(m, fm)
     fm = mm.newField("释义")
     mm.addField(m, fm)
@@ -29,14 +27,13 @@ def addBasicModel(col):
     fm = mm.newField("音频")
     mm.addField(m, fm)
 
-    t = mm.newTemplate("默认显示样式")
-    t['qfmt'] = "{{单词}}<br>{{音标}}<span class='voice'>{{音频}}</span>"
-    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n{{释义}}<br>{{例句}}<br>{{图片}}"
+    t = mm.newTemplate("Diego爸爸定制显示样式")
+    t['qfmt'] = "{{单词}}<br><span class='voice'>{{音频}}</span>"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>{{释义}}<br>{{例句}}<br>{{图片}}"
     mm.addTemplate(m, t)
 
     source = {
         "单词": "Baicizhan:word",
-        "音标": "Baicizhan:accent",
         "释义": "Baicizhan:mean_cn",
         "例句": "Baicizhan:st",
         "图片": "Baicizhan:img",
