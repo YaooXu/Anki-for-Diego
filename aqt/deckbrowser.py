@@ -431,6 +431,7 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                     # print(word_info[key1][key2])
                     # 判断word_info中是否有对应的field，若没有，则置为None
                     if key1 in word_info and key2 in word_info[key1]:
+                        word_info[key1][key2] = word_info[key1][key2].replace('\n', '<br>')
                         addCard.editor.note.fields[cnt] = word_info[key1][key2]
                     else:
                         addCard.editor.note.fields[cnt] = ''
