@@ -10,7 +10,7 @@
   "template": {
     "name": "Diego爸爸定制显示样式",
     "qfmt": "{{单词}}<br><span class='voice'>{{音频}}</span>",
-    "afmt": "{{FrontSide}}\n\n<hr id=answer>{{释义}}<br>{{例句}}<br>{{图片}}"
+    "afmt": "{{FrontSide}}\n\n<hr id=answer>{{例句}}<br>{{图片}}<br>{{释义}}"
   },
   "source":{
     "单词": "Baicizhan:word",
