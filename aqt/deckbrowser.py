@@ -441,14 +441,14 @@ where id > ?""", (self.mw.col.sched.dayCutoff - 86400) * 1000)
                         word = word_info[key1][key2]
                     elif key2 in ['img']:
                         res = requests.get(word_info[key1][key2])
-                        with open("./{}.jpg".format(word), "wb") as f:
+                        with open("{}.jpg".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "<img src='%s'>" % ("./{}.jpg".format(word))
+                        addCard.editor.note.fields[cnt] = "<img src='%s'>" % ("{}.jpg".format(word))
                     elif key2 in ['sound']:
                         res = requests.get(word_info[key1][key2])
-                        with open("./{}.mp3".format(word), "wb") as f:
+                        with open("{}.mp3".format(word), "wb") as f:
                             f.write(res.content)
-                        addCard.editor.note.fields[cnt] = "[sound:./{}.mp3]".format(word)
+                        addCard.editor.note.fields[cnt] = "[sound:{}.mp3]".format(word)
                 except Exception as e:
                     flag = 0
                     print(e)
