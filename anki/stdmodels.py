@@ -49,3 +49,48 @@ models.append((lambda: _("Basic"), addBasicModel))
 
 # Basic w/ typing
 ##########################################################################
+# Cloze
+##########################################################################
+
+def addClozeModel(col):
+    mm = col.models
+    m = mm.new(_("Cloze"))
+    m['type'] = MODEL_CLOZE
+    txt = _("Text")
+    fm = mm.newField(txt)
+    mm.addField(m, fm)
+    fm = mm.newField(_("Extra"))
+    mm.addField(m, fm)
+    t = mm.newTemplate(_("Cloze"))
+    fmt = "{{cloze:%s}}" % txt
+    m['css'] += """
+.cloze {
+ font-weight: bold;
+ color: blue;
+}
+.nightMode .cloze {
+ color: lightblue;
+}"""
+    t['qfmt'] = fmt
+    t['afmt'] = fmt + "<br>\n{{%s}}" % _("Extra")
+    mm.addTemplate(m, t)
+    mm.add(m)
+    return m
+
+models.append((lambda: _("Cloze"), addClozeModel))
+
+
+# Forward & Reverse
+##########################################################################
+
+def addForwardReverse(col):
+    mm = col.models
+    m = addBasicModel(col)
+    m['name'] = _("Basic (and reversed card)")
+    t = mm.newTemplate(_("Card 2"))
+    t['qfmt'] = "{{"+_("Back")+"}}"
+    t['afmt'] = "{{FrontSide}}\n\n<hr id=answer>\n\n"+"{{"+_("Front")+"}}"
+    mm.addTemplate(m, t)
+    return m
+
+models.append((lambda: _("Basic (and reversed card)"), addForwardReverse))

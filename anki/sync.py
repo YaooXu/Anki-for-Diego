@@ -695,6 +695,7 @@ class MediaSyncer:
         runHook("sync", "findMedia")
         self.col.log("findChanges")
         try:
+            # 在这里更新了media数据库！
             self.col.media.findChanges()
         except DBError:
             return "corruptMediaDB"
